@@ -5,7 +5,20 @@
 }:
 
 let overrides = self: super: {
+
   setuptools = pythonPackages.setuptools;
+
+  flake8 = super.flake8.overrideDerivation (old: {
+    buildInputs = old.buildInputs ++ [self.pytest-runner];
+  });
+
+  flake8-debugger = super.flake8-debugger.overrideDerivation (old: {
+    buildInputs = old.buildInputs ++ [self.pytest-runner];
+  });
+
+  mccabe = super.mccabe.overrideDerivation (old: {
+    buildInputs = old.buildInputs ++ [self.pytest-runner];
+  });
 
   pytest = super.pytest.overrideDerivation (old: {
     buildInputs = old.buildInputs ++ [ self.setuptools_scm ];

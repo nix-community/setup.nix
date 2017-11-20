@@ -64,6 +64,16 @@ self: super: {
       sha256 = "1wd1szk0z3073ghx26ynw43gnc140ibln1safgsis6s6z3s25ss8";
     };
   };
+  "coverage" = super.buildPythonPackage {
+    name = "coverage-4.4.2";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/0b/e1/190ef1a264144c9b073b7353c259ca5431b5ddc8861b452e858fcbd0e9de/coverage-4.4.2.tar.gz";
+      sha256 = "1k1l1xdpzni35xrffwv3nvqb7ylb912mdmz4l33kw1imgayr379h";
+    };
+  };
   "docutils" = super.buildPythonPackage {
     name = "docutils-0.14";
     buildInputs = with self; [];
@@ -72,6 +82,56 @@ self: super: {
     src = fetchurl {
       url = "https://pypi.python.org/packages/84/f4/5771e41fdf52aabebbadecc9381d11dea0fa34e4759b4071244fa094804c/docutils-0.14.tar.gz";
       sha256 = "0x22fs3pdmr42kvz6c654756wja305qv6cx1zbhwlagvxgr4xrji";
+    };
+  };
+  "flake8" = super.buildPythonPackage {
+    name = "flake8-3.5.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [pyflakes pycodestyle mccabe setuptools];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/1e/ab/7730f6d6cdf73a3b7f98a2fe3b2cdf68e9e760a4a133e083607497d4c3a6/flake8-3.5.0.tar.gz";
+      sha256 = "184b33grvvjmiwlv9kyd7yng9qv5ld24154j70z332xxg9gjclvj";
+    };
+  };
+  "flake8-blind-except" = super.buildPythonPackage {
+    name = "flake8-blind-except-0.1.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [setuptools];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/ff/f2/ab635e6e420e78c94eab50cd3f53abd3ec27e411793e50b14f29edbb9f0b/flake8-blind-except-0.1.1.tar.gz";
+      sha256 = "16g58mkr3fcn2vlfhp3rlahj93qswc7jd5qrqp748mc26dk3b8xc";
+    };
+  };
+  "flake8-coding" = super.buildPythonPackage {
+    name = "flake8-coding-1.3.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [flake8];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/ae/26/3c6304d646f8ee27d6c40bfcd9874fea870098c3ef3cf60e284ea9db29ef/flake8-coding-1.3.0.tar.gz";
+      sha256 = "1gjhzv85gaviwszp04l3win3h69bhfd4kwvi7mm7cxwkhxpyj0ds";
+    };
+  };
+  "flake8-debugger" = super.buildPythonPackage {
+    name = "flake8-debugger-3.0.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [flake8 pycodestyle];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/2c/a7/45823a26ef0c5fa7a0c099b772a5b6aa2d8e686284490ef738fc8691ffc0/flake8-debugger-3.0.0.tar.gz";
+      sha256 = "1m6jqgdbpq7plf24kknnxlkw3rig7bjf17xqzgrv57c11ncarj75";
+    };
+  };
+  "flake8-quotes" = super.buildPythonPackage {
+    name = "flake8-quotes-0.12.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [flake8];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/a0/4f/60ff2549d4b4abb3665f7019184652f5bd9a421ad7312cc1aef644317441/flake8-quotes-0.12.0.zip";
+      sha256 = "195cxk43d868qw1nmn1nvs7h42s07rk2if701cx1py3p8xazws8l";
     };
   };
   "html5lib" = super.buildPythonPackage {
@@ -94,6 +154,36 @@ self: super: {
       sha256 = "13qaab6d0s15gknz8v3zbcfmbj6v86hn9pjxgkdf62ch13imssic";
     };
   };
+  "isort" = super.buildPythonPackage {
+    name = "isort-4.2.15";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/4d/d5/7c8657126a43bcd3b0173e880407f48be4ac91b4957b51303eab744824cf/isort-4.2.15.tar.gz";
+      sha256 = "10rr1grpsxnjrxgnfdjwabn8nlwbgb667rhnf0zfbqm4sdr63x3r";
+    };
+  };
+  "mccabe" = super.buildPythonPackage {
+    name = "mccabe-0.6.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/06/18/fa675aa501e11d6d6ca0ae73a101b2f3571a565e0f7d38e062eec18a91ee/mccabe-0.6.1.tar.gz";
+      sha256 = "07w3p1qm44hgxf3vvwz84kswpsx6s7kvaibzrsx5dzm0hli1i3fx";
+    };
+  };
+  "pep8-naming" = super.buildPythonPackage {
+    name = "pep8-naming-0.4.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/c8/c9/d16bea3e5f888f430b73f44eb9be8ba3cd7a22f08ed05363c8614b131e21/pep8-naming-0.4.1.tar.gz";
+      sha256 = "0nhf8p37y008shd4f21bkj5pizv8q0l8cpagyyb8gr059d6gvvaf";
+    };
+  };
   "pkginfo" = super.buildPythonPackage {
     name = "pkginfo-1.4.1";
     buildInputs = with self; [];
@@ -114,6 +204,26 @@ self: super: {
       sha256 = "0vd7i2lspzfwj0k68cnm1pk3rclnrnkavgqncdsifm1350z9866a";
     };
   };
+  "pycodestyle" = super.buildPythonPackage {
+    name = "pycodestyle-2.3.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/e1/88/0e2cbf412bd849ea6f1af1f97882add46a374f4ba1d2aea39353609150ad/pycodestyle-2.3.1.tar.gz";
+      sha256 = "0rk78b66p57ala26mdldl9lafr48blv5s659sah9q50qnfjmc8k8";
+    };
+  };
+  "pyflakes" = super.buildPythonPackage {
+    name = "pyflakes-1.6.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/26/85/f6a315cd3c1aa597fb3a04cc7d7dbea5b3cc66ea6bd13dfa0478bf4876e6/pyflakes-1.6.0.tar.gz";
+      sha256 = "01c87qiadz71sbqrclrsr85vx601p20g4hs7nlcvyg945ww6lqcd";
+    };
+  };
   "pyroma" = super.buildPythonPackage {
     name = "pyroma-2.2";
     buildInputs = with self; [];
@@ -132,6 +242,16 @@ self: super: {
     src = fetchurl {
       url = "https://pypi.python.org/packages/1f/f8/8cd74c16952163ce0db0bd95fdd8810cbf093c08be00e6e665ebf0dc3138/pytest-3.2.5.tar.gz";
       sha256 = "10cbsyyyzamhvi1gqqyhccsx906xlcwcgddvldalqi1v27vx8nvd";
+    };
+  };
+  "pytest-cov" = super.buildPythonPackage {
+    name = "pytest-cov-2.5.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [pytest coverage];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/24/b4/7290d65b2f3633db51393bdf8ae66309b37620bc3ec116c5e357e3e37238/pytest-cov-2.5.1.tar.gz";
+      sha256 = "0bbfpwdh9k3636bxc88vz9fa7vf4akchgn513ql1vd0xy4n7bah3";
     };
   };
   "pytest-runner" = super.buildPythonPackage {
