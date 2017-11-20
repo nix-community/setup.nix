@@ -33,4 +33,5 @@ let overrides = self: super: {
 in setup {
   inherit pkgs pythonPackages overrides;
   src = ./.;
+  propagatedBuildInputs = [ pkgs.lolcat ];
 }

@@ -2,6 +2,8 @@
 , pythonPackages ? pkgs.pythonPackages
 , overrides
 , src
+, buildInputs ? []
+, propagatedBuildInputs ? []
 }:
 
 with builtins;
@@ -47,24 +49,29 @@ in rec {
   build = packages.buildPythonPackage {
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
-    buildInputs = map
+    buildInputs = buildInputs ++ map
       (name: getAttr name packages) ((list package.options.setup_requires) ++
                                      (list package.options.tests_require));
-    propagatedBuildInputs = map
+    propagatedBuildInputs = propagatedBuildInputs ++ map
       (name: getAttr name packages) (list package.options.install_requires);
     doCheck = false;
   };
 
   develop = build.overrideDerivation(old: {
     name = "${old.name}-shell";
-    buildInputs = map
+    buildInputs = buildInputs ++ propagatedBuildInputs ++ map
       (name: getAttr name packages) (attrNames (requirements {} {}));
   });
 
   install = packages.python.withPackages (ps: [ build ]);
 
-  env = packages.python.withPackages (ps: map
-    (name: getAttr name packages) (attrNames (requirements {} {})));
+  env = pkgs.buildEnv {
+    name = "${package.metadata.name}-${package.metadata.version}-env";
+    paths = buildInputs ++ propagatedBuildInputs ++ [
+      (packages.python.withPackages (ps: map
+        (name: getAttr name packages) (attrNames (requirements {} {}))))
+    ];
+  };
 
   sdist = build.overrideDerivation(old: {
     name = "${old.name}-sdist";
