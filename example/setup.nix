@@ -21,11 +21,11 @@ let overrides = self: super: {
   });
 
   pytest = super.pytest.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [ self.setuptools_scm ];
+    buildInputs = old.buildInputs ++ [ self.setuptools-scm ];
   });
 
   pytest-runner = super.pytest-runner.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [ self.setuptools_scm ];
+    buildInputs = old.buildInputs ++ [ self.setuptools-scm ];
   });
 
 };

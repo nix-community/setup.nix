@@ -8,4 +8,5 @@ pep8-naming
 pytest
 pytest-cov
 pytest-runner
+setuptools-scm
 zest.releaser[recommended]

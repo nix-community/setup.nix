@@ -304,6 +304,16 @@ self: super: {
       sha256 = "0pdk0nmmjjiwjx9lv8xx2kz6wx11154jshfxqgrj1zg4x405mamj";
     };
   };
+  "setuptools-scm" = super.buildPythonPackage {
+    name = "setuptools-scm-1.15.6";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/03/6d/aafdd01edd227ee879b691455bf19895091872af7e48192bea1758c82032/setuptools_scm-1.15.6.tar.gz";
+      sha256 = "0pzvfmx8s20yrgkgwfbxaspz2x1g38qv61jpm0ns91lrb22ldas9";
+    };
+  };
   "six" = super.buildPythonPackage {
     name = "six-1.11.0";
     buildInputs = with self; [];
