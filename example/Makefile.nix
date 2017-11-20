@@ -1,7 +1,7 @@
 PYTHON ?= python3
 ARGSTR ?= --argstr python $(PYTHON)
 
-test: requirements.nix
+%:
 	nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) $@"
 
 env: requirements.nix
@@ -10,7 +10,7 @@ env: requirements.nix
 shell: requirements.nix
 	nix-shell setup.nix $(ARGSTR) -A develop
 
-.PHONY: docs env shell test
+.PHONY: env shell
 
 requirements.nix: requirements.txt
 	nix-shell setup.nix -A pip2nix \

@@ -5,7 +5,7 @@ isort:
 	isort tests/*.py
 
 test:
+	flake8 *.py tests/*.py
 	pytest --cov=helloworld tests/
-	flake8 src tests
 
 .PHONY: all isort
