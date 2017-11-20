@@ -37,6 +37,9 @@ let
     (extends requirements
              pythonPackages.__unfix__)));
 
+  list = candidate:
+    if isList candidate then candidate else [];
+
 in rec {
 
   pythonPackages = packages;
@@ -45,10 +48,10 @@ in rec {
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
     buildInputs = map
-      (name: getAttr name packages) (package.options.setup_requires ++
-                                     package.options.tests_require);
+      (name: getAttr name packages) ((list package.options.setup_requires) ++
+                                     (list package.options.tests_require));
     propagatedBuildInputs = map
-      (name: getAttr name packages) package.options.install_requires;
+      (name: getAttr name packages) (list package.options.install_requires);
     doCheck = false;
   };
 
@@ -95,10 +98,10 @@ in rec {
 
   pip2nix = (pkgs.python3.withPackages (ps: [
     (import (pkgs.fetchFromGitHub {
-      owner = "johbo";
+      owner = "datakurre";
       repo = "pip2nix";
-      rev = "714b51eb69711474a9a2fbddf144e5e66b36986b";
-      sha256 = "0h7hg95p1v392h4a310ng2kri9r59ailpj3r4mkr6x1dhq6l4fic";
+      rev = "6899f86ac426d9182829d42ced9db0b1759c39ff";
+      sha256 = "1chvwyl9ginflk5z81cfr9913727fz5s83725sl2m4mpd27dg3zg";
     } + "/release.nix") {}).pip2nix.python36
   ])).env;
 
