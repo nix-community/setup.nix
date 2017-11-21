@@ -6,7 +6,7 @@
 , propagatedBuildInputs ? []
 , image_name ? null
 , image_tag  ? "latest"
-, image_entrypoint
+, image_entrypoint ? null
 , image_features ? [ "busybox" "tmpdir" ]
 }:
 
@@ -16,7 +16,7 @@ with pkgs.stdenv;
 
 let
 
-  package = fromJSON(readFile(
+  package = if pathExists (src + "/setup.cfg") then fromJSON(readFile(
     pkgs.runCommand "setup.json" { input=src + "/setup.cfg"; } ''
       ${pkgs.python3}/bin/python << EOF
       import configparser, json, os
@@ -31,7 +31,7 @@ let
       fp.close()
       EOF
     ''
-  ));
+  )) else null;
 
   requirements = import (src + "/requirements.nix") {
     inherit pkgs;
@@ -47,7 +47,25 @@ let
   list = candidate:
     if isList candidate then candidate else [];
 
-in rec {
+in if isNull package then rec {
+
+  develop = shell;
+
+  env = pkgs.buildEnv {
+    name = "env";
+    paths = buildInputs ++ propagatedBuildInputs ++ [
+      (packages.python.withPackages (ps: map
+        (name: getAttr name packages) (attrNames (requirements {} {}))))
+    ];
+  };
+
+  shell = pkgs.stdenv.mkDerivation {
+    name = "env";
+    nativeBuildInputs = [ env ];
+    buildCommand = "";
+  };
+
+} else rec {
 
   pythonPackages = packages;
 
@@ -62,11 +80,7 @@ in rec {
     doCheck = false;
   };
 
-  develop = build.overrideDerivation(old: {
-    name = "${old.name}-shell";
-    buildInputs = buildInputs ++ propagatedBuildInputs ++ map
-      (name: getAttr name packages) (attrNames (requirements {} {}));
-  });
+  develop = shell;
 
   install = packages.python.withPackages (ps: [ build ]);
 
@@ -77,6 +91,12 @@ in rec {
         (name: getAttr name packages) (attrNames (requirements {} {}))))
     ];
   };
+
+  shell = build.overrideDerivation(old: {
+    name = "${old.name}-shell";
+    buildInputs = buildInputs ++ propagatedBuildInputs ++ map
+      (name: getAttr name packages) (attrNames (requirements {} {}));
+  });
 
   sdist = build.overrideDerivation(old: {
     name = "${old.name}-sdist";
