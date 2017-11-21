@@ -34,4 +34,5 @@ in setup {
   inherit pkgs pythonPackages overrides;
   src = ./.;
   propagatedBuildInputs = [ pkgs.lolcat ];
+  image_entrypoint = "/bin/hello-world";
 }

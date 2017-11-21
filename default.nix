@@ -4,10 +4,15 @@
 , src
 , buildInputs ? []
 , propagatedBuildInputs ? []
+, image_name ? null
+, image_tag  ? "latest"
+, image_entrypoint
+, image_features ? [ "busybox" "tmpdir" ]
 }:
 
 with builtins;
 with pkgs.lib;
+with pkgs.stdenv;
 
 let
 
@@ -104,20 +109,26 @@ in rec {
   });
 
   bdist_docker = pkgs.dockerTools.buildImage {
-    name = "${package.metadata.name}";
-#   name = image_name;
-#   tag = image_tag;
-    contents = [ build ];
-#   runAsRoot = ''
-#     #!${pkgs.stdenv.shell}
-#     ${pkgs.dockerTools.shadowSetup}
-#     groupadd --system --gid 65534 nobody
-#     useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
-#     echo "hosts: files dns" > /etc/nsswitch.conf
-    '';
+    name = if isNull image_name then package.metadata.name else image_name;
+    tag = image_tag;
+    contents = [ build ] ++
+      optional (elem "busybox" image_features) pkgs.busybox;
+    runAsRoot = if isLinux then ''
+      #!${pkgs.stdenv.shell}
+      ${pkgs.dockerTools.shadowSetup}
+      groupadd --system --gid 65534 nobody
+      useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
+      mkdir -p /usr/bin && ln -s /bin/env /usr/bin
+      echo "hosts: files dns" > /etc/nsswitch.conf
+    '' + optionalString (elem "tmpdir" image_features) ''
+      mkdir -p /tmp && chmod a+rxwt /tmp
+    '' else null;
     config = {
-#     EntryPoint = [ "${image_entrypoint}" ];
-#     User = "nobody";
+      EntryPoint = [ image_entrypoint ];
+    } // optionalAttrs isLinux {
+      User = "nobody";
+    } // optionalAttrs (elem "tmpdir" image_features) {
+      Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
     };
   };
 
