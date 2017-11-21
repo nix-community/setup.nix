@@ -118,8 +118,9 @@ in rec {
       ${pkgs.dockerTools.shadowSetup}
       groupadd --system --gid 65534 nobody
       useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
-      mkdir -p /usr/bin && ln -s /bin/env /usr/bin
       echo "hosts: files dns" > /etc/nsswitch.conf
+    '' + optionalString (elem "busybox" image_features) ''
+      mkdir -p /usr/bin && ln -s /bin/env /usr/bin
     '' + optionalString (elem "tmpdir" image_features) ''
       mkdir -p /tmp && chmod a+rxwt /tmp
     '' else null;
