@@ -103,6 +103,24 @@ in rec {
     '';
   });
 
+  bdist_docker = pkgs.dockerTools.buildImage {
+    name = "${package.metadata.name}";
+#   name = image_name;
+#   tag = image_tag;
+    contents = [ build ];
+#   runAsRoot = ''
+#     #!${pkgs.stdenv.shell}
+#     ${pkgs.dockerTools.shadowSetup}
+#     groupadd --system --gid 65534 nobody
+#     useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
+#     echo "hosts: files dns" > /etc/nsswitch.conf
+    '';
+    config = {
+#     EntryPoint = [ "${image_entrypoint}" ];
+#     User = "nobody";
+    };
+  };
+
   pip2nix = (pkgs.python3.withPackages (ps: [
     (import (pkgs.fetchFromGitHub {
       owner = "datakurre";
