@@ -68,7 +68,7 @@ Usage
 
      $ nix-shell setup.nix -A develop
 
-* build environment with all requirements:
+* build environment with all the requirements (e.g. for PyCharm):
 
   .. code:: bash
 
