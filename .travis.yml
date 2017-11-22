@@ -2,8 +2,6 @@ language: nix
 script:
 - make -C examples/env nix-env PYTHON=python2
 - make -C examples/env nix-env PYTHON=python3
-- make -C examples/overrides nix-env PYTHON=python2
-- make -C examples/overrides nix-env PYTHON=python3
 - make -C examples/package nix-env nix-build nix-sdist nix-wheel nix-test
 cache:
   directories:

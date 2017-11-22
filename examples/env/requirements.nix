@@ -4,6 +4,26 @@
 { pkgs, fetchurl, fetchgit, fetchhg }:
 
 self: super: {
+  "Jinja2" = super.buildPythonPackage {
+    name = "Jinja2-2.10";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [MarkupSafe];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/56/e6/332789f295cf22308386cf5bbd1f4e00ed11484299c5d7383378cf48ba47/Jinja2-2.10.tar.gz";
+      sha256 = "190l36hfw3wb2n3n68yacjabxyb1pnxwn7vjx96cmjj002xy2jzq";
+    };
+  };
+  "MarkupSafe" = super.buildPythonPackage {
+    name = "MarkupSafe-1.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/4d/de/32d741db316d8fdb7680822dd37001ef7a448255de9699ab4bfcbdf4172b/MarkupSafe-1.0.tar.gz";
+      sha256 = "0rdn1s8x9ni7ss8rfiacj7x1085lx8mh2zdwqslnw8xc3l4nkgm6";
+    };
+  };
   "Pygments" = super.buildPythonPackage {
     name = "Pygments-2.2.0";
     buildInputs = with self; [];
@@ -14,14 +34,24 @@ self: super: {
       sha256 = "1k78qdvir1yb1c634nkv6rbga8wv4289xarghmsbbvzhvr311bnv";
     };
   };
-  "bleach" = super.buildPythonPackage {
-    name = "bleach-2.1.1";
+  "alabaster" = super.buildPythonPackage {
+    name = "alabaster-0.7.10";
     buildInputs = with self; [];
     doCheck = false;
-    propagatedBuildInputs = with self; [six html5lib];
+    propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/d4/3f/d517089af35b01bb9bc4eac5ea04bae342b37a5e9abbb27b7c3ce0eae070/bleach-2.1.1.tar.gz";
-      sha256 = "03gaynhzq15rswv057f327rycy2k4z38v92f1y5gp01101l962kn";
+      url = "https://pypi.python.org/packages/d0/a5/e3a9ad3ee86aceeff71908ae562580643b955ea1b1d4f08ed6f7e8396bd7/alabaster-0.7.10.tar.gz";
+      sha256 = "1q3z4lf39qndwcjg3gbscck8q5qjklma275w5s8n1valk6gcpk9p";
+    };
+  };
+  "babel" = super.buildPythonPackage {
+    name = "babel-2.5.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [pytz];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/5a/22/63f1dbb8514bb7e0d0c8a85cc9b14506599a075e231985f98afd70430e1f/Babel-2.5.1.tar.gz";
+      sha256 = "04aqsbb2r3g4869mb2b2ls6yc81w5gaf4dp4pcj5bkfh2kvxl1v0";
     };
   };
   "certifi" = super.buildPythonPackage {
@@ -44,36 +74,6 @@ self: super: {
       sha256 = "1bpalpia6r5x1kknbk11p1fzph56fmmnp405ds8icksd3knr5aw4";
     };
   };
-  "check-manifest" = super.buildPythonPackage {
-    name = "check-manifest-0.35";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/10/f2/7f397f3f7d088b0720dc3e19cf5bde15baa489c9054a0d09793ededd2c07/check-manifest-0.35.tar.gz";
-      sha256 = "0jplr4i1pkdvrfhpcpd3aawgfcbd7f80yxpskc09268z0yka7dzr";
-    };
-  };
-  "colorama" = super.buildPythonPackage {
-    name = "colorama-0.3.9";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/e6/76/257b53926889e2835355d74fec73d82662100135293e17d382e2b74d1669/colorama-0.3.9.tar.gz";
-      sha256 = "1wd1szk0z3073ghx26ynw43gnc140ibln1safgsis6s6z3s25ss8";
-    };
-  };
-  "coverage" = super.buildPythonPackage {
-    name = "coverage-4.4.2";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/0b/e1/190ef1a264144c9b073b7353c259ca5431b5ddc8861b452e858fcbd0e9de/coverage-4.4.2.tar.gz";
-      sha256 = "1k1l1xdpzni35xrffwv3nvqb7ylb912mdmz4l33kw1imgayr379h";
-    };
-  };
   "docutils" = super.buildPythonPackage {
     name = "docutils-0.14";
     buildInputs = with self; [];
@@ -94,26 +94,6 @@ self: super: {
       sha256 = "184b33grvvjmiwlv9kyd7yng9qv5ld24154j70z332xxg9gjclvj";
     };
   };
-  "flake8-blind-except" = super.buildPythonPackage {
-    name = "flake8-blind-except-0.1.1";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [setuptools];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/ff/f2/ab635e6e420e78c94eab50cd3f53abd3ec27e411793e50b14f29edbb9f0b/flake8-blind-except-0.1.1.tar.gz";
-      sha256 = "16g58mkr3fcn2vlfhp3rlahj93qswc7jd5qrqp748mc26dk3b8xc";
-    };
-  };
-  "flake8-coding" = super.buildPythonPackage {
-    name = "flake8-coding-1.3.0";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [flake8];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/ae/26/3c6304d646f8ee27d6c40bfcd9874fea870098c3ef3cf60e284ea9db29ef/flake8-coding-1.3.0.tar.gz";
-      sha256 = "1gjhzv85gaviwszp04l3win3h69bhfd4kwvi7mm7cxwkhxpyj0ds";
-    };
-  };
   "flake8-debugger" = super.buildPythonPackage {
     name = "flake8-debugger-3.0.0";
     buildInputs = with self; [];
@@ -122,26 +102,6 @@ self: super: {
     src = fetchurl {
       url = "https://pypi.python.org/packages/2c/a7/45823a26ef0c5fa7a0c099b772a5b6aa2d8e686284490ef738fc8691ffc0/flake8-debugger-3.0.0.tar.gz";
       sha256 = "1m6jqgdbpq7plf24kknnxlkw3rig7bjf17xqzgrv57c11ncarj75";
-    };
-  };
-  "flake8-quotes" = super.buildPythonPackage {
-    name = "flake8-quotes-0.12.0";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [flake8];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/a0/4f/60ff2549d4b4abb3665f7019184652f5bd9a421ad7312cc1aef644317441/flake8-quotes-0.12.0.zip";
-      sha256 = "195cxk43d868qw1nmn1nvs7h42s07rk2if701cx1py3p8xazws8l";
-    };
-  };
-  "html5lib" = super.buildPythonPackage {
-    name = "html5lib-1.0b10";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [six webencodings setuptools];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/97/16/982214624095c1420c75f3bd295d9e658794aafb95fc075823de107e0ae4/html5lib-1.0b10.tar.gz";
-      sha256 = "1yd068a5c00wd0ajq0hqimv7fd82lhrw0w3s01vbhy9bbd6xapqd";
     };
   };
   "idna" = super.buildPythonPackage {
@@ -154,14 +114,14 @@ self: super: {
       sha256 = "13qaab6d0s15gknz8v3zbcfmbj6v86hn9pjxgkdf62ch13imssic";
     };
   };
-  "isort" = super.buildPythonPackage {
-    name = "isort-4.2.15";
+  "imagesize" = super.buildPythonPackage {
+    name = "imagesize-0.7.1";
     buildInputs = with self; [];
     doCheck = false;
     propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/4d/d5/7c8657126a43bcd3b0173e880407f48be4ac91b4957b51303eab744824cf/isort-4.2.15.tar.gz";
-      sha256 = "10rr1grpsxnjrxgnfdjwabn8nlwbgb667rhnf0zfbqm4sdr63x3r";
+      url = "https://pypi.python.org/packages/53/72/6c6f1e787d9cab2cc733cf042f125abec07209a58308831c9f292504e826/imagesize-0.7.1.tar.gz";
+      sha256 = "0qk07k0z4241lkzzjji7z4da04pcvg7bfc4xz1934zlqhwmwdcha";
     };
   };
   "mccabe" = super.buildPythonPackage {
@@ -174,24 +134,34 @@ self: super: {
       sha256 = "07w3p1qm44hgxf3vvwz84kswpsx6s7kvaibzrsx5dzm0hli1i3fx";
     };
   };
-  "pep8-naming" = super.buildPythonPackage {
-    name = "pep8-naming-0.4.1";
+  "olefile" = super.buildPythonPackage {
+    name = "olefile-0.44";
     buildInputs = with self; [];
     doCheck = false;
     propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/c8/c9/d16bea3e5f888f430b73f44eb9be8ba3cd7a22f08ed05363c8614b131e21/pep8-naming-0.4.1.tar.gz";
-      sha256 = "0nhf8p37y008shd4f21bkj5pizv8q0l8cpagyyb8gr059d6gvvaf";
+      url = "https://pypi.python.org/packages/35/17/c15d41d5a8f8b98cc3df25eb00c5cee76193114c78e5674df6ef4ac92647/olefile-0.44.zip";
+      sha256 = "1bbk1xplmrhymqpk6rkb15sg7v9qfih7zh23p6g2fxxas06cmwk1";
     };
   };
-  "pkginfo" = super.buildPythonPackage {
-    name = "pkginfo-1.4.1";
+  "pillow" = super.buildPythonPackage {
+    name = "pillow-4.3.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [olefile];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/e0/82/ec499c78bfe4ecaa91c2f3000040451d187ed0a816d58b8543e29c48827f/Pillow-4.3.0.tar.gz";
+      sha256 = "09xmn7rl6840sli2iz1k3fgxfgmri2nqz6vkinmb9mgg8ifp2z59";
+    };
+  };
+  "pip" = super.buildPythonPackage {
+    name = "pip-9.0.1";
     buildInputs = with self; [];
     doCheck = false;
     propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/58/54/57f7c5638fecdf232a5b6b767da467b0ff31467d7f86a7364c252acf2321/pkginfo-1.4.1.tar.gz";
-      sha256 = "17pqjfpq3c6xzdmk8pski6jcjgjv78q00zjf2bgzb668pzm6l6mv";
+      url = "https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz";
+      sha256 = "03clr9c1dih5n9c00c592zzvf6r1ffimywkaq9agcqdllzhl7wh9";
     };
   };
   "py" = super.buildPythonPackage {
@@ -224,16 +194,6 @@ self: super: {
       sha256 = "01c87qiadz71sbqrclrsr85vx601p20g4hs7nlcvyg945ww6lqcd";
     };
   };
-  "pyroma" = super.buildPythonPackage {
-    name = "pyroma-2.2";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [setuptools docutils];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/de/f3/104ae27624982cd4b6de786d9afe23a2dc0b8c0999443ba370b3755848c7/pyroma-2.2.tar.gz";
-      sha256 = "0l5ab84plqf6gy2xphm92dazpa6c5r1xcj20f35zhlbwd1aq1zfk";
-    };
-  };
   "pytest" = super.buildPythonPackage {
     name = "pytest-3.2.5";
     buildInputs = with self; [];
@@ -242,16 +202,6 @@ self: super: {
     src = fetchurl {
       url = "https://pypi.python.org/packages/1f/f8/8cd74c16952163ce0db0bd95fdd8810cbf093c08be00e6e665ebf0dc3138/pytest-3.2.5.tar.gz";
       sha256 = "10cbsyyyzamhvi1gqqyhccsx906xlcwcgddvldalqi1v27vx8nvd";
-    };
-  };
-  "pytest-cov" = super.buildPythonPackage {
-    name = "pytest-cov-2.5.1";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [pytest coverage];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/24/b4/7290d65b2f3633db51393bdf8ae66309b37620bc3ec116c5e357e3e37238/pytest-cov-2.5.1.tar.gz";
-      sha256 = "0bbfpwdh9k3636bxc88vz9fa7vf4akchgn513ql1vd0xy4n7bah3";
     };
   };
   "pytest-runner" = super.buildPythonPackage {
@@ -264,14 +214,24 @@ self: super: {
       sha256 = "00v7pi09q60yx0l1kzyklnmr5bp597mir85a9gsi7bdfyly3lz0g";
     };
   };
-  "readme-renderer" = super.buildPythonPackage {
-    name = "readme-renderer-17.2";
+  "pytz" = super.buildPythonPackage {
+    name = "pytz-2017.3";
     buildInputs = with self; [];
     doCheck = false;
-    propagatedBuildInputs = with self; [bleach docutils Pygments six];
+    propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/b6/a8/f27c15837fcbcb6110bd0f1dfa04b5fae658a1da3c07f186dba89818a613/readme_renderer-17.2.tar.gz";
-      sha256 = "1nm8rg4g27ca4arz8mr3bacp6i443hdmigwlnhdafqrsjr1b9slx";
+      url = "https://pypi.python.org/packages/60/88/d3152c234da4b2a1f7a989f89609ea488225eaea015bc16fbde2b3fdfefa/pytz-2017.3.zip";
+      sha256 = "1dw5l527vcafvdqq4wadwl7ikhb2sssz0v0cssibh8890kyczr7s";
+    };
+  };
+  "reportlab" = super.buildPythonPackage {
+    name = "reportlab-3.4.0";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [pillow pip setuptools];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/87/f9/53b34c58d3735a6df7d5c542bf4de60d699cfa6035e113ca08b3ecdcca3f/reportlab-3.4.0.tar.gz";
+      sha256 = "0hy304pzsz9lblmk7mrbk2682bi911lxgvzx2kcfpmfzb5gg7sjv";
     };
   };
   "requests" = super.buildPythonPackage {
@@ -284,34 +244,14 @@ self: super: {
       sha256 = "0zi3v9nsmv9j27d0c0m1dvqyvaxz53g8m0aa1h3qanxs4irkwi4w";
     };
   };
-  "requests-toolbelt" = super.buildPythonPackage {
-    name = "requests-toolbelt-0.8.0";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [requests];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/86/f9/e80fa23edca6c554f1994040064760c12b51daff54b55f9e379e899cd3d4/requests-toolbelt-0.8.0.tar.gz";
-      sha256 = "1dc7l42i4080r8i4m9fj51jx367lqkai170vrv7wd93gdj9k39gn";
-    };
-  };
   "setuptools" = super.buildPythonPackage {
-    name = "setuptools-36.8.0";
+    name = "setuptools-37.0.0";
     buildInputs = with self; [];
     doCheck = false;
     propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/b8/04/be569e393006fa9a2c10ef72ea33133c2902baa115dd1d4279dae55c3b3b/setuptools-36.8.0.zip";
-      sha256 = "0pdk0nmmjjiwjx9lv8xx2kz6wx11154jshfxqgrj1zg4x405mamj";
-    };
-  };
-  "setuptools-scm" = super.buildPythonPackage {
-    name = "setuptools-scm-1.15.6";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/03/6d/aafdd01edd227ee879b691455bf19895091872af7e48192bea1758c82032/setuptools_scm-1.15.6.tar.gz";
-      sha256 = "0pzvfmx8s20yrgkgwfbxaspz2x1g38qv61jpm0ns91lrb22ldas9";
+      url = "https://pypi.python.org/packages/7c/cb/bdfbb0b6a56459d5461768de824d4f40ec4c4c778f3a8fb0b84c25f03b68/setuptools-37.0.0.zip";
+      sha256 = "1qwiahab0jlgv6c81bp5hfjsa7nfbwj78xzi2x946kgpmcbdp58b";
     };
   };
   "six" = super.buildPythonPackage {
@@ -324,24 +264,34 @@ self: super: {
       sha256 = "1scqzwc51c875z23phj48gircqjgnn3af8zy2izjwmnlxrxsgs3h";
     };
   };
-  "tqdm" = super.buildPythonPackage {
-    name = "tqdm-4.19.4";
+  "snowballstemmer" = super.buildPythonPackage {
+    name = "snowballstemmer-1.2.1";
     buildInputs = with self; [];
     doCheck = false;
     propagatedBuildInputs = with self; [];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/68/bf/f1f515b82e15d367c073d4b1fd6d47ac072657b0b1ace45f17c50f8dc84c/tqdm-4.19.4.tar.gz";
-      sha256 = "1wcdiigjavcjg1m2l4xlyx5wy8xgldsaqb8yakdnp316xb107a3w";
+      url = "https://pypi.python.org/packages/20/6b/d2a7cb176d4d664d94a6debf52cd8dbae1f7203c8e42426daa077051d59c/snowballstemmer-1.2.1.tar.gz";
+      sha256 = "0a0idq4y5frv7qsg2x62jd7rd272749xk4x99misf5rcifk2d7wi";
     };
   };
-  "twine" = super.buildPythonPackage {
-    name = "twine-1.9.1";
+  "sphinx" = super.buildPythonPackage {
+    name = "sphinx-1.6.5";
     buildInputs = with self; [];
     doCheck = false;
-    propagatedBuildInputs = with self; [tqdm pkginfo requests requests-toolbelt setuptools];
+    propagatedBuildInputs = with self; [six Jinja2 Pygments docutils snowballstemmer babel alabaster imagesize requests setuptools sphinxcontrib-websupport];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/7e/b4/ecc6aaf0eb287c6577e796bcc3089ce6286d273d5caa70655050cc3462f9/twine-1.9.1.tar.gz";
-      sha256 = "1ay1b6kdq6k4bfbjsvf6ymj41wrgpvinhxndb09355pwhxwmp96a";
+      url = "https://pypi.python.org/packages/8b/7e/b188d9a3b9c938e736e02a74c1363c2888e095d770df2c72b4c312f9fdcb/Sphinx-1.6.5.tar.gz";
+      sha256 = "1670rzrgqb51cy4kfwhpkv2b6vlg1v09qf7lawkps3bspfymvpn6";
+    };
+  };
+  "sphinxcontrib-websupport" = super.buildPythonPackage {
+    name = "sphinxcontrib-websupport-1.0.1";
+    buildInputs = with self; [];
+    doCheck = false;
+    propagatedBuildInputs = with self; [];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/c5/6b/f0630436b931ad4f8331a9399ca18a7d447f0fcc0c7178fb56b1aee68d01/sphinxcontrib-websupport-1.0.1.tar.gz";
+      sha256 = "1f9f0wjpi9nhikbyaz6d19s7qvzdf1nq2g5dsh640fma4q9rd1bs";
     };
   };
   "urllib3" = super.buildPythonPackage {
@@ -352,36 +302,6 @@ self: super: {
     src = fetchurl {
       url = "https://pypi.python.org/packages/ee/11/7c59620aceedcc1ef65e156cc5ce5a24ef87be4107c2b74458464e437a5d/urllib3-1.22.tar.gz";
       sha256 = "0kyvc9zdlxr5r96bng5rhm9a6sfqidrbvvkz64s76qs5267dli6c";
-    };
-  };
-  "webencodings" = super.buildPythonPackage {
-    name = "webencodings-0.5.1";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz";
-      sha256 = "08qrgrc4hrximb2gqnl69g01s93rhf2842jfxdjljc1dbwj1qsmk";
-    };
-  };
-  "wheel" = super.buildPythonPackage {
-    name = "wheel-0.30.0";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/fa/b4/f9886517624a4dcb81a1d766f68034344b7565db69f13d52697222daeb72/wheel-0.30.0.tar.gz";
-      sha256 = "1j2knvhzgv71yli5nw6fxn87rrdxsx2xw8ldn28gs8z8jh5gw5cm";
-    };
-  };
-  "zest.releaser" = super.buildPythonPackage {
-    name = "zest.releaser-6.13.1";
-    buildInputs = with self; [];
-    doCheck = false;
-    propagatedBuildInputs = with self; [setuptools colorama six twine chardet check-manifest pyroma readme-renderer wheel];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/7e/c6/a6ab9f8c13679aaf8583dc9bce9d3970a2c526e2028d5ce4708d5caa0c35/zest.releaser-6.13.1.tar.gz";
-      sha256 = "1sd8vzyzny0jpj5lch38pmmwgwcpsmipdrbn3s1xcncalb1jbas8";
     };
   };
 

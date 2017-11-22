@@ -1,8 +1,0 @@
-flake8
-flake8-debugger
-mccabe
-pillow
-pytest
-pytest-runner
-reportlab
-sphinx
