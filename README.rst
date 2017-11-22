@@ -48,13 +48,10 @@ Installation
        })
      }:
 
-     let overrides = self: super: {
-     };
-
-     in setup {
-       inherit pkgs pythonPackages overrides;
+     setup {
+       inherit pkgs pythonPackages;
        src = ./.;
-    }
+     }
 
 * generate ``requirements.nix``:
 
