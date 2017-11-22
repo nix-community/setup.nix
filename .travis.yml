@@ -1,5 +1,5 @@
 language: nix
-script: make -C $DIR -f Makefile.nix $TARGET
+script: make -C $DIR -f Makefile $TARGET
 env:
 - PYTHON=python2 DIR=tests/env TARGET="nix-env"
 - PYTHON=python3 DIR=tests/env TARGET="nix-env"
