@@ -3,21 +3,31 @@
 self: super: {
 
   aiovault = super.aiovault.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [self.pytest-runner];
+    buildInputs = old.buildInputs ++ [
+      self.pytest-runner
+    ];
   });
 
   flake8 = super.flake8.overrideDerivation (old: {
     buildInputs = old.buildInputs ++ [
-      self.enum34 self.configparser self.pytest-runner
+      self.pytest-runner
+    ];
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      self.enum34
+      self.configparser
     ];
   });
 
   flake8-debugger = super.flake8-debugger.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    buildInputs = old.buildInputs ++ [
+      self.pytest-runner
+    ];
   });
 
   mccabe = super.mccabe.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [self.pytest-runner];
+    buildInputs = old.buildInputs ++ [
+      self.pytest-runner
+    ];
   });
 
   olefile = pythonPackages.olefile;
@@ -27,11 +37,15 @@ self: super: {
   );
 
   pytest = super.pytest.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [ self.setuptools_scm ];
+    buildInputs = old.buildInputs ++ [
+      self.setuptools_scm
+    ];
   });
 
   pytest-runner = super.pytest-runner.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [ self.setuptools_scm ];
+    buildInputs = old.buildInputs ++ [
+      self.setuptools_scm
+    ];
   });
 
   reportlab = pythonPackages.reportlab.overrideDerivation(old:
@@ -48,7 +62,8 @@ self: super: {
 
   sphinx = super.sphinx.overrideDerivation(old: {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      self.typing self.configparser
+      self.typing
+      self.configparser
     ];
   });
 
