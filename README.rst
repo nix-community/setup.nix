@@ -8,6 +8,11 @@ in Nix_/NixOS_ environments. **setup.nix** is designed for mixed environments,
 where both traditional and Nixpkgs_ based Python package development must
 coexists with minimal additional maintance.
 
+**setup.nix** does not replace any tools or conventions in Nixpkgs_, but helps
+to develop Python packages on top of it when not all required packages or
+versions are yet (or no longer) in Nixpkgs_.
+
+
 Quick start
 ===========
 
