@@ -1,12 +1,7 @@
 *.egg-info
-*.mo
 *.pyc
-.installed.cfg
 .cache
 .coverage
 .eggs/
 .idea/
-bin/
-docs/_build/
-html/
 result
