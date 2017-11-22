@@ -1,8 +1,7 @@
 language: nix
-script: make -C $DIR -f Makefile $TARGET
-env:
-- PYTHON=python2 DIR=tests/env TARGET="nix-env"
-- PYTHON=python3 DIR=tests/env TARGET="nix-env"
-- PYTHON=python2 DIR=tests/overrides TARGET="nix-env"
-- PYTHON=python3 DIR=tests/overrides TARGET="nix-env"
-- PYTHON=python3 DIR=tests/package TARGET="nix-test nix-env nix-build nix-sdist nix-bdist_wheel"
+script:
+- make -C tests/env nix-env PYTHON=python2
+- make -C tests/env nix-env PYTHON=python3
+- make -C tests/overrides nix-env PYTHON=python2
+- make -C tests/overrides nix-env PYTHON=python3
+- make -C tests/package nix-env nix-build nix-sdist nix-bdist_wheel nix-test
