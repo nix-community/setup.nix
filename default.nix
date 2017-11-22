@@ -80,6 +80,15 @@ in if isNull package then rec {
     buildCommand = "";
   };
 
+  pip2nix = (pkgs.python3.withPackages (ps: [
+    (import (pkgs.fetchFromGitHub {
+      owner = "datakurre";
+      repo = "pip2nix";
+      rev = "6899f86ac426d9182829d42ced9db0b1759c39ff";
+      sha256 = "1chvwyl9ginflk5z81cfr9913727fz5s83725sl2m4mpd27dg3zg";
+    } + "/release.nix") { inherit pkgs; }).pip2nix.python36
+  ])).env;
+
 } else rec {
 
   pythonPackages = packages;
