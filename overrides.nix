@@ -2,6 +2,10 @@
 
 self: super: {
 
+  aiovault = super.aiovault.overrideDerivation (old: {
+    buildInputs = old.buildInputs ++ [self.pytest-runner];
+  });
+
   flake8 = super.flake8.overrideDerivation (old: {
     buildInputs = old.buildInputs ++ [
       self.enum34 self.configparser self.pytest-runner
