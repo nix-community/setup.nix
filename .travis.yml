@@ -5,3 +5,6 @@ script:
 - make -C tests/overrides nix-env PYTHON=python2
 - make -C tests/overrides nix-env PYTHON=python3
 - make -C tests/package nix-env nix-build nix-sdist nix-bdist_wheel nix-test
+cache:
+  directories:
+  - /nix
