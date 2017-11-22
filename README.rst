@@ -1,6 +1,6 @@
-========================================================
-setup.nix – ”setuptools” for declarative Python packages
-========================================================
+===============================================================
+setup.nix – ”setuptools” for declarative Python packages on Nix
+===============================================================
 
 **setup.nix** provides opinionated helper functions and pip2nix_-based workflow
 for developing, testing and packaging declaratively configured Python packages
