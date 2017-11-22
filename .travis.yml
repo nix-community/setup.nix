@@ -1,10 +1,10 @@
 language: nix
 script:
-- make -C tests/env nix-env PYTHON=python2
-- make -C tests/env nix-env PYTHON=python3
-- make -C tests/overrides nix-env PYTHON=python2
-- make -C tests/overrides nix-env PYTHON=python3
-- make -C tests/package nix-env nix-build nix-sdist nix-wheel nix-test
+- make -C examples/env nix-env PYTHON=python2
+- make -C examples/env nix-env PYTHON=python3
+- make -C examples/overrides nix-env PYTHON=python2
+- make -C examples/overrides nix-env PYTHON=python3
+- make -C examples/package nix-env nix-build nix-sdist nix-wheel nix-test
 cache:
   directories:
   - /nix

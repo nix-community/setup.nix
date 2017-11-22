@@ -109,9 +109,14 @@ overrides`__ for reference.
 __ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
 
 Until all the available features and options are documented, see the
-setup-function_  and `test examples`_ for more information.
+setup-function_ and `examples`_ for more information.
 
 .. _setup-function: https://github.com/datakurre/setup.nix/blob/master/default.nix
-.. _test examples: https://github.com/datakurre/setup.nix/blob/master/tests
+.. _examples: https://github.com/datakurre/setup.nix/blob/master/examples
 
 
+Examples
+--------
+
+* https://github.com/collective/sphinxcontrib-httpexample
+* https://github.com/datakurre/setup.nix/blob/master/examples
