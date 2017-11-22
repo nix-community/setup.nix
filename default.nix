@@ -15,7 +15,7 @@
 # bdist_docker
 , image_name ? null
 , image_tag  ? "latest"
-, image_entrypoint ? null
+, image_entrypoint ? "/bin/sh"
 , image_features ? [ "busybox" "tmpdir" ]
 }:
 
