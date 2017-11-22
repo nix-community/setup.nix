@@ -1,9 +1,18 @@
 { pkgs ? import <nixpkgs> {}
 , pythonPackages ? pkgs.pythonPackages
-, overrides
+
+# project path, usually ./.
 , src
+
+# requirements overrides
+, overrides ? self: super: {}
+, defaultOverrides ? true
+
+# non-Python inputs
 , buildInputs ? []
 , propagatedBuildInputs ? []
+
+# bdist_docker
 , image_name ? null
 , image_tag  ? "latest"
 , image_entrypoint ? null
@@ -38,7 +47,13 @@ let
     inherit (pkgs) fetchurl fetchgit fetchhg;
   };
 
-  packages =
+  packages = if defaultOverrides then
+    (fix
+    (extends overrides
+    (extends (import ./overrides.nix { inherit pkgs pythonPackages; })
+    (extends requirements
+             pythonPackages.__unfix__))))
+  else
     (fix
     (extends overrides
     (extends requirements
