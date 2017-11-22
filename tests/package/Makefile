@@ -13,13 +13,13 @@ nix-shell: requirements.nix
 	nix-shell setup.nix $(ARGSTR) -A develop
 
 nix-build: requirements.nix
-	nix-shell setup.nix $(ARGSTR) -A build
+	nix-build setup.nix $(ARGSTR) -A build
 
 nix-sdist: requirements.nix
-	nix-shell setup.nix $(ARGSTR) -A sdist
+	nix-build setup.nix $(ARGSTR) -A sdist
 
 nix-wheel: requirements.nix
-	nix-shell setup.nix $(ARGSTR) -A bdist_wheel
+	nix-build setup.nix $(ARGSTR) -A bdist_wheel
 
 isort:
 	isort *.py
