@@ -243,7 +243,7 @@ To be described in detail soon...
 
     {
     # Nixpkgs revision
-    , pkgs ? import <nixpkgs> {}
+      pkgs ? import <nixpkgs> {}
 
     # Python version
     , pythonPackages ? pkgs.python36Packages
