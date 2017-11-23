@@ -234,6 +234,38 @@ Build and run docker image:
      Hello World!
 
 
+Configuration options
+=====================
+
+To be described in detail soon...
+
+.. code:: nix
+
+    { pkgs ? import <nixpkgs> {}
+    , pythonPackages ? pkgs.pythonPackages
+
+    # project path, usually ./. (with implicit cleanSource filter)
+    , src
+
+    # enable tests on build
+    , doCheck ? false
+
+    # requirements overrides
+    , overrides ? self: super: {}
+    , defaultOverrides ? true
+
+    # non-Python inputs
+    , buildInputs ? []
+    , propagatedBuildInputs ? []
+
+    # bdist_docker options (with image_name defaulting to package name)
+    , image_name ? null
+    , image_tag  ? "latest"
+    , image_entrypoint ? "/bin/sh"
+    , image_features ? [ "busybox" "tmpdir" ]
+    }:
+
+
 More examples
 =============
 
