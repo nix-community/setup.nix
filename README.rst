@@ -133,6 +133,7 @@ Project skeleton
     # -*- coding: utf-8 -*-
     import helloworld
 
+
     def test_main():
         helloworld.main()
 
