@@ -13,4 +13,5 @@ in setup {
   src = ./.;
   propagatedBuildInputs = [ pkgs.lolcat ];
   image_entrypoint = "/bin/hello-world";
+  doCheck = true;
 }

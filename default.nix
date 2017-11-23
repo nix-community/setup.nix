@@ -4,6 +4,9 @@
 # project path, usually ./.
 , src
 
+# enable tests on build
+, doCheck ? false
+
 # requirements overrides
 , overrides ? self: super: {}
 , defaultOverrides ? true
@@ -101,7 +104,7 @@ in if isNull package then rec {
                                      (list package.options.tests_require));
     propagatedBuildInputs = propagatedBuildInputs ++ map
       (name: getAttr name packages) (list package.options.install_requires);
-    doCheck = false;
+    inherit doCheck;
   };
 
   develop = shell;
