@@ -207,13 +207,13 @@ Project skeleton
 Usage
 -----
 
-* run tests
+* run tests with coverage
 
   .. code:: bash
 
      $ nix-shell setup.nix -A develop --run "pytest --cov=helloworld"
 
-* build run docker image
+* build an run docker image
 
   .. code:: bash
 
