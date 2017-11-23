@@ -39,7 +39,7 @@ Installation
   .. code:: nix
 
      { pkgs ? import <nixpkgs> {}
-     , pythonPackages ? python3Packages
+     , pythonPackages ? pkgs.python3Packages
      , setup ? import (pkgs.fetchFromGitHub {
          owner = "datakurre";
          repo = "setup.nix";
@@ -115,8 +115,111 @@ setup-function_ and `examples`_ for more information.
 .. _examples: https://github.com/datakurre/setup.nix/blob/master/examples
 
 
-Examples
---------
+Complete example
+================
+
+
+``./helloworld.py``
+-------------------
+
+.. code:: python
+
+    # -*- coding: utf-8 -*-
+    def main():
+        print('Hello World!')
+
+
+``./tests/test_helloworld.py``
+------------------------------
+
+.. code:: python
+
+    # -*- coding: utf-8 -*-
+    import helloworld
+
+    def test_main():
+        helloworld.main()
+
+
+``./setup.py``
+--------------
+
+.. code:: python
+
+   from setuptools import setup; setup()
+
+
+``./setup.cfg``
+---------------
+
+.. code:: ini
+
+    [metadata]
+    name = helloworld
+    version = 1.0
+
+    [options]
+    setup_requires =
+        pytest-runner
+    install_requires =
+    tests_require =
+        pytest
+    py_modules =
+        helloworld
+
+    [options.entry_points]
+    console_scripts =
+        hello-world = helloworld:main
+
+    [aliases]
+    test = pytest
+
+
+``./requirements.txt``
+----------------------
+
+.. code::
+
+   coverage
+   pytest
+   pytest-cov
+   pytest-runner
+
+
+``./setup.nix``
+---------------
+
+.. code:: nix
+
+    { pkgs ? import <nixpkgs> {}
+    , pythonPackages ? pkgs.python3Packages
+    , setup ? import (pkgs.fetchFromGitHub {
+        owner = "datakurre";
+        repo = "setup.nix";
+        rev = "7748fdb925366cbd8fa4f01ec39418da37c3bc96";
+        sha256 = "1fi49ns3ylii6kzpvmlpkg0zirw3p95ga24mcss99jgm3lj8s8pl";
+      })
+    }:
+
+    setup {
+      inherit pkgs pythonPackages;
+      src = ./.;
+      doCheck = true;
+      image_entrypoint = "/bin/hello-world";
+    }
+
+
+``./requirements.nix``
+----------------------
+
+.. code:: bash
+
+    $ nix-shell setup.nix -A pip2nix \
+        --run "pip2nix generate -r requirements.txt --output=requirements.nix"
+
+
+More examples
+-------------
 
 * https://github.com/collective/sphinxcontrib-httpexample
 * https://github.com/datakurre/setup.nix/blob/master/examples
