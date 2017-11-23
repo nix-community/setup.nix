@@ -241,8 +241,12 @@ To be described in detail soon...
 
 .. code:: nix
 
-    { pkgs ? import <nixpkgs> {}
-    , pythonPackages ? pkgs.pythonPackages
+    {
+    # Nixpkgs revision
+    , pkgs ? import <nixpkgs> {}
+
+    # Python version
+    , pythonPackages ? pkgs.python36Packages
 
     # project path, usually ./. (with implicit cleanSource filter)
     , src
