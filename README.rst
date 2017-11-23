@@ -6,7 +6,7 @@ setup.nix – ”setuptools” for Python packages on Nix
 for developing, testing and packaging declaratively configured Python packages
 in Nix_/NixOS_ environments. **setup.nix** is designed for mixed environments,
 where both traditional and Nixpkgs_ based Python package development must
-coexists with minimal additional maintance.
+coexist with minimal additional maintanance.
 
 **setup.nix** does not replace any tools or conventions in Nixpkgs_, but helps
 to develop Python packages on top of it when not all required packages or
@@ -29,7 +29,6 @@ Requirements
 .. _Nixpkgs:  https://nixos.org/nixpkgs/
 
 __ http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
-
 
 Installation
 ------------
@@ -60,7 +59,6 @@ Installation
      $ nix-shell setup.nix -A pip2nix \
        --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
-
 Usage
 -----
 
@@ -88,13 +86,12 @@ Usage
 
      $ nix-build setup.nix -A bdist_wheel
 
-* build docker image for the package:
+* build docker image from the package:
 
   .. code:: bash
 
      $ nix-build setup.nix -A bdist_docker
      $ docker loads < result
-
 
 Troubleshooting
 ---------------
@@ -118,9 +115,10 @@ setup-function_ and `examples`_ for more information.
 Complete example
 ================
 
+Project skeleton
+----------------
 
-``./helloworld.py``
--------------------
+**./helloworld.py**:
 
 .. code:: python
 
@@ -128,9 +126,7 @@ Complete example
     def main():
         print('Hello World!')
 
-
-``./tests/test_helloworld.py``
-------------------------------
+**./tests/test_helloworld.py**:
 
 .. code:: python
 
@@ -140,17 +136,13 @@ Complete example
     def test_main():
         helloworld.main()
 
-
-``./setup.py``
---------------
+**./setup.py**:
 
 .. code:: python
 
    from setuptools import setup; setup()
 
-
-``./setup.cfg``
----------------
+**./setup.cfg**:
 
 .. code:: ini
 
@@ -174,9 +166,7 @@ Complete example
     [aliases]
     test = pytest
 
-
-``./requirements.txt``
-----------------------
+**./requirements.txt**:
 
 .. code::
 
@@ -185,9 +175,7 @@ Complete example
    pytest-cov
    pytest-runner
 
-
-``./setup.nix``
----------------
+**./setup.nix**:
 
 .. code:: nix
 
@@ -208,9 +196,7 @@ Complete example
       image_entrypoint = "/bin/hello-world";
     }
 
-
-``./requirements.nix``
-----------------------
+**./requirements.nix**:
 
 .. code:: bash
 
@@ -219,7 +205,7 @@ Complete example
 
 
 More examples
--------------
+=============
 
 * https://github.com/collective/sphinxcontrib-httpexample
 * https://github.com/datakurre/setup.nix/blob/master/examples
