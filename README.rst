@@ -213,7 +213,7 @@ Usage
 
      $ nix-shell setup.nix -A develop --run "pytest --cov=helloworld"
 
-* build an run docker image
+* build and run docker image
 
   .. code:: bash
 
