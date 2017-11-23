@@ -216,7 +216,7 @@ Project skeleton
         --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
 
-Testing for coverage
+Interaction examples
 --------------------
 
 Run tests with coverage:
@@ -224,10 +224,6 @@ Run tests with coverage:
   .. code:: bash
 
      $ nix-shell setup.nix -A develop --run "pytest --cov=helloworld"
-
-
-Running as Docker image
------------------------
 
 Build and run docker image:
 
