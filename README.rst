@@ -43,8 +43,8 @@ Installation
      , setup ? import (pkgs.fetchFromGitHub {
          owner = "datakurre";
          repo = "setup.nix";
-         rev = "593c60f59f247a554d4a3e87e7879768d87a983e";
-         sha256 = "047sizgifwaj6rvawr4qmmicqa9j49nkrdhqmn9w88qk8s0n02vh";
+         rev = "7748fdb925366cbd8fa4f01ec39418da37c3bc96";
+         sha256 = "1fi49ns3ylii6kzpvmlpkg0zirw3p95ga24mcss99jgm3lj8s8pl";
        })
      }:
 
