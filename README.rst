@@ -204,6 +204,24 @@ Project skeleton
         --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
 
+Usage
+-----
+
+* run tests
+
+  .. code:: bash
+
+     $ nix-shell setup.nix -A develop --run "pytest --cov=helloworld"
+
+* build run docker image
+
+  .. code:: bash
+
+     $ docker load < `nix-build setup.nix -A bdist_docker --no-build-output`
+     $ docker run --rm helloworld:latest
+     Hello World!
+
+
 More examples
 =============
 
