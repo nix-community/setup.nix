@@ -1,6 +1,6 @@
-===================================================
-setup.nix – ”setuptools” for Python packages on Nix
-===================================================
+================================================
+setup.nix – Nix for Python developers simplified
+================================================
 
 **setup.nix** provides opinionated helper functions and pip2nix_-based workflow
 for developing, testing and packaging declaratively configured Python packages
@@ -16,6 +16,7 @@ versions are yet (or no longer) in Nixpkgs_.
 Quick start
 ===========
 
+
 Requirements
 ------------
 
@@ -30,10 +31,11 @@ Requirements
 
 __ http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
 
+
 Installation
 ------------
 
-* create minimal ``./setup.nix``:
+Create minimal ``./setup.nix``:
 
   .. code:: nix
 
@@ -52,46 +54,54 @@ Installation
        src = ./.;
      }
 
-* generate ``requirements.nix``:
+Generate ``requirements.nix``:
 
   .. code:: bash
 
      $ nix-shell setup.nix -A pip2nix \
        --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
-Usage
------
 
-* develop package in a Nix development shell:
+Basic usage
+-----------
+
+Develop package in console with a Nix development shell (this is similar to
+developing with a regular Python virtualenv):
 
   .. code:: bash
 
      $ nix-shell setup.nix -A develop
 
-* build environment with all the requirements (e.g. for PyCharm):
+Build easily accessible environment with all the requirements (this is useful
+e.g. as project Python interpreter for PyCharm):
 
   .. code:: bash
 
      $ nix-build setup.nix -A env
 
-* install the package:
+Install the package for local use (that's where Nix excels, any amount of
+Python packages could be installed to be available in path without worrying
+about conflicting package versions):
 
   .. code:: bash
 
      $ nix-env -if setup.nix -A build
 
-* build wheel for the package:
+Build a wheel release for the package (though sure you could just include
+``zest.releaser [recommended]`` in your ``requirements.txt`` and use that):
 
   .. code:: bash
 
      $ nix-build setup.nix -A bdist_wheel
 
-* build docker image from the package:
+Build a reasonably minimal docker image from the package (the best part being
+that build itself does not requier Docker at all):
 
   .. code:: bash
 
      $ nix-build setup.nix -A bdist_docker
-     $ docker loads < result
+     $ docker load < result
+
 
 Troubleshooting
 ---------------
@@ -114,6 +124,7 @@ setup-function_ and `examples`_ for more information.
 
 Complete example
 ================
+
 
 Project skeleton
 ----------------
@@ -205,16 +216,20 @@ Project skeleton
         --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
 
-Usage
------
+Testing for coverage
+--------------------
 
-* run tests with coverage
+Run tests with coverage:
 
   .. code:: bash
 
      $ nix-shell setup.nix -A develop --run "pytest --cov=helloworld"
 
-* build and run docker image
+
+Running as Docker image
+-----------------------
+
+Build and run docker image:
 
   .. code:: bash
 
