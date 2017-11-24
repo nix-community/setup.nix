@@ -44,8 +44,8 @@ Create minimal ``./setup.nix``:
      , setup ? import (pkgs.fetchFromGitHub {
          owner = "datakurre";
          repo = "setup.nix";
-         rev = "7748fdb925366cbd8fa4f01ec39418da37c3bc96";
-         sha256 = "1fi49ns3ylii6kzpvmlpkg0zirw3p95ga24mcss99jgm3lj8s8pl";
+         rev = "e779df9158f9ad7047d4bb86c049a332d21f1da9";
+         sha256 = "072p4m6srp2r8bklcbdf6vsr31qp0b29p84db0gpv6jmpaxb6n1a";
        })
      }:
 
@@ -196,8 +196,8 @@ Project skeleton
     , setup ? import (pkgs.fetchFromGitHub {
         owner = "datakurre";
         repo = "setup.nix";
-        rev = "7748fdb925366cbd8fa4f01ec39418da37c3bc96";
-        sha256 = "1fi49ns3ylii6kzpvmlpkg0zirw3p95ga24mcss99jgm3lj8s8pl";
+        rev = "e779df9158f9ad7047d4bb86c049a332d21f1da9";
+        sha256 = "072p4m6srp2r8bklcbdf6vsr31qp0b29p84db0gpv6jmpaxb6n1a";
       })
     }:
 
