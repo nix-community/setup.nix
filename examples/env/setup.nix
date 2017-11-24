@@ -4,12 +4,8 @@
 , setup ? import ../../default.nix
 }:
 
-let overrides = self: super: {
-
-};
-
-in setup {
-  inherit pkgs pythonPackages overrides;
+setup {
+  inherit pkgs pythonPackages;
   src = ./.;
   buildInputs = [ pkgs.lolcat ];
 }

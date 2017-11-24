@@ -87,8 +87,8 @@ in if isNull package then rec {
     (import (pkgs.fetchFromGitHub {
       owner = "datakurre";
       repo = "pip2nix";
-      rev = "6899f86ac426d9182829d42ced9db0b1759c39ff";
-      sha256 = "1chvwyl9ginflk5z81cfr9913727fz5s83725sl2m4mpd27dg3zg";
+      rev = "ad25deaa4584ea4dc24cd7c595b17e39a05cd2df";
+      sha256 = "051za8r1v76pkg6n407qmmy2m1w12pbrifbn9rccaday8z7rvpsk";
     } + "/release.nix") { inherit pkgs; }).pip2nix.python36
   ])).env;
 
@@ -184,8 +184,8 @@ in if isNull package then rec {
     (import (pkgs.fetchFromGitHub {
       owner = "datakurre";
       repo = "pip2nix";
-      rev = "6899f86ac426d9182829d42ced9db0b1759c39ff";
-      sha256 = "1chvwyl9ginflk5z81cfr9913727fz5s83725sl2m4mpd27dg3zg";
+      rev = "ad25deaa4584ea4dc24cd7c595b17e39a05cd2df";
+      sha256 = "051za8r1v76pkg6n407qmmy2m1w12pbrifbn9rccaday8z7rvpsk";
     } + "/release.nix") { inherit pkgs; }).pip2nix.python36
   ])).env;
 
