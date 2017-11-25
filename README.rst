@@ -335,10 +335,10 @@ Arguments in detail:
     Allowed arguments for ``image_features`` are:
 
     * ``"busybox"`` to make possible to execute interactive shell in the image
-    with e.g. ``docker run --rm -ti --entrypoint=/bin/sh``
+      with e.g. ``docker run --rm -ti --entrypoint=/bin/sh``
 
     * ``"tmpfile"`` to include writable ``/tmp`` in the image with environment
-    variables ``TMP`` and ``HOME`` set to point it.
+      variables ``TMP`` and ``HOME`` set to point it.
 
 __ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
 
