@@ -65,7 +65,20 @@ let
   list = candidate:
     if isList candidate then candidate else [];
 
-in if isNull package then rec {
+in {
+
+  pip2nix = (pkgs.python3.withPackages (ps: [
+    (import (pkgs.fetchFromGitHub {
+      owner = "datakurre";
+      repo = "pip2nix";
+      rev = "ad25deaa4584ea4dc24cd7c595b17e39a05cd2df";
+      sha256 = "051za8r1v76pkg6n407qmmy2m1w12pbrifbn9rccaday8z7rvpsk";
+    } + "/release.nix") { inherit pkgs; }).pip2nix.python36
+  ])).env;
+
+} //
+
+(if isNull package then rec {
 
   develop = shell;
 
@@ -82,15 +95,6 @@ in if isNull package then rec {
     nativeBuildInputs = [ env ];
     buildCommand = "";
   };
-
-  pip2nix = (pkgs.python3.withPackages (ps: [
-    (import (pkgs.fetchFromGitHub {
-      owner = "datakurre";
-      repo = "pip2nix";
-      rev = "ad25deaa4584ea4dc24cd7c595b17e39a05cd2df";
-      sha256 = "051za8r1v76pkg6n407qmmy2m1w12pbrifbn9rccaday8z7rvpsk";
-    } + "/release.nix") { inherit pkgs; }).pip2nix.python36
-  ])).env;
 
 } else rec {
 
@@ -180,13 +184,4 @@ in if isNull package then rec {
     };
   };
 
-  pip2nix = (pkgs.python3.withPackages (ps: [
-    (import (pkgs.fetchFromGitHub {
-      owner = "datakurre";
-      repo = "pip2nix";
-      rev = "ad25deaa4584ea4dc24cd7c595b17e39a05cd2df";
-      sha256 = "051za8r1v76pkg6n407qmmy2m1w12pbrifbn9rccaday8z7rvpsk";
-    } + "/release.nix") { inherit pkgs; }).pip2nix.python36
-  ])).env;
-
-}
+})
