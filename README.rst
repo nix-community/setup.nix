@@ -62,8 +62,8 @@ Generate ``requirements.nix``:
        --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
 
-Basic usage
------------
+Basic use cases
+---------------
 
 Develop package in console with a Nix development shell (this is similar to
 developing with a regular Python virtualenv):
@@ -79,6 +79,14 @@ e.g. as project Python interpreter for PyCharm):
 
      $ nix-build setup.nix -A env
 
+Build a reasonably minimal docker image from the package (the best part being
+that build itself does not requier Docker at all):
+
+  .. code:: bash
+
+     $ nix-build setup.nix -A bdist_docker
+     $ docker load < result
+
 Install the package for local use (that's where Nix excels, any amount of
 Python packages could be installed to be available in path without worrying
 about conflicting package versions):
@@ -93,14 +101,6 @@ Build a wheel release for the package (though sure you could just include
   .. code:: bash
 
      $ nix-build setup.nix -A bdist_wheel
-
-Build a reasonably minimal docker image from the package (the best part being
-that build itself does not requier Docker at all):
-
-  .. code:: bash
-
-     $ nix-build setup.nix -A bdist_docker
-     $ docker load < result
 
 
 Troubleshooting
@@ -125,9 +125,13 @@ setup-function_ and `examples`_ for more information.
 Complete example
 ================
 
+Here's a complete example of using **setup.nix** for Python package
+development:
+
 
 Project skeleton
 ----------------
+
 
 **./helloworld.py**:
 
@@ -237,7 +241,8 @@ Build and run docker image:
 Configuration options
 =====================
 
-To be described in detail soon...
+Here is the signature of **setup.nix** expression with all the available
+configuration argments:
 
 .. code:: nix
 
@@ -268,6 +273,74 @@ To be described in detail soon...
     , image_entrypoint ? "/bin/sh"
     , image_features ? [ "busybox" "tmpdir" ]
     }:
+
+Arguments in detail:
+
+**pkgs**
+    **setup.nix** defaults to the currently available Nixpkgs_ version,
+    but also accepts the given version to allow pinning of use packages.
+
+**pythonPackges**
+    In Nixpkgs_ each Python version has its own set of available packages.
+    This is also used in **setup.nix** for selection of the used Python
+    version (e.g. ``pkgs.python27Packages`` for Python 2.7 and
+    ``pkgs.pythonPackages36Packages`` for Python 3.6).
+
+**src**
+    This is the  absolute path for the project directory. Usually this must be
+    ``./.`` in Nix for **setup.nix** to properly find ``setup.cfg`` and
+    ``requirements.txt``.
+
+**doCheck**
+    In Nixpkgs_ it is usual to require tests to pass before pakage is built,
+    but elsewhere it's usual to run tests in a separate test stage on CI.
+    **setup.nix** defaults to disable automatic tests on build, but tests
+    can be forced with argment ``doCheck = true``.
+
+**overrides**
+    Because pip2nix_ cannot always generate fully working derivations for every
+    Python package, **overrides**-function is required to complete the failing
+    derivations. In addition, some Python package are actually hard to build,
+    but luckily it's possible to re-use build insructions from Nixpkgs_.  See
+    the `default overrides`__ example function (``overrides = self: super:
+    {}``).
+
+    The most usual use cases for overrides are:
+
+    1. Adding missing Python ``buildInputs`` from package ``setup_requires``
+       or non-Python inputs required by possible C-extensions in the package.
+
+    2. Using the existing Nixpkgs_ derivation as it is.
+
+    3. Using use the existing Nixpkgs_ derivation with updated PyPI version.
+
+**defaultOverrides**
+    **setup.nix** includes growing amount default package overrides to minimize
+    the need of custom overrides. In case that those default overrides cause
+    unexpected issues, it's possible to disable including the with argument
+    ``defaultOverrides = false``.
+
+**buildInputs**
+    Non-Python build-time dependencies (usually Nixpkgs_-packages) required for
+    building or testing the developed Python package.
+
+**propagatedBuildInputs**
+    Non-Python run-time dependencies (usually Nixpkgs_-packages) required for
+    actually using the developed Python package.
+
+**image_name**, **image_tag**, **image_entrypoint**, **image_features**:
+    Required for configuring the build of Docker image with ``bdist_docker``
+    build target.
+
+    Allowed arguments for ``image_features`` are:
+
+    * ``"busybox"`` to make possible to execute interactive shell in the image
+    with e.g. ``docker run --rm -ti --entrypoint=/bin/sh``
+
+    * ``"tmpfile"`` to include writable ``/tmp`` in the image with environment
+    variables ``TMP`` and ``HOME`` set to point it.
+
+__ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
 
 
 More examples
