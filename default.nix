@@ -129,6 +129,13 @@ in {
       (name: getAttr name packages) (attrNames (requirements {} {}));
   });
 
+  test = if pathExists (src + "/setup.nix") then (
+    let make-test = import (pkgs.path + "/nixos/tests/make-test.nix");
+    in import (src + "/tests.nix") {
+      inherit pkgs pythonPackages make-test build;
+    }
+  ) else null;
+
   sdist = build.overrideDerivation(old: {
     name = "${old.name}-sdist";
     phases = [ "unpackPhase" "buildPhase" ];
