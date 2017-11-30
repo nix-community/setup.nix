@@ -7,6 +7,6 @@ make-test ({ pkgs, ... }: {
   };
   testScript = ''
     $machine->waitForUnit("multi-user.target");
-    print STDERR $machine->succeed("hello-world");
+    $machine->succeed("hello-world") =~ /Hello World!/;
   '';
 })

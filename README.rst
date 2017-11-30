@@ -219,6 +219,23 @@ Project skeleton
     $ nix-shell setup.nix -A pip2nix \
         --run "pip2nix generate -r requirements.txt --output=requirements.nix"
 
+**./tests.nix**:
+
+.. code:: nix
+
+    { pkgs, pythonPackages, make-test, build, ... }:
+
+    make-test ({ pkgs, ... }: {
+      name = "test";
+      machine = { config, pkgs, lib, ... }: {
+        environment.systemPackages = [ build ];
+      };
+      testScript = ''
+        $machine->waitForUnit("multi-user.target");
+        $machine->succeed("hello-world") =~ /Hello World!/;
+      '';
+    })
+
 
 Interaction examples
 --------------------
@@ -237,6 +254,11 @@ Build and run docker image:
      $ docker run --rm helloworld:latest
      Hello World!
 
+Run functional NixOS tests:
+
+  .. code:: bash
+
+     $ nix-build setup.nix -A tests
 
 Configuration options
 =====================
@@ -272,6 +294,7 @@ configuration argments:
     , image_tag  ? "latest"
     , image_entrypoint ? "/bin/sh"
     , image_features ? [ "busybox" "tmpdir" ]
+    , image_labels ? {}
     }:
 
 Arguments in detail:
@@ -328,7 +351,7 @@ Arguments in detail:
     Non-Python run-time dependencies (usually Nixpkgs_-packages) required for
     actually using the developed Python package.
 
-**image_name**, **image_tag**, **image_entrypoint**, **image_features**:
+**image_name**, **image_tag**, **image_entrypoint**, **image_features**, **image_labels**:
     Required for configuring the build of Docker image with ``bdist_docker``
     build target.
 
@@ -339,6 +362,9 @@ Arguments in detail:
 
     * ``"tmpfile"`` to include writable ``/tmp`` in the image with environment
       variables ``TMP`` and ``HOME`` set to point it.
+
+    ``image_labels`` should be a flat record of key value pairs for to be
+    used as Docker image labels.
 
 __ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
 

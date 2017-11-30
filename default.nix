@@ -20,6 +20,7 @@
 , image_tag  ? "latest"
 , image_entrypoint ? "/bin/sh"
 , image_features ? [ "busybox" "tmpdir" ]
+, image_labels ? {}
 }:
 
 with builtins;
@@ -129,7 +130,7 @@ in {
       (name: getAttr name packages) (attrNames (requirements {} {}));
   });
 
-  test = if pathExists (src + "/setup.nix") then (
+  tests = if pathExists (src + "/tests.nix") then (
     let make-test = import (pkgs.path + "/nixos/tests/make-test.nix");
     in import (src + "/tests.nix") {
       inherit pkgs pythonPackages make-test build;
@@ -188,6 +189,8 @@ in {
       User = "nobody";
     } // optionalAttrs (elem "tmpdir" image_features) {
       Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
+    } // {
+      Labels = image_labels;
     };
   };
 
