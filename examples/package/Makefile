@@ -6,6 +6,10 @@ all: test
 nix-%: requirements.nix
 	nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) $*"
 
+nix-test: requirements.nix
+	nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) test"
+	nix-build setup.nix -A test
+
 nix-env: requirements.nix
 	nix-build setup.nix $(ARGSTR) -A env
 
