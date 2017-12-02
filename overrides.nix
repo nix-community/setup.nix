@@ -2,68 +2,68 @@
 
 self: super: {
 
-  aiovault = super.aiovault.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [
-      self.pytest-runner
+  "aiovault" = super."aiovault".overridePythonAttrs (old: {
+    buildInputs = super."aiovault".buildInputs ++ [
+      self."pytest-runner"
     ];
   });
 
-  flake8 = super.flake8.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [
-      self.pytest-runner
+  "flake8" = super."flake8".overridePythonAttrs (old: {
+    buildInputs = super."flake8".buildInputs ++ [
+      self."pytest-runner"
     ];
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      self.enum34
-      self.configparser
-    ];
-  });
-
-  flake8-debugger = super.flake8-debugger.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [
-      self.pytest-runner
+    propagatedBuildInputs = super."flake8".propagatedBuildInputs ++ [
+      self."enum34"
+      self."configparser"
     ];
   });
 
-  mccabe = super.mccabe.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [
-      self.pytest-runner
+  "flake8-debugger" = super."flake8-debugger".overridePythonAttrs (old: {
+    buildInputs = super."flake8-debugger".buildInputs ++ [
+      self."pytest-runner"
     ];
   });
 
-  olefile = pythonPackages.olefile;
+  "mccabe" = super."mccabe".overridePythonAttrs (old: {
+    buildInputs = super."mccabe".buildInputs ++ [
+      self."pytest-runner"
+    ];
+  });
 
-  pillow = pythonPackages.pillow.overrideDerivation(old:
-    with super.pillow; { inherit name src; }
+  "olefile" = pythonPackages."olefile";
+
+  "pillow" = pythonPackages."pillow".overridePythonAttrs(old:
+    with super."pillow"; { inherit name src; }
   );
 
-  pytest = super.pytest.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [
-      self.setuptools_scm
+  "pytest" = super."pytest".overridePythonAttrs (old: {
+    buildInputs = super."pytest".buildInputs ++ [
+      self."setuptools_scm"
     ];
   });
 
-  pytest-runner = super.pytest-runner.overrideDerivation (old: {
-    buildInputs = old.buildInputs ++ [
-      self.setuptools_scm
+  "pytest-runner" = super."pytest-runner".overridePythonAttrs (old: {
+    buildInputs = super."pytest-runner".buildInputs ++ [
+      self."setuptools_scm"
     ];
   });
 
-  reportlab = pythonPackages.reportlab.overrideDerivation(old:
-    with super.reportlab; { inherit name src; }
+  "reportlab" = pythonPackages."reportlab".overridePythonAttrs(old:
+    with super."reportlab"; { inherit name src; }
   );
 
-  rst2pdf = super.rst2pdf.overrideDerivation(old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      self.pillow
+  "rst2pdf" = super."rst2pdf".overridePythonAttrs(old: {
+    propagatedBuildInputs = super."rst2pdf".propagatedBuildInputs ++ [
+      self."pillow"
     ];
   });
 
-  setuptools = pythonPackages.setuptools;
+  "setuptools" = pythonPackages."setuptools";
 
-  sphinx = super.sphinx.overrideDerivation(old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      self.typing
-      self.configparser
+  "sphinx" = super."sphinx".overridePythonAttrs(old: {
+    propagatedBuildInputs = super."sphinx".propagatedBuildInputs ++ [
+      self."typing"
+      self."configparser"
     ];
   });
 
