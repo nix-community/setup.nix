@@ -24,6 +24,10 @@ self: super: {
     ];
   });
 
+  "lxml" = pythonPackages."lxml".overridePythonAttrs(old:
+    with super."lxml"; { inherit name src; }
+  );
+
   "mccabe" = super."mccabe".overridePythonAttrs (old: {
     buildInputs = super."mccabe".buildInputs ++ [
       self."pytest-runner"

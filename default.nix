@@ -11,9 +11,15 @@
 , overrides ? self: super: {}
 , defaultOverrides ? true
 
+# force to build environment packages with empty requirements
+, force ? false
+
 # non-Python inputs
 , buildInputs ? []
 , propagatedBuildInputs ? []
+
+# known list of "broken" as in non-installable Python packages
+, nonInstallablePackages ? [ "zc.recipe.egg" ]
 
 # bdist_docker
 , image_name ? null
@@ -29,6 +35,7 @@ with pkgs.stdenv;
 
 let
 
+  # Parse setup.cfg into Nix via JSON (strings with \n are parsed into lists)
   package = if pathExists (src + "/setup.cfg") then fromJSON(readFile(
     pkgs.runCommand "setup.json" { input=src + "/setup.cfg"; } ''
       ${pkgs.python3}/bin/python << EOF
@@ -46,99 +53,195 @@ let
     ''
   )) else null;
 
-  requirements = import (src + "/requirements.nix") {
+  # Load generated requirements
+  requirements = import (if baseNameOf src == "requirements.nix"
+                         then src else src + "/requirements.nix") {
     inherit pkgs;
     inherit (pkgs) fetchurl fetchgit fetchhg;
   };
 
-  packages = if defaultOverrides then
-    (fix
-    (extends overrides
-    (extends (import ./overrides.nix { inherit pkgs pythonPackages; })
-    (extends requirements
-             pythonPackages.__unfix__))))
+  # Load default overrides
+  commonOverrides = import ./overrides.nix { inherit pkgs pythonPackages; };
+
+  # List package names in requirements
+  requirementsNames = attrNames (requirements {} {});
+
+  # List union of package names in overrides and defaultOverrides
+  overridesNames = if defaultOverrides then
+    attrNames ((commonOverrides {} {}) // (overrides {} {}))
   else
+    attrNames (overrides {} {});
+
+  # Define overlay for force building requirements without overrides
+  forcedRequirements = self: super: (listToAttrs (map
+    (name: {
+      inherit name;
+      value = (getAttr name super).overridePythonAttrs(old: {
+        installFlags = [ "--no-dependencies" ];
+        propagatedBuildInputs = [];
+      });
+    })
+    (filter (name: !(elem name overridesNames)) requirementsNames)
+  ));
+
+  # Build final pythonPackages with all generated & customized requirements
+  packages =
     (fix
     (extends overrides
+    (extends (if defaultOverrides then commonOverrides else self: super: {})
+    (extends (if force then forcedRequirements else self: super: {})
     (extends requirements
-             pythonPackages.__unfix__)));
+             pythonPackages.__unfix__)))));
 
-  list = candidate:
-    if isList candidate then candidate else [];
+  # Helper to always return a list
+  list = name: attrs:
+    if hasAttr name attrs then
+      let candidate = getAttr name attrs; in
+      if isList candidate then candidate else []
+    else [];
 
+  # Docker image
+  bdist_docker_factory = build: pkgs.dockerTools.buildImage {
+    name = if isNull image_name then package.metadata.name else image_name;
+    tag = image_tag;
+    contents = [ build ] ++
+      optional (elem "busybox" image_features) pkgs.busybox;
+    runAsRoot = if isLinux then ''
+      #!${pkgs.stdenv.shell}
+      ${pkgs.dockerTools.shadowSetup}
+      groupadd --system --gid 65534 nobody
+      useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
+      echo "hosts: files dns" > /etc/nsswitch.conf
+    '' + optionalString (elem "busybox" image_features) ''
+      mkdir -p /usr/bin && ln -s /bin/env /usr/bin
+    '' + optionalString (elem "tmpdir" image_features) ''
+      mkdir -p /tmp && chmod a+rxwt /tmp
+    '' else null;
+    config = {
+      EntryPoint = [ image_entrypoint ];
+    } // optionalAttrs isLinux {
+      User = "nobody";
+    } // optionalAttrs (elem "tmpdir" image_features) {
+      Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
+    } // {
+      Labels = image_labels;
+    };
+  };
+
+
+# Define commmon targets
 in {
 
+  # Define known good version of pip2nix environment
   pip2nix = (pythonPackages.python.withPackages (ps: [
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.majorVersion)
       (import (pkgs.fetchFromGitHub {
-        owner = "datakurre";
+        owner = "johbo";
         repo = "pip2nix";
-        rev = "ad25deaa4584ea4dc24cd7c595b17e39a05cd2df";
-        sha256 = "051za8r1v76pkg6n407qmmy2m1w12pbrifbn9rccaday8z7rvpsk";
+        rev = "64a0799ea5bb444502c3201db7fa335ba69514e6";
+        sha256 = "1dqzig7mzp6za68f3wbm4ki6myiask1cqqsdyaxaawms3c82bldi";
       } + "/release.nix") { inherit pkgs; }).pip2nix
     )
   ])).env;
 
+  # Define convenient alias for the final set of packages
+  pythonPackages = packages;
+
 } //
 
+# Define environment build targets
 (if isNull package then rec {
 
+  # Make all packages available for build with all requirements
+  build = genAttrs requirementsNames (name:
+    if force == true then
+      (getAttr name packages).overridePythonAttrs(old: {
+        propagatedBuildInputs =
+          map (name: getAttr name packages)
+              (foldl' (x: y: remove y x)
+               requirementsNames (nonInstallablePackages ++ [ name ]));
+      })
+    else
+      getAttr name packages
+  );
+
+  # Setup.py alias
   develop = shell;
 
+  # Build env with all requirements
   env = pkgs.buildEnv {
     name = "env";
     paths = buildInputs ++ propagatedBuildInputs ++ [
-      (packages.python.withPackages (ps: map
-        (name: getAttr name packages) (attrNames (requirements {} {}))))
+      (packages.python.buildEnv.override {
+        extraLibs = map
+          (name: getAttr name packages)
+          (foldl' (x: y: remove y x)
+           requirementsNames nonInstallablePackages);
+      })
     ];
   };
 
+  # Setup.py alias
+  install = env;
+
+  # Make full environment available for nix-shell
   shell = pkgs.stdenv.mkDerivation {
     name = "env";
     nativeBuildInputs = [ env ];
     buildCommand = "";
   };
 
-} else rec {
+  # Docker image
+  bdist_docker = bdist_docker_factory env;
 
-  pythonPackages = packages;
+  # NixOS functional tests
+  tests = if pathExists (src + "/tests.nix") then (
+    let make-test = import (pkgs.path + "/nixos/tests/make-test.nix");
+    in import (src + "/tests.nix") {
+      inherit pkgs pythonPackages make-test build env;
+    }
+  ) else null;
+
+# Define package build targets
+} else rec {
 
   build = packages.buildPythonPackage {
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
     buildInputs = buildInputs ++ map
-      (name: getAttr name packages) ((list package.options.setup_requires) ++
-                                     (list package.options.tests_require));
-    propagatedBuildInputs = propagatedBuildInputs ++ map
-      (name: getAttr name packages) (list package.options.install_requires);
+      (name: getAttr name packages) ((list "setup_requires" package.options) ++
+                                     (list "tests_require" package.options));
+    propagatedBuildInputs = if force == true then propagatedBuildInputs ++ map
+      (name: getAttr name packages)
+      (foldl' (x: y: remove y x)
+       requirementsNames (nonInstallablePackages ++ [ package.metadata.name ]))
+    else propagatedBuildInputs ++ map
+      (name: getAttr name packages) (list "install_requires" package.options);
     inherit doCheck;
   };
 
   develop = shell;
 
-  install = packages.python.withPackages (ps: [ build ]);
-
   env = pkgs.buildEnv {
     name = "${package.metadata.name}-${package.metadata.version}-env";
     paths = buildInputs ++ propagatedBuildInputs ++ [
       (packages.python.withPackages (ps: map
-        (name: getAttr name packages) (attrNames (requirements {} {}))))
+        (name: getAttr name packages)
+        (foldl' (x: y: remove y x)
+         requirementsNames nonInstallablePackages)))
     ];
   };
+
+  install = packages.python.withPackages (ps: [ build ]);
 
   shell = build.overrideDerivation(old: {
     name = "${old.name}-shell";
     buildInputs = buildInputs ++ propagatedBuildInputs ++ map
-      (name: getAttr name packages) (attrNames (requirements {} {}));
+      (name: getAttr name packages)
+      (foldl' (x: y: remove y x)
+       requirementsNames nonInstallablePackages);
   });
-
-  tests = if pathExists (src + "/tests.nix") then (
-    let make-test = import (pkgs.path + "/nixos/tests/make-test.nix");
-    in import (src + "/tests.nix") {
-      inherit pkgs pythonPackages make-test build;
-    }
-  ) else null;
 
   sdist = build.overrideDerivation(old: {
     name = "${old.name}-sdist";
@@ -170,31 +273,15 @@ in {
     '';
   });
 
-  bdist_docker = pkgs.dockerTools.buildImage {
-    name = if isNull image_name then package.metadata.name else image_name;
-    tag = image_tag;
-    contents = [ build ] ++
-      optional (elem "busybox" image_features) pkgs.busybox;
-    runAsRoot = if isLinux then ''
-      #!${pkgs.stdenv.shell}
-      ${pkgs.dockerTools.shadowSetup}
-      groupadd --system --gid 65534 nobody
-      useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
-      echo "hosts: files dns" > /etc/nsswitch.conf
-    '' + optionalString (elem "busybox" image_features) ''
-      mkdir -p /usr/bin && ln -s /bin/env /usr/bin
-    '' + optionalString (elem "tmpdir" image_features) ''
-      mkdir -p /tmp && chmod a+rxwt /tmp
-    '' else null;
-    config = {
-      EntryPoint = [ image_entrypoint ];
-    } // optionalAttrs isLinux {
-      User = "nobody";
-    } // optionalAttrs (elem "tmpdir" image_features) {
-      Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
-    } // {
-      Labels = image_labels;
-    };
-  };
+  # Docker image
+  bdist_docker = bdist_docker_factory build;
+
+  # NixOS functional tests
+  tests = if pathExists (src + "/tests.nix") then (
+    let make-test = import (pkgs.path + "/nixos/tests/make-test.nix");
+    in import (src + "/tests.nix") {
+      inherit pkgs pythonPackages make-test build env;
+    }
+  ) else null;
 
 })
