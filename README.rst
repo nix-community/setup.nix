@@ -44,8 +44,8 @@ Create minimal ``./setup.nix``:
      , setup ? import (pkgs.fetchFromGitHub {
          owner = "datakurre";
          repo = "setup.nix";
-         rev = "97814c0e718d086cf7439cda84bc03fdaba747c9";
-         sha256 = "0wkn943dahwxpgbr5brlxdslw3rn697isr5dj5jnd8bs612fq7da";
+         rev = "b1bfe61cd2f60f5446c8e3e74e99663fdbbaf7f6";
+         sha256 = "1iw3ib6zwgyqnyr9gapsrmwprawws8k331cb600724ddv30xrpkg";
        })
      }:
 
@@ -200,8 +200,8 @@ Project skeleton
     , setup ? import (pkgs.fetchFromGitHub {
         owner = "datakurre";
         repo = "setup.nix";
-        rev = "97814c0e718d086cf7439cda84bc03fdaba747c9";
-        sha256 = "0wkn943dahwxpgbr5brlxdslw3rn697isr5dj5jnd8bs612fq7da";
+        rev = "b1bfe61cd2f60f5446c8e3e74e99663fdbbaf7f6";
+        sha256 = "1iw3ib6zwgyqnyr9gapsrmwprawws8k331cb600724ddv30xrpkg";
       })
     }:
 
@@ -281,6 +281,9 @@ configuration argments:
     # enable tests on build
     , doCheck ? false
 
+    # force to build environment packages with empty requirements
+    , force ? false
+
     # requirements overrides
     , overrides ? self: super: {}
     , defaultOverrides ? true
@@ -310,9 +313,20 @@ Arguments in detail:
     ``pkgs.pythonPackages36Packages`` for Python 3.6).
 
 **src**
-    This is the  absolute path for the project directory. Usually this must be
-    ``./.`` in Nix for **setup.nix** to properly find ``setup.cfg`` and
-    ``requirements.txt``.
+    This is the absolute path for the project directory or ``environment.nix``.
+    Usually this must be ``./.`` in Nix for **setup.nix** to properly find
+    your project's ``setup.cfg`` and ``requirements.txt``. Yet, if you are
+    only building an evironmet, e.g. ``./requirements.nix`` to **pip2nix**
+    generated **requirements.nix** is enough.
+
+**force**
+    By default **setup.nix** tries its best to behave like a good **nixpkgs**
+    citizen and compose Python projects from reusable package builds with
+    well-defined dependencies. ``force = true`` configures **setup.nix** to
+    build individual packages without dependencies, only to add all the
+    dependencies into the final derivation. This make it possible to build
+    packages with circular dependencies or packages with add-ons (depending
+    on the package itself).
 
 **doCheck**
     In Nixpkgs_ it is usual to require tests to pass before pakage is built,
