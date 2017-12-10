@@ -1,12 +1,3 @@
-PYTHON ?= python3
-ARGSTR ?= --argstr python $(PYTHON)
-
-nix-env: requirements.nix
-	nix-build setup.nix $(ARGSTR) -A env
-
-nix-shell: requirements.nix
-	nix-shell setup.nix $(ARGSTR) -A develop
-
 nix-build: requirements.nix
 	nix-build setup.nix -A 'build."zest.releaser"'
 

@@ -1,8 +1,8 @@
 { pkgs ? import ((import <nixpkgs> {}).pkgs.fetchFromGitHub {
   owner = "NixOS";
   repo = "nixpkgs";
-  rev = "11d0cccf56979f621a2e513bf3a921b46972615b";
-  sha256 = "1il0r3xnmml71arg1f5kds0ds4ymmcljdmxrk8i8w3y1jw2mqgj6";
+  rev = "4759056cf1290057845c7aa748c516be6a7e41d4";
+  sha256 = "1169qavgxspnb74j30gkjbf1fxp46q96d97r56n69dmg35nfy2r9";
 }) {}
 , pythonPackages ? pkgs.pythonPackages
 , setup ? import ../..
