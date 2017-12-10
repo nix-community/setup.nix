@@ -54,7 +54,7 @@ Create minimal ``./setup.nix``:
        src = ./.;
      }
 
-Generate ``requirements.nix``:
+Generate ``requirements.nix`` from your ``requirements.txt``:
 
   .. code:: bash
 
@@ -87,13 +87,13 @@ that build itself does not requier Docker at all):
      $ nix-build setup.nix -A bdist_docker
      $ docker load < result
 
-Install the package for local use (that's where Nix excels, any amount of
-Python packages could be installed to be available in path without worrying
+Install the package for local use (that's where Nix excels, because any amount
+of Python packages could be installed to be available in path without worrying
 about conflicting package versions):
 
   .. code:: bash
 
-     $ nix-env -if setup.nix -A build
+     $ nix-env -f setup.nix -iA build
 
 Build a wheel release for the package (though sure you could just include
 ``zest.releaser [recommended]`` in your ``requirements.txt`` and use that):
@@ -101,6 +101,15 @@ Build a wheel release for the package (though sure you could just include
   .. code:: bash
 
      $ nix-build setup.nix -A bdist_wheel
+
+Integration with regular Makefile so that ``make nix-test`` will be equal
+to ``make test`` within Nix-built shell:
+
+  .. code:: make
+
+     nix-%: requirements.nix
+        nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) $*"
+
 
 
 Troubleshooting
@@ -260,11 +269,12 @@ Run functional NixOS tests:
 
      $ nix-build setup.nix -A tests
 
+
 Configuration options
 =====================
 
 Here is the signature of **setup.nix** expression with all the available
-configuration argments:
+configuration arguments:
 
 .. code:: nix
 
@@ -304,7 +314,16 @@ Arguments in detail:
 
 **pkgs**
     **setup.nix** defaults to the currently available Nixpkgs_ version,
-    but also accepts the given version to allow pinning of use packages.
+    but also accepts the given version for better reproducibility:
+
+    .. code:: nix
+
+       pkgs = import ((import <nixpkgs> {}).pkgs.fetchFromGitHub {
+           owner = "NixOS";
+           repo = "nixpkgs";
+           rev = "11d0cccf56979f621a2e513bf3a921b46972615b";
+           sha256 = "1il0r3xnmml71arg1f5kds0ds4ymmcljdmxrk8i8w3y1jw2mqgj6";
+       })
 
 **pythonPackges**
     In Nixpkgs_ each Python version has its own set of available packages.
@@ -314,19 +333,19 @@ Arguments in detail:
 
 **src**
     This is the absolute path for the project directory or ``environment.nix``.
-    Usually this must be ``./.`` in Nix for **setup.nix** to properly find
-    your project's ``setup.cfg`` and ``requirements.txt``. Yet, if you are
-    only building an evironmet, e.g. ``./requirements.nix`` to **pip2nix**
-    generated **requirements.nix** is enough.
+    Usually this must be ``src = ./.`` in Nix for **setup.nix** to properly
+    find your project's ``setup.cfg`` and ``requirements.txt``.
+    If you are only building an evironment or an existing package from
+    ``requirements.txt``, ``src = ./requirements.nix`` is enough.
 
 **force**
     By default **setup.nix** tries its best to behave like a good **nixpkgs**
     citizen and compose Python projects from reusable package builds with
     well-defined dependencies. ``force = true`` configures **setup.nix** to
-    build individual packages without dependencies, only to add all the
-    dependencies into the final derivation. This make it possible to build
+    build individual packages without their dependencies, only to add all the
+    dependencies into the final derivation. `This makes it possible to build
     packages with circular dependencies or packages with add-ons (depending
-    on the package itself).
+    on the package itself).`__
 
 **doCheck**
     In Nixpkgs_ it is usual to require tests to pass before pakage is built,
@@ -380,6 +399,7 @@ Arguments in detail:
     ``image_labels`` should be a flat record of key value pairs for to be
     used as Docker image labels.
 
+__ https://github.com/datakurre/setup.nix/blob/master/examples/tool
 __ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
 
 
@@ -387,4 +407,6 @@ More examples
 =============
 
 * https://github.com/collective/sphinxcontrib-httpexample
-* https://github.com/datakurre/setup.nix/blob/master/examples
+* https://github.com/datakurre/setup.nix/blob/master/examples/env
+* https://github.com/datakurre/setup.nix/blob/master/examples/package
+* https://github.com/datakurre/setup.nix/blob/master/examples/tool
