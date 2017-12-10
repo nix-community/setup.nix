@@ -108,7 +108,7 @@ to ``make test`` within Nix-built shell:
   .. code:: make
 
      nix-%: requirements.nix
-        nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) $*"
+        nix-shell setup.nix -A develop --run "$(MAKE) $*"
 
 
 
