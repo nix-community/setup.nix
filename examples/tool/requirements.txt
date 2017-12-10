@@ -1,0 +1,3 @@
+zest.releaser [recommended]
+zest.pocompile
+gocept.zestreleaser.customupload
