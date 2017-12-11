@@ -24,6 +24,12 @@ self: super: {
     ];
   });
 
+  "flake8-print" = super."flake8-print".overridePythonAttrs (old: {
+    buildInputs = super."flake8-print".buildInputs ++ [
+      self."pytest-runner"
+    ];
+  });
+
   "lxml" = pythonPackages."lxml".overridePythonAttrs(old:
     with super."lxml"; { inherit name src; }
   );
