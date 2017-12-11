@@ -13,6 +13,7 @@
 
 # force to build environment packages with empty requirements
 , force ? false
+, ignoreCollisions ? false
 
 # non-Python inputs
 , buildInputs ? []
@@ -178,6 +179,7 @@ in {
           (name: getAttr name packages)
           (foldl' (x: y: remove y x)
            requirementsNames nonInstallablePackages);
+        inherit ignoreCollisions;
       })
     ];
   };
@@ -226,10 +228,13 @@ in {
   env = pkgs.buildEnv {
     name = "${package.metadata.name}-${package.metadata.version}-env";
     paths = buildInputs ++ propagatedBuildInputs ++ [
-      (packages.python.withPackages (ps: map
-        (name: getAttr name packages)
-        (foldl' (x: y: remove y x)
-         requirementsNames nonInstallablePackages)))
+      (packages.python.buildEnv.override {
+        extraLibs = map
+          (name: getAttr name packages)
+          (foldl' (x: y: remove y x)
+           requirementsNames nonInstallablePackages);
+        inherit ignoreCollisions;
+      })
     ];
   };
 
