@@ -46,6 +46,10 @@ self: super: {
     with super."pillow"; { inherit name src; }
   );
 
+  "psycopg2" = pythonPackages."psycopg2".overridePythonAttrs(old:
+    with super."psycopg2"; { inherit name src; }
+  );
+
   "pytest" = super."pytest".overridePythonAttrs (old: {
     buildInputs = super."pytest".buildInputs ++ [
       self."setuptools_scm"
