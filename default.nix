@@ -23,11 +23,14 @@
 , nonInstallablePackages ? [ "zc.recipe.egg" ]
 
 # bdist_docker
+, image_author ? null
 , image_name ? null
 , image_tag  ? "latest"
 , image_entrypoint ? "/bin/sh"
+, image_cmd ? null
 , image_features ? [ "busybox" "tmpdir" ]
 , image_labels ? {}
+, image_extras ? []
 }:
 
 with builtins;
@@ -35,6 +38,7 @@ with pkgs.lib;
 with pkgs.stdenv;
 
 let
+  dockerTools = pkgs.callPackage ./docker {};
 
   # Parse setup.cfg into Nix via JSON (strings with \n are parsed into lists)
   package = if pathExists (src + "/setup.cfg") then fromJSON(readFile(
@@ -102,10 +106,19 @@ let
     else [];
 
   # Docker image
-  bdist_docker_factory = build: pkgs.dockerTools.buildImage {
+  bdist_docker_factory = build: dockerTools.buildImage {
+    author = if isNull image_author then (
+      if (hasAttr "metadata" package &&
+          hasAttr "author" package.metadata &&
+          hasAttr "author_email" package.metadata &&
+          package.metadata.author != "" &&
+          package.metadata.author_email != "") then
+        "${package.metadata.author} <${package.metadata.author_email}>"
+        else null
+      ) else image_author;
     name = if isNull image_name then package.metadata.name else image_name;
     tag = image_tag;
-    contents = [ build ] ++
+    contents = [ build ] ++ image_extras ++
       optional (elem "busybox" image_features) pkgs.busybox;
     runAsRoot = if isLinux then ''
       #!${pkgs.stdenv.shell}
@@ -118,9 +131,12 @@ let
     '' + optionalString (elem "tmpdir" image_features) ''
       mkdir -p /tmp && chmod a+rxwt /tmp
     '' else null;
-    config = {
-      EntryPoint = [ image_entrypoint ];
-    } // optionalAttrs isLinux {
+    config = {}
+    // (if isNull image_cmd then {
+      EntryPoint = if isList image_entrypoint then image_entrypoint else [ image_entrypoint ];
+    } else {
+      Cmd = if isList image_cmd then image_cmd else [ image_cmd ];
+    }) // optionalAttrs isLinux {
       User = "nobody";
     } // optionalAttrs (elem "tmpdir" image_features) {
       Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
