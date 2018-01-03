@@ -106,15 +106,15 @@ self: super: {
     };
   };
   "pyroma" = super.buildPythonPackage {
-    name = "pyroma-2.3";
+    name = "pyroma-2.2";
     doCheck = false;
     propagatedBuildInputs = [
       self."setuptools"
       self."docutils"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/90/27/c7da27d7e6c16bec4233128cd9e655f50ada77e16e1654fb0816b520fcd8/pyroma-2.3.tar.gz";
-      sha256 = "0ncnmrqs19jma2q5yz1sh0lcllvg8m96p78bxm50k6bzfc52h07x";
+      url = "https://pypi.python.org/packages/de/f3/104ae27624982cd4b6de786d9afe23a2dc0b8c0999443ba370b3755848c7/pyroma-2.2.tar.gz";
+      sha256 = "0l5ab84plqf6gy2xphm92dazpa6c5r1xcj20f35zhlbwd1aq1zfk";
     };
   };
   "python-gettext" = super.buildPythonPackage {
@@ -181,11 +181,11 @@ self: super: {
     };
   };
   "tqdm" = super.buildPythonPackage {
-    name = "tqdm-4.19.4";
+    name = "tqdm-4.19.5";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/68/bf/f1f515b82e15d367c073d4b1fd6d47ac072657b0b1ace45f17c50f8dc84c/tqdm-4.19.4.tar.gz";
-      sha256 = "1wcdiigjavcjg1m2l4xlyx5wy8xgldsaqb8yakdnp316xb107a3w";
+      url = "https://pypi.python.org/packages/19/c6/4d74a16323f5045e6d4444bd1e3104b8ba52507700bc152a9c6bd88d1cfb/tqdm-4.19.5.tar.gz";
+      sha256 = "0xvkffm77nqckk29xjy5fkqvig5b97vk7nzafp3cn36w4zqyccnz";
     };
   };
   "twine" = super.buildPythonPackage {
