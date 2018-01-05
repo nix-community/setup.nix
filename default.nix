@@ -31,6 +31,7 @@
 , image_features ? [ "busybox" "tmpdir" ]
 , image_labels ? {}
 , image_extras ? []
+, image_created ? "1970-01-01T00:00:01Z"
 }:
 
 with builtins;
@@ -118,6 +119,7 @@ let
       ) else image_author;
     name = if isNull image_name then package.metadata.name else image_name;
     tag = image_tag;
+    created = image_created;
     contents = [ build ] ++ image_extras ++
       optional (elem "busybox" image_features) pkgs.busybox;
     runAsRoot = if isLinux then ''
