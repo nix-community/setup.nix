@@ -4,6 +4,9 @@
 # project path, usually ./.
 , src
 
+# custom post install script
+, postInstall ? ""
+
 # enable tests on build
 , doCheck ? false
 
@@ -226,7 +229,7 @@ in {
 # Define package build targets
 } else rec {
 
-  build = packages.buildPythonPackage {
+  build = packages.buildPythonPackage ({
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
     buildInputs = buildInputs ++ map
@@ -239,7 +242,11 @@ in {
     else propagatedBuildInputs ++ map
       (name: getAttr name packages) (list "install_requires" package.options);
     inherit doCheck;
-  };
+  } // (if isFunction postInstall then {
+    postInstall = (postInstall packages);
+  } else {
+    inherit postInstall;
+  }));
 
   develop = shell;
 
