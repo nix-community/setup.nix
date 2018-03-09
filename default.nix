@@ -64,7 +64,7 @@ let
   )) else null;
 
   # Load generated requirements
-  requirements = import (if baseNameOf src == "requirements.nix"
+  requirements = import (if !pathExists (src + "/setup.cfg")
                          then src else src + "/requirements.nix") {
     inherit pkgs;
     inherit (pkgs) fetchurl fetchgit fetchhg;
