@@ -1,3 +1,4 @@
+bleach
 coverage
 flake8-blind-except
 flake8-coding
@@ -5,6 +6,7 @@ flake8-debugger
 flake8-quotes
 isort
 pep8-naming
+pyroma==2.2
 pytest
 pytest-cov
 pytest-runner

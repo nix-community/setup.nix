@@ -36,5 +36,5 @@ test:
 .PHONY: all isort test nix-%
 
 requirements.nix: requirements.txt
-	nix-shell setup.nix -A pip2nix \
-	  --run "pip2nix generate -r requirements.txt --output=requirements.nix"
+	nix-shell -p libffi --run 'nix-shell setup.nix -A pip2nix \
+	  --run "pip2nix generate -r requirements.txt --output=requirements.nix"'
