@@ -39,23 +39,31 @@ self: super: {
       sha256 = "1q3z4lf39qndwcjg3gbscck8q5qjklma275w5s8n1valk6gcpk9p";
     };
   };
+  "attrs" = super.buildPythonPackage {
+    name = "attrs-17.4.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/8b/0b/a06cfcb69d0cb004fde8bc6f0fd192d96d565d1b8aa2829f0f20adb796e5/attrs-17.4.0.tar.gz";
+      sha256 = "1jafnn1kzd6qhxgprhx6y6ik1r5m2rilx25syzcmq03azp660y8w";
+    };
+  };
   "babel" = super.buildPythonPackage {
-    name = "babel-2.5.1";
+    name = "babel-2.5.3";
     doCheck = false;
     propagatedBuildInputs = [
       self."pytz"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/5a/22/63f1dbb8514bb7e0d0c8a85cc9b14506599a075e231985f98afd70430e1f/Babel-2.5.1.tar.gz";
-      sha256 = "04aqsbb2r3g4869mb2b2ls6yc81w5gaf4dp4pcj5bkfh2kvxl1v0";
+      url = "https://pypi.python.org/packages/0e/d5/9b1d6a79c975d0e9a32bd337a1465518c2519b14b214682ca9892752417e/Babel-2.5.3.tar.gz";
+      sha256 = "050zyi300wsyqq1cj0ajrskb5kkv0wxblz124g9yv4s3vmpwpr4c";
     };
   };
   "certifi" = super.buildPythonPackage {
-    name = "certifi-2017.11.5";
+    name = "certifi-2018.1.18";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/23/3f/8be01c50ed24a4bd6b8da799839066ce0288f66f5e11f0367323467f0cbc/certifi-2017.11.5.tar.gz";
-      sha256 = "1h0k6sy3p4csfdayghg2wjbnb1hfz27i5qbr0c7v8dhira8l5isy";
+      url = "https://pypi.python.org/packages/15/d4/2f888fc463d516ff7bf2379a4e9a552fef7f22a94147655d9b1097108248/certifi-2018.1.18.tar.gz";
+      sha256 = "0z9zyry30znikglm66d3r9y0yaqa2sxr4xlsyxqzbvi76hh3zg7d";
     };
   };
   "chardet" = super.buildPythonPackage {
@@ -89,15 +97,15 @@ self: super: {
     };
   };
   "flake8-debugger" = super.buildPythonPackage {
-    name = "flake8-debugger-3.0.0";
+    name = "flake8-debugger-3.1.0";
     doCheck = false;
     propagatedBuildInputs = [
       self."flake8"
       self."pycodestyle"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/2c/a7/45823a26ef0c5fa7a0c099b772a5b6aa2d8e686284490ef738fc8691ffc0/flake8-debugger-3.0.0.tar.gz";
-      sha256 = "1m6jqgdbpq7plf24kknnxlkw3rig7bjf17xqzgrv57c11ncarj75";
+      url = "https://pypi.python.org/packages/39/4b/90548607282483dd15f9ce1f4434d735ae756e16e1faf60621b0f8877fcc/flake8-debugger-3.1.0.tar.gz";
+      sha256 = "15qxrb2d7sr0pf024fkknsx58aqa5iz38b9s0panv3zfwf6vhkxy";
     };
   };
   "idna" = super.buildPythonPackage {
@@ -109,11 +117,11 @@ self: super: {
     };
   };
   "imagesize" = super.buildPythonPackage {
-    name = "imagesize-0.7.1";
+    name = "imagesize-1.0.0";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/53/72/6c6f1e787d9cab2cc733cf042f125abec07209a58308831c9f292504e826/imagesize-0.7.1.tar.gz";
-      sha256 = "0qk07k0z4241lkzzjji7z4da04pcvg7bfc4xz1934zlqhwmwdcha";
+      url = "https://pypi.python.org/packages/c6/3f/1db2da33804e8d7ef3a868b27b7bdc1aae6a4f693f0162d2aeeaf503864f/imagesize-1.0.0.tar.gz";
+      sha256 = "05b3p62r7rbcvvbk5vknr3bhcq9b2airysn6ric534mng136wcjv";
     };
   };
   "mccabe" = super.buildPythonPackage {
@@ -124,39 +132,59 @@ self: super: {
       sha256 = "07w3p1qm44hgxf3vvwz84kswpsx6s7kvaibzrsx5dzm0hli1i3fx";
     };
   };
-  "olefile" = super.buildPythonPackage {
-    name = "olefile-0.44";
+  "more-itertools" = super.buildPythonPackage {
+    name = "more-itertools-4.1.0";
     doCheck = false;
+    propagatedBuildInputs = [
+      self."six"
+    ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/35/17/c15d41d5a8f8b98cc3df25eb00c5cee76193114c78e5674df6ef4ac92647/olefile-0.44.zip";
-      sha256 = "1bbk1xplmrhymqpk6rkb15sg7v9qfih7zh23p6g2fxxas06cmwk1";
+      url = "https://pypi.python.org/packages/db/0b/f5660bf6299ec5b9f17bd36096fa8148a1c843fa77ddfddf9bebac9301f7/more-itertools-4.1.0.tar.gz";
+      sha256 = "0i3ch700g5fyjp692gprlnzbysl8w0sa2vijbp3s40drvk67xkn9";
+    };
+  };
+  "packaging" = super.buildPythonPackage {
+    name = "packaging-17.1";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."pyparsing"
+      self."six"
+    ];
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/77/32/439f47be99809c12ef2da8b60a2c47987786d2c6c9205549dd6ef95df8bd/packaging-17.1.tar.gz";
+      sha256 = "0nrpayk8kij1zm9sjnk38ldz3a6705ggvw8ljylqbrb4vmqbf6gh";
     };
   };
   "pillow" = super.buildPythonPackage {
-    name = "pillow-4.3.0";
+    name = "pillow-5.1.0";
     doCheck = false;
-    propagatedBuildInputs = [
-      self."olefile"
-    ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/e0/82/ec499c78bfe4ecaa91c2f3000040451d187ed0a816d58b8543e29c48827f/Pillow-4.3.0.tar.gz";
-      sha256 = "09xmn7rl6840sli2iz1k3fgxfgmri2nqz6vkinmb9mgg8ifp2z59";
+      url = "https://pypi.python.org/packages/89/b8/2f49bf71cbd0e9485bb36f72d438421b69b7356180695ae10bd4fd3066f5/Pillow-5.1.0.tar.gz";
+      sha256 = "1vzl67b3yl53fhyxr1i7vqcg3a1413gq2w4lnqbx6mglpxsvrsff";
     };
   };
   "pip" = super.buildPythonPackage {
-    name = "pip-9.0.1";
+    name = "pip-9.0.3";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz";
-      sha256 = "03clr9c1dih5n9c00c592zzvf6r1ffimywkaq9agcqdllzhl7wh9";
+      url = "https://pypi.python.org/packages/c4/44/e6b8056b6c8f2bfd1445cc9990f478930d8e3459e9dbf5b8e2d2922d64d3/pip-9.0.3.tar.gz";
+      sha256 = "15jpxz282dfaxpk5b2ny3ikzsagyx457xbzp967xbq9vd6d8zx3v";
+    };
+  };
+  "pluggy" = super.buildPythonPackage {
+    name = "pluggy-0.6.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/11/bf/cbeb8cdfaffa9f2ea154a30ae31a9d04a1209312e2919138b4171a1f8199/pluggy-0.6.0.tar.gz";
+      sha256 = "1zqckndfn85l1cd8pndw212zg1bq9fkg1nnj32kp2mppppsyg2kz";
     };
   };
   "py" = super.buildPythonPackage {
-    name = "py-1.5.2";
+    name = "py-1.5.3";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/90/e3/e075127d39d35f09a500ebb4a90afd10f9ef0a1d28a6d09abeec0e444fdd/py-1.5.2.tar.gz";
-      sha256 = "0vd7i2lspzfwj0k68cnm1pk3rclnrnkavgqncdsifm1350z9866a";
+      url = "https://pypi.python.org/packages/f7/84/b4c6e84672c4ceb94f727f3da8344037b62cee960d80e999b1cd9b832d83/py-1.5.3.tar.gz";
+      sha256 = "10gq2lckvgwlk9w6yzijhzkarx44hsaknd0ypa08wlnpjnsgmj99";
     };
   };
   "pycodestyle" = super.buildPythonPackage {
@@ -175,32 +203,44 @@ self: super: {
       sha256 = "01c87qiadz71sbqrclrsr85vx601p20g4hs7nlcvyg945ww6lqcd";
     };
   };
+  "pyparsing" = super.buildPythonPackage {
+    name = "pyparsing-2.2.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/3c/ec/a94f8cf7274ea60b5413df054f82a8980523efd712ec55a59e7c3357cf7c/pyparsing-2.2.0.tar.gz";
+      sha256 = "016b9gh606aa44sq92jslm89bg874ia0yyiyb643fa6dgbsbqch8";
+    };
+  };
   "pytest" = super.buildPythonPackage {
-    name = "pytest-3.2.5";
+    name = "pytest-3.5.0";
     doCheck = false;
     propagatedBuildInputs = [
       self."py"
+      self."six"
       self."setuptools"
+      self."attrs"
+      self."more-itertools"
+      self."pluggy"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/1f/f8/8cd74c16952163ce0db0bd95fdd8810cbf093c08be00e6e665ebf0dc3138/pytest-3.2.5.tar.gz";
-      sha256 = "10cbsyyyzamhvi1gqqyhccsx906xlcwcgddvldalqi1v27vx8nvd";
+      url = "https://pypi.python.org/packages/2d/56/6019153cdd743300c5688ab3b07702355283e53c83fbf922242c053ffb7b/pytest-3.5.0.tar.gz";
+      sha256 = "1q832zd07zak2lyxbycxjydh0jp7y3hvawjqzlvra6aghz8r3r7s";
     };
   };
   "pytest-runner" = super.buildPythonPackage {
-    name = "pytest-runner-3.0";
+    name = "pytest-runner-4.2";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/65/b4/ae89338cd2d81e2cc54bd6db2e962bfe948f612303610d68ab24539ac2d1/pytest-runner-3.0.tar.gz";
-      sha256 = "00v7pi09q60yx0l1kzyklnmr5bp597mir85a9gsi7bdfyly3lz0g";
+      url = "https://pypi.python.org/packages/9e/b7/fe6e8f87f9a756fd06722216f1b6698ccba4d269eac6329d9f0c441d0f93/pytest-runner-4.2.tar.gz";
+      sha256 = "1gkpyphawxz38ni1gdq1fmwyqcg02m7ypzqvv46z06crwdxi2gyj";
     };
   };
   "pytz" = super.buildPythonPackage {
-    name = "pytz-2017.3";
+    name = "pytz-2018.3";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/60/88/d3152c234da4b2a1f7a989f89609ea488225eaea015bc16fbde2b3fdfefa/pytz-2017.3.zip";
-      sha256 = "1dw5l527vcafvdqq4wadwl7ikhb2sssz0v0cssibh8890kyczr7s";
+      url = "https://pypi.python.org/packages/1b/50/4cdc62fc0753595fc16c8f722a89740f487c6e5670c644eb8983946777be/pytz-2018.3.tar.gz";
+      sha256 = "1h4m80p36yzwmil23qwrlja1x2yxyqxx77jxlsx6y0h9chfws2s1";
     };
   };
   "reportlab" = super.buildPythonPackage {
@@ -231,11 +271,11 @@ self: super: {
     };
   };
   "setuptools" = super.buildPythonPackage {
-    name = "setuptools-37.0.0";
+    name = "setuptools-39.0.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/7c/cb/bdfbb0b6a56459d5461768de824d4f40ec4c4c778f3a8fb0b84c25f03b68/setuptools-37.0.0.zip";
-      sha256 = "1qwiahab0jlgv6c81bp5hfjsa7nfbwj78xzi2x946kgpmcbdp58b";
+      url = "https://pypi.python.org/packages/72/c2/c09362ab29338413ab687b47dab03bab4a792e2bbb727a1eb5e0a88e3b86/setuptools-39.0.1.zip";
+      sha256 = "1ix7sqh5fqsfc4p6kms1spjp86y4xlv7ii7saf0zrrv01zgvmixy";
     };
   };
   "six" = super.buildPythonPackage {
@@ -255,7 +295,7 @@ self: super: {
     };
   };
   "sphinx" = super.buildPythonPackage {
-    name = "sphinx-1.6.5";
+    name = "sphinx-1.7.2";
     doCheck = false;
     propagatedBuildInputs = [
       self."six"
@@ -268,11 +308,12 @@ self: super: {
       self."imagesize"
       self."requests"
       self."setuptools"
+      self."packaging"
       self."sphinxcontrib-websupport"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/8b/7e/b188d9a3b9c938e736e02a74c1363c2888e095d770df2c72b4c312f9fdcb/Sphinx-1.6.5.tar.gz";
-      sha256 = "1670rzrgqb51cy4kfwhpkv2b6vlg1v09qf7lawkps3bspfymvpn6";
+      url = "https://pypi.python.org/packages/0d/12/843cdf08c9795d1d225c92e099a18143856110cbeff562b8abd60bd26cec/Sphinx-1.7.2.tar.gz";
+      sha256 = "1qhsyarrd280xpi7rij5gzdqwrh41hjbmbzmlawj9337xh7rl72s";
     };
   };
   "sphinxcontrib-websupport" = super.buildPythonPackage {
