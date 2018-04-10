@@ -1,7 +1,6 @@
 { pkgs, pythonPackages }:
 
 self: super: {
-
   "aiovault" = super."aiovault".overridePythonAttrs (old: {
     buildInputs = super."aiovault".buildInputs ++ [
       self."pytest-runner"
@@ -30,6 +29,10 @@ self: super: {
     ];
   });
 
+  "cffi" = pythonPackages."cffi".overridePythonAttrs(old:
+    with super."cffi"; { inherit name src; }
+  );
+
   "lxml" = pythonPackages."lxml".overridePythonAttrs(old:
     with super."lxml"; { inherit name src; }
   );
@@ -56,6 +59,16 @@ self: super: {
     ];
   });
 
+  "python-ldap" = pythonPackages."ldap".overridePythonAttrs(old:
+    with super."python-ldap"; {
+      inherit name src;
+      patches = [];
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        self."pyasn1-modules"
+      ];
+    }
+  );
+
   "pytest-runner" = super."pytest-runner".overridePythonAttrs (old: {
     buildInputs = super."pytest-runner".buildInputs ++ [
       self."setuptools_scm"
@@ -63,7 +76,7 @@ self: super: {
   });
 
   "reportlab" = pythonPackages."reportlab".overridePythonAttrs(old:
-    with super."reportlab"; { inherit name src; }
+    with super."reportlab"; { inherit name src; doCheck = false; }
   );
 
   "rst2pdf" = super."rst2pdf".overridePythonAttrs(old: {
@@ -80,5 +93,9 @@ self: super: {
       self."configparser"
     ];
   });
+
+  "wheel" = pythonPackages."wheel".overridePythonAttrs(old:
+    with super."wheel"; { inherit name src; }
+  );
 
 }
