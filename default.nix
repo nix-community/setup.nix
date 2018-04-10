@@ -157,7 +157,7 @@ in {
         owner = "datakurre";
         repo = "pip2nix";
         rev = "0eff2793fb760b5dd3a7c0b9145d11840222fd0e";
-        sha256 = "0ajw2bg0l6x0b86d47ngms04n3dznmk3mlgjz8li5rivmnhan80i";
+        sha256 = "0cm7pkg1sz0vrk9hihwxbk0nl6qh0yd8h4dmsp669m4pzkpff3zd";
       } + "/release.nix") { inherit pkgs; }).pip2nix
     )
   ])).env;
