@@ -76,10 +76,11 @@ self: super: {
   "python-ldap" = pythonPackages."ldap".overridePythonAttrs(old:
     with super."python-ldap"; {
       inherit name src;
-      propagatedBuildInputs = propagatedBuildInputs ++ [
+      propagatedBuildInputs = [
         pkgs.cyrus_sasl
         pkgs.openldap
         pkgs.openssl
+        self.pyasn1-modules
       ];
       patches = [];
     }
