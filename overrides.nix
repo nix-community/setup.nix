@@ -29,6 +29,7 @@ self: super: {
     with super."cffi"; {
       inherit name src;
       propagatedBuildInputs = propagatedBuildInputs ++ [ pkgs.libffi ];
+      doCheck = false;
     }
   );
 
