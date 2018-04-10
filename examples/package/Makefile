@@ -8,6 +8,8 @@ nix-%: requirements.nix
 
 nix-test: requirements.nix
 	nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) test"
+
+nix-acceptance-test: requirements.nix
 	nix-build setup.nix -A tests
 
 nix-env: requirements.nix
