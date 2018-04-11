@@ -1,12 +1,16 @@
 { pkgs, pythonPackages, make-test, build, ... }:
 
-make-test ({ pkgs, ... }: {
+make-test ({ pkgs,  ... }: {
   name = "test";
   machine = { config, pkgs, lib, ... }: {
     environment.systemPackages = [ build ];
   };
   testScript = ''
     $machine->waitForUnit("multi-user.target");
-    $machine->succeed("hello-world") =~ /Hello World!/;
+
+    subtest "prints hello", sub {
+      $machine->succeed("hello-world") =~ /Hello World!/;
+    };
   '';
+  makeCoverageReport = false;
 })
