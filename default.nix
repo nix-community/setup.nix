@@ -49,12 +49,13 @@ let
   package = if pathExists (src + "/setup.cfg") then fromJSON(readFile(
     pkgs.runCommand "setup.json" { input=src + "/setup.cfg"; } ''
       ${pkgs.python3}/bin/python << EOF
-      import configparser, json, os
+      import configparser, json, re, os
       parser = configparser.ConfigParser()
       parser.read(os.environ.get("input"))
       with open(os.environ.get("out"), "w") as fp:
         fp.write(json.dumps(dict(
-          [(k, dict([(K, "\n" in V and list(filter(bool, V.split("\n"))) or V)
+          [(k, dict([(K, "\n" in V and [re.findall(r"[\w\.-]+", i)[0] for i in
+                                        filter(bool, V.split("\n"))] or V)
                      for K, V in v.items()]))
            for k, v in parser._sections.items()]
         ), indent=4, sort_keys=True))
