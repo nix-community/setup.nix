@@ -44,8 +44,8 @@ rec {
 
     cp ${./tarsum.go} tarsum.go
     export GOPATH=$(pwd)
-    mkdir src
-    ln -sT ${docker.src}/components/engine/pkg/tarsum src/tarsum
+    mkdir -p src/github.com/docker/docker/pkg
+    ln -sT ${docker.src}/components/engine/pkg/tarsum src/github.com/docker/docker/pkg/tarsum
     go build
 
     cp tarsum $out
@@ -212,7 +212,7 @@ rec {
 
       postMount = ''
         echo "Packing raw image..."
-        tar -C mnt --mtime="@$SOURCE_DATE_EPOCH" -cf $out .
+        tar -C mnt --hard-dereference --sort=name --mtime="@$SOURCE_DATE_EPOCH" -cf $out .
       '';
     };
 
@@ -249,6 +249,10 @@ rec {
     baseJson,
     # Files to add to the layer.
     contents ? null,
+    # When copying the contents into the image, preserve symlinks to
+    # directories (see `rsync -K`).  Otherwise, transform those symlinks
+    # into directories.
+    keepContentsDirlinks ? false,
     # Additional commands to run on the layer before it is tar'd up.
     extraCommands ? "", uid ? 0, gid ? 0
   }:
@@ -262,11 +266,7 @@ rec {
         echo "Adding contents..."
         for item in $contents; do
           echo "Adding $item"
-          if [ -f "$item" ]; then
-            rsync -a --chown=0:0 $item layer/
-          else
-            rsync -ak --chown=0:0 $item/ layer/
-          fi
+          rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
         done
       else
         echo "No contents to add to layer."
@@ -281,7 +281,7 @@ rec {
       # Tar up the layer and throw it into 'layer.tar'.
       echo "Packing layer..."
       mkdir $out
-      tar -C layer --mtime="@$SOURCE_DATE_EPOCH" --owner=${toString uid} --group=${toString gid} -cf $out/layer.tar .
+      tar -C layer --hard-dereference --sort=name --mtime="@$SOURCE_DATE_EPOCH" --owner=${toString uid} --group=${toString gid} -cf $out/layer.tar .
 
       # Compute a checksum of the tarball.
       echo "Computing layer checksum..."
@@ -307,6 +307,10 @@ rec {
     runAsRoot,
     # Files to add to the layer. If null, an empty layer will be created.
     contents ? null,
+    # When copying the contents into the image, preserve symlinks to
+    # directories (see `rsync -K`).  Otherwise, transform those symlinks
+    # into directories.
+    keepContentsDirlinks ? false,
     # JSON containing configuration and metadata for this layer.
     baseJson,
     # Existing image onto which to append the new layer.
@@ -331,11 +335,7 @@ rec {
         echo "Adding contents..."
         for item in ${toString contents}; do
           echo "Adding $item..."
-          if [ -f "$item" ]; then
-            rsync -a --chown=0:0 $item layer/
-          else
-            rsync -ak --chown=0:0 $item/ layer/
-          fi
+          rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
         done
 
         chmod ug+w layer
@@ -367,7 +367,7 @@ rec {
 
         echo "Packing layer..."
         mkdir $out
-        tar -C layer --mtime="@$SOURCE_DATE_EPOCH" -cf $out/layer.tar .
+        tar -C layer --hard-dereference --sort=name --mtime="@$SOURCE_DATE_EPOCH" -cf $out/layer.tar .
 
         # Compute the tar checksum and add it to the output json.
         echo "Computing checksum..."
@@ -399,6 +399,10 @@ rec {
     fromImageTag ? null,
     # Files to put on the image (a nix store path or list of paths).
     contents ? null,
+    # When copying the contents into the image, preserve symlinks to
+    # directories (see `rsync -K`).  Otherwise, transform those symlinks
+    # into directories.
+    keepContentsDirlinks ? false,
     # Docker config; e.g. what command to run on the container.
     config ? null,
     # Optional bash script to run on the files prior to fixturizing the layer.
@@ -427,11 +431,12 @@ rec {
         if runAsRoot == null
         then mkPureLayer {
           name = baseName;
-          inherit baseJson contents extraCommands uid gid;
+          inherit baseJson contents keepContentsDirlinks extraCommands uid gid;
         } else mkRootLayer {
           name = baseName;
           inherit baseJson fromImage fromImageName fromImageTag
-                  contents runAsRoot diskSize extraCommands;
+                  contents keepContentsDirlinks runAsRoot diskSize
+                  extraCommands;
         };
       result = runCommand "docker-image-${baseName}.tar.gz" {
         buildInputs = [ jshon pigz coreutils findutils jq ];
@@ -486,8 +491,6 @@ rec {
         cp ${layer}/* temp/
         chmod ug+w temp/*
 
-        echo "$(dirname ${storeDir})" >> layerFiles
-        echo '${storeDir}' >> layerFiles
         for dep in $(cat $layerClosure); do
           find $dep >> layerFiles
         done
@@ -501,7 +504,7 @@ rec {
         comm <(sort -n baseFiles|uniq) \
              <(sort -n layerFiles|uniq|grep -v ${layer}) -1 -3 > newFiles
         # Append the new files to the layer.
-        tar -rpf temp/layer.tar --mtime="@$SOURCE_DATE_EPOCH" \
+        tar -rpf temp/layer.tar --hard-dereference --sort=name --mtime="@$SOURCE_DATE_EPOCH" \
           --owner=0 --group=0 --no-recursion --files-from newFiles
 
         echo "Adding meta..."
@@ -549,7 +552,7 @@ rec {
         chmod -R a-w image
 
         echo "Cooking the image..."
-        tar -C image --mtime="@$SOURCE_DATE_EPOCH" --owner=0 --group=0 --xform s:'./':: -c . | pigz -nT > $out
+        tar -C image --hard-dereference --sort=name --mtime="@$SOURCE_DATE_EPOCH" --owner=0 --group=0 --xform s:'./':: -c . | pigz -nT > $out
 
         echo "Finished."
       '';
