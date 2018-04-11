@@ -4,6 +4,9 @@
 # project path, usually ./.
 , src
 
+# custom post install script
+, postInstall ? ""
+
 # enable tests on build
 , doCheck ? false
 
@@ -31,6 +34,8 @@
 , image_features ? [ "busybox" "tmpdir" ]
 , image_labels ? {}
 , image_extras ? []
+, image_created ? "1970-01-01T00:00:01Z"
+, image_user ? { name = "nobody"; uid = "65534"; gid = "65534"; }
 }:
 
 with builtins;
@@ -119,13 +124,14 @@ let
       ) else image_author;
     name = if isNull image_name then package.metadata.name else image_name;
     tag = image_tag;
+    created = image_created;
     contents = [ build ] ++ image_extras ++
       optional (elem "busybox" image_features) pkgs.busybox;
     runAsRoot = if isLinux then ''
       #!${pkgs.stdenv.shell}
       ${pkgs.dockerTools.shadowSetup}
-      groupadd --system --gid 65534 nobody
-      useradd --system --uid 65534 --gid 65534 -d / -s /sbin/nologin nobody
+      groupadd --system --gid ${image_user.gid} ${image_user.name}
+      useradd --system --uid ${image_user.uid} --gid ${image_user.gid} -d / -s /sbin/nologin ${image_user.name}
       echo "hosts: files dns" > /etc/nsswitch.conf
     '' + optionalString (elem "busybox" image_features) ''
       mkdir -p /usr/bin && ln -s /bin/env /usr/bin
@@ -138,7 +144,7 @@ let
     } else {
       Cmd = if isList image_cmd then image_cmd else [ image_cmd ];
     }) // optionalAttrs isLinux {
-      User = "nobody";
+      User = "${image_user.name}";
     } // optionalAttrs (elem "tmpdir" image_features) {
       Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
     } // {
@@ -225,7 +231,7 @@ in {
 # Define package build targets
 } else rec {
 
-  build = packages.buildPythonPackage {
+  build = packages.buildPythonPackage ({
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
     buildInputs = buildInputs ++ map
@@ -238,7 +244,11 @@ in {
     else propagatedBuildInputs ++ map
       (name: getAttr name packages) (list "install_requires" package.options);
     inherit doCheck;
-  };
+  } // (if isFunction postInstall then {
+    postInstall = (postInstall packages);
+  } else {
+    inherit postInstall;
+  }));
 
   develop = shell;
 
