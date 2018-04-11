@@ -8,6 +8,8 @@ nix-%: requirements.nix
 
 nix-test: requirements.nix
 	nix-shell setup.nix $(ARGSTR) -A develop --run "$(MAKE) test"
+
+nix-acceptance-test: requirements.nix
 	nix-build setup.nix -A tests
 
 nix-env: requirements.nix
@@ -36,5 +38,5 @@ test:
 .PHONY: all isort test nix-%
 
 requirements.nix: requirements.txt
-	nix-shell setup.nix -A pip2nix \
-	  --run "pip2nix generate -r requirements.txt --output=requirements.nix"
+	nix-shell -p libffi --run 'nix-shell setup.nix -A pip2nix \
+	  --run "pip2nix generate -r requirements.txt --output=requirements.nix"'

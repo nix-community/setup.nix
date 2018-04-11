@@ -160,10 +160,10 @@ in {
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.majorVersion)
       (import (pkgs.fetchFromGitHub {
-        owner = "johbo";
+        owner = "datakurre";
         repo = "pip2nix";
-        rev = "64a0799ea5bb444502c3201db7fa335ba69514e6";
-        sha256 = "1dqzig7mzp6za68f3wbm4ki6myiask1cqqsdyaxaawms3c82bldi";
+        rev = "0eff2793fb760b5dd3a7c0b9145d11840222fd0e";
+        sha256 = "0cm7pkg1sz0vrk9hihwxbk0nl6qh0yd8h4dmsp669m4pzkpff3zd";
       } + "/release.nix") { inherit pkgs; }).pip2nix
     )
   ])).env;

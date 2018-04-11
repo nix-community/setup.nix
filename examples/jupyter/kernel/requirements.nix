@@ -4,6 +4,14 @@
 { pkgs, fetchurl, fetchgit, fetchhg }:
 
 self: super: {
+  "backcall" = super.buildPythonPackage {
+    name = "backcall-0.1.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/84/71/c8ca4f5bb1e08401b916c68003acf0a0655df935d74d93bf3f3364b310e0/backcall-0.1.0.tar.gz";
+      sha256 = "1r01dqch3f8fdj3n6fviw8hxqrs6w5v0qw4izmvqzry1w9dxiv1q";
+    };
+  };
   "click" = super.buildPythonPackage {
     name = "click-6.7";
     doCheck = false;
@@ -71,7 +79,7 @@ self: super: {
     };
   };
   "ipython" = super.buildPythonPackage {
-    name = "ipython-6.2.1";
+    name = "ipython-6.3.1";
     doCheck = false;
     propagatedBuildInputs = [
       self."setuptools"
@@ -82,12 +90,13 @@ self: super: {
       self."traitlets"
       self."prompt-toolkit"
       self."pygments"
+      self."backcall"
       self."pexpect"
       self."pexpect"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/fa/50/974211502bd72873728d44c3013fe79875c819c8fb69f778bcfd67bc7d38/ipython-6.2.1.tar.gz";
-      sha256 = "022n6lcqx1x51yzgj1f9bj0rc08i6hdbbili3j6qk6dqr2k5ihai";
+      url = "https://pypi.python.org/packages/4f/a7/fc647e9ce711cd630873c37219c0bd4438b8171211d813c7e6b316811e02/ipython-6.3.1.tar.gz";
+      sha256 = "0h8cq61j62bnz8209yrr6q72119ljrlk6absnc2gdxdkh49rib56";
     };
   };
   "ipython-genutils" = super.buildPythonPackage {
@@ -110,7 +119,7 @@ self: super: {
     };
   };
   "jupyter-client" = super.buildPythonPackage {
-    name = "jupyter-client-5.2.2";
+    name = "jupyter-client-5.2.3";
     doCheck = false;
     propagatedBuildInputs = [
       self."traitlets"
@@ -120,8 +129,8 @@ self: super: {
       self."tornado"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/bf/0b/7e1725b5ef8925867a604ab74e0618e84fbe4b171996631996b02b99a752/jupyter_client-5.2.2.tar.gz";
-      sha256 = "1i06kf88c3ldqi6i31bai65gi5zsp4zzaf9rrnfggn7h68qy5mc3";
+      url = "https://pypi.python.org/packages/4c/df/1e8df7f4de63cc667a7a9aa234539c0419513bf94ac57d36d73b3b434786/jupyter_client-5.2.3.tar.gz";
+      sha256 = "0qdpcqs7r8fw38mjbqllgxyss0fi5n86lk81afcf40bb8kqgrgi7";
     };
   };
   "jupyter-core" = super.buildPythonPackage {
@@ -136,14 +145,14 @@ self: super: {
     };
   };
   "munch" = super.buildPythonPackage {
-    name = "munch-2.2.0";
+    name = "munch-2.3.0";
     doCheck = false;
     propagatedBuildInputs = [
       self."six"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/92/58/c17cf679a2b9b65541cc71ba13a950289b7d34dd0967e34b8816a4d87044/munch-2.2.0.tar.gz";
-      sha256 = "05dawxaki7ckd9cp1dq00njha29ylr9azrl8n1ja8rg932rlzyv2";
+      url = "https://pypi.python.org/packages/2c/bf/0e810b28327400617a388217e78bf1d5deccb69e3896fb81034a007c5f2a/munch-2.3.0.tar.gz";
+      sha256 = "0vpikykaij87j14cw24s3mzl18bga7hy49q4fbf9wql932d1nr7v";
     };
   };
   "parso" = super.buildPythonPackage {
@@ -202,14 +211,14 @@ self: super: {
     };
   };
   "python-dateutil" = super.buildPythonPackage {
-    name = "python-dateutil-2.6.1";
+    name = "python-dateutil-2.7.2";
     doCheck = false;
     propagatedBuildInputs = [
       self."six"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/54/bb/f1db86504f7a49e1d9b9301531181b00a1c7325dc85a29160ee3eaa73a54/python-dateutil-2.6.1.tar.gz";
-      sha256 = "1jkahssf0ir5ssxc3ydbp8cpv77limn8d4s77szb2nrgl2r3h749";
+      url = "https://pypi.python.org/packages/c5/39/4da7c2dbc4f023fba5fb2325febcadf0d0ce0efdc8bd12083a0f65d20653/python-dateutil-2.7.2.tar.gz";
+      sha256 = "0bh0g2bwxn4lj7a7g9ij574dlw9g0n9yb3478x4vwgwr9jz7904x";
     };
   };
   "pyzmq" = super.buildPythonPackage {
@@ -221,11 +230,11 @@ self: super: {
     };
   };
   "setuptools" = super.buildPythonPackage {
-    name = "setuptools-38.5.2";
+    name = "setuptools-39.0.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/e0/02/2b14188e06ddf61e5b462e216b15d893e8472fca28b1b0c5d9272ad7e87c/setuptools-38.5.2.zip";
-      sha256 = "0r4hilfa8a274bqf2rmhj4l5wcpbb2xx3p1v2s3zdback0z14il2";
+      url = "https://pypi.python.org/packages/72/c2/c09362ab29338413ab687b47dab03bab4a792e2bbb727a1eb5e0a88e3b86/setuptools-39.0.1.zip";
+      sha256 = "1ix7sqh5fqsfc4p6kms1spjp86y4xlv7ii7saf0zrrv01zgvmixy";
     };
   };
   "shapely" = super.buildPythonPackage {
@@ -253,11 +262,11 @@ self: super: {
     };
   };
   "tornado" = super.buildPythonPackage {
-    name = "tornado-5.0";
+    name = "tornado-5.0.2";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/59/4b/2c992ec4feb904471125702ed1dd3c912de1630c03bd555c3b05a41da93e/tornado-5.0.tar.gz";
-      sha256 = "1aii2w25f6nss8scqxphc0kvqs2h20174wk11nq99sk15ib59xv2";
+      url = "https://pypi.python.org/packages/cf/d1/3be271ae5eba9fb59df63c9891fdc7d8044b999e8ac145994cdbfd2ae66a/tornado-5.0.2.tar.gz";
+      sha256 = "1izv4a99sqqw3v7dfrsgghl0z1gqsqqp7ixlh0rnbwjh0p0xb0qv";
     };
   };
   "traitlets" = super.buildPythonPackage {
