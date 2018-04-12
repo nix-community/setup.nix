@@ -265,8 +265,10 @@ rec {
       if [[ -n "$contents" ]]; then
         echo "Adding contents..."
         for item in $contents; do
-          echo "Adding $item"
-          rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
+          echo "Adding $item..."
+          if [ -d "$item" ]; then
+            rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
+          fi
         done
       else
         echo "No contents to add to layer."
@@ -335,7 +337,9 @@ rec {
         echo "Adding contents..."
         for item in ${toString contents}; do
           echo "Adding $item..."
-          rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
+          if [ -d "$item" ]; then
+            rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
+          fi
         done
 
         chmod ug+w layer
