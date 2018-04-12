@@ -28,7 +28,7 @@
 # bdist_docker
 , image_author ? null
 , image_name ? null
-, image_tag  ? "latest"
+, image_tag ? "latest"
 , image_entrypoint ? "/bin/sh"
 , image_cmd ? null
 , image_features ? [ "busybox" "tmpdir" ]
@@ -36,6 +36,8 @@
 , image_extras ? []
 , image_created ? "1970-01-01T00:00:01Z"
 , image_user ? { name = "nobody"; uid = "65534"; gid = "65534"; }
+, image_keepContentsDirlinks ? false
+, image_extraCommands ? ""
 }:
 
 with builtins;
@@ -151,6 +153,8 @@ let
     } // {
       Labels = image_labels;
     };
+    keepContentsDirlinks = image_keepContentsDirlinks;
+    extraCommands = image_extraCommands;
   };
 
 
