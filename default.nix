@@ -37,7 +37,9 @@
 , image_created ? "1970-01-01T00:00:01Z"
 , image_user ? { name = "nobody"; uid = "65534"; gid = "65534"; }
 , image_keepContentsDirlinks ? false
+, image_runAsRoot ? ""
 , image_extraCommands ? ""
+, image_extraConfig ? {}
 }:
 
 with builtins;
@@ -142,7 +144,7 @@ let
       mkdir -p /usr/bin && ln -s /bin/env /usr/bin
     '' + optionalString (elem "tmpdir" image_features) ''
       mkdir -p /tmp && chmod a+rxwt /tmp
-    '' else null;
+    '' + image_runAsRoot else null;
     config = {}
     // (if isNull image_cmd then {
       EntryPoint = if isList image_entrypoint then image_entrypoint else [ image_entrypoint ];
@@ -154,7 +156,7 @@ let
       Env = [ "TMPDIR=/tmp" "HOME=/tmp" ];
     } // {
       Labels = image_labels;
-    };
+    } // image_extraConfig;
     keepContentsDirlinks = image_keepContentsDirlinks;
     extraCommands = image_extraCommands;
   };
