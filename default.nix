@@ -133,8 +133,10 @@ let
     runAsRoot = if isLinux then ''
       #!${pkgs.stdenv.shell}
       ${pkgs.dockerTools.shadowSetup}
-      groupadd --system --gid ${image_user.gid} ${image_user.name}
-      useradd --system --uid ${image_user.uid} --gid ${image_user.gid} -d / -s /sbin/nologin ${image_user.name}
+      if [ "${image_user.name}" != "root" ]; then
+        groupadd --system --gid ${image_user.gid} ${image_user.name}
+        useradd --system --uid ${image_user.uid} --gid ${image_user.gid} -d / -s /sbin/nologin ${image_user.name}
+      fi
       echo "hosts: files dns" > /etc/nsswitch.conf
     '' + optionalString (elem "busybox" image_features) ''
       mkdir -p /usr/bin && ln -s /bin/env /usr/bin
