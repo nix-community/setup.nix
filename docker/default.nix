@@ -274,6 +274,12 @@ rec {
         echo "No contents to add to layer."
       fi
 
+      # Ensure globally readable /nix/store
+      mkdir -p layer/nix/store
+      touch layer/nix/store/.keep
+      chmod u-w layer/nix layer/nix/store
+      chmod a+rx layer/nix layer/nix/store
+
       chmod ug+w layer
 
       if [[ -n $extraCommands ]]; then
@@ -341,6 +347,12 @@ rec {
             rsync -a${if keepContentsDirlinks then "K" else "k"} --chown=0:0 $item/ layer/
           fi
         done
+
+        # Ensure globally readable /nix/store
+        mkdir -p layer/nix/store
+        touch layer/nix/store/.keep
+        chmod u-w layer/nix layer/nix/store
+        chmod a+rx layer/nix layer/nix/store
 
         chmod ug+w layer
       '';
