@@ -46,6 +46,7 @@ rec {
     export GOPATH=$(pwd)
     mkdir -p src/github.com/docker/docker/pkg
     ln -sT ${docker.src}/components/engine/pkg/tarsum src/github.com/docker/docker/pkg/tarsum
+    ls -l src/github.com/docker/docker/pkg/tarsum
     go build
 
     cp tarsum $out
