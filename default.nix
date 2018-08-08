@@ -56,7 +56,8 @@ let
       ${pkgs.python3}/bin/python << EOF
       import configparser, json, re, os
       parser = configparser.ConfigParser()
-      parser.read(os.environ.get("input"))
+      with open(os.environ.get("input"), errors="ignore") as fp:
+         parser.read_file(fp)
       with open(os.environ.get("out"), "w") as fp:
         fp.write(json.dumps(dict(
           [(k, dict([(K, "\n" in V and [re.findall(r"[\w\.-]+", i)[0] for i in
