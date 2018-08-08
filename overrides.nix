@@ -54,7 +54,18 @@ self: super: {
   );
 
   "pillow" = pythonPackages."pillow".overridePythonAttrs(old:
-    with super."pillow"; { inherit name src propagatedBuildInputs; }
+    with super."pillow"; {
+      inherit name src propagatedBuildInputs;
+      buildInputs = old.buildInputs ++ [ self.nose ];
+    }
+  );
+
+  # Pillow is usually written with title case
+  "Pillow" = pythonPackages."pillow".overridePythonAttrs(old:
+    with super."Pillow"; {
+      inherit name src propagatedBuildInputs;
+      buildInputs = old.buildInputs ++ [ self.nose ];
+    }
   );
 
   "pip" = pythonPackages."pip".overridePythonAttrs(old:
@@ -62,7 +73,10 @@ self: super: {
   );
 
   "psycopg2" = pythonPackages."psycopg2".overridePythonAttrs(old:
-    with super."psycopg2"; { inherit name src propagatedBuildInputs; }
+    with super."psycopg2"; {
+      inherit name src propagatedBuildInputs;
+      buildInputs = old.buildInputs ++ [ pkgs.postgresql ];
+    }
   );
 
   "pytest" = super."pytest".overridePythonAttrs (old: {
