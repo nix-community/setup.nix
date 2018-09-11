@@ -21,6 +21,7 @@
 # non-Python inputs
 , buildInputs ? []
 , propagatedBuildInputs ? []
+, shellHook ? ""
 
 # known list of "broken" as in non-installable Python packages
 , nonInstallablePackages ? [ "zc.recipe.egg" ]
@@ -225,6 +226,7 @@ in {
     name = "env";
     nativeBuildInputs = [ env ];
     buildCommand = "";
+    inherit shellHook;
   };
 
   # Docker image
@@ -283,6 +285,7 @@ in {
       (name: getAttr name packages)
       (foldl' (x: y: remove y x)
        requirementsNames nonInstallablePackages);
+    inherit shellHook;
   });
 
   sdist = build.overrideDerivation(old: {
