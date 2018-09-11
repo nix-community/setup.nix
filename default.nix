@@ -285,7 +285,7 @@ in {
       (name: getAttr name packages)
       (foldl' (x: y: remove y x)
        requirementsNames nonInstallablePackages);
-    inherit shellHook;
+    shellHook = old.shellHook + shellHook;
   });
 
   sdist = build.overrideDerivation(old: {
