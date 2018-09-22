@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {}
 , pythonPackages ? pkgs.pythonPackages
 
-# project path, usually ./.
+# project path, usually ./., without cleanSource, which is added later
 , src
 
 # custom post install script
@@ -10,11 +10,12 @@
 # enable tests on build
 , doCheck ? false
 
-# requirements overrides
+# requirements overrides fix building packages with undetected inputs
 , overrides ? self: super: {}
 , defaultOverrides ? true
+, implicitOverrides ? true
 
-# force to build environment packages with empty requirements
+# force to build environments without package level dependency checks
 , force ? false
 , ignoreCollisions ? false
 
@@ -26,7 +27,7 @@
 # known list of "broken" as in non-installable Python packages
 , nonInstallablePackages ? [ "zc.recipe.egg" ]
 
-# bdist_docker
+# very dedicated bdist_docker
 , image_author ? null
 , image_name ? null
 , image_tag ? "latest"
@@ -57,7 +58,8 @@ let
       ${pkgs.python3}/bin/python << EOF
       import configparser, json, re, os
       parser = configparser.ConfigParser()
-      with open(os.environ.get("input"), errors="ignore") as fp:
+      with open(os.environ.get("input"), errors="ignore",
+                encoding="ascii") as fp:  # fromJSON supports ASCII only
          parser.read_file(fp)
       with open(os.environ.get("out"), "w") as fp:
         fp.write(json.dumps(dict(
@@ -90,7 +92,7 @@ let
   else
     attrNames (overrides {} {});
 
-  # Define overlay for force building requirements without overrides
+  # Define optional overlay for force building requirements without overrides
   forcedRequirements = self: super: (listToAttrs (map
     (name: {
       inherit name;
@@ -102,14 +104,38 @@ let
     (filter (name: !(elem name overridesNames)) requirementsNames)
   ));
 
+  nameFromDrvName = name:
+    let parts = tail (split "([0-9]-)" (parseDrvName name).name);
+    in if length parts > 0 then elemAt parts 1 else name;
+
+  # Define implicit overrides overlay to implictly reuse nixpkgs derivations
+  nixpkgsOverrides = self: super: (listToAttrs (map
+    (name: {
+      inherit name;
+      value = (getAttr name pythonPackages).overridePythonAttrs(old: {
+        inherit name;
+        src = (getAttr name super).src;
+        propagatedBuildInputs = (getAttr name super).propagatedBuildInputs;
+        buildInputs = map
+          (x: if hasAttr (nameFromDrvName x.name) super
+              then getAttr (nameFromDrvName x.name) self
+              else x)
+          (if hasAttr "buildInputs" old then old.buildInputs else []);
+        doCheck = false;  # already tested at nixpkgs
+      });
+    })
+    (filter (name: (hasAttr name pythonPackages)) requirementsNames)
+  ));
+
   # Build final pythonPackages with all generated & customized requirements
   packages =
     (fix
     (extends overrides
     (extends (if defaultOverrides then commonOverrides else self: super: {})
     (extends (if force then forcedRequirements else self: super: {})
-    (extends requirements
-             pythonPackages.__unfix__)))));
+    (extends (if implicitOverrides then nixpkgsOverrides else self: super: {})
+    (extends requirements pythonPackages.__unfix__)
+    )))));
 
   # Helper to always return a list
   list = name: attrs:
@@ -171,13 +197,12 @@ in {
   pip2nix = (pythonPackages.python.withPackages (ps: [
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.majorVersion)
-      (import (pkgs.fetchFromGitHub {
-        owner = "datakurre";
-        repo = "pip2nix";
-        rev = "0eff2793fb760b5dd3a7c0b9145d11840222fd0e";
-        sha256 = "0cm7pkg1sz0vrk9hihwxbk0nl6qh0yd8h4dmsp669m4pzkpff3zd";
-      } + "/release.nix") { inherit pkgs; }).pip2nix
-    )
+      ( import (fetchTarball {
+          url = "https://github.com/datakurre/pip2nix/archive/9dec61e2ea9bc1e9dfee65d5dcd5a575add2b974.tar.gz";
+          sha256 = "19glzfxb3a42345by11m4966xkvrxb8sqnj4i86pwv82bssz2x5x";
+        } + "/release.nix") { inherit pkgs; }).pip2nix
+      )
+  # ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
   ])).env;
 
   # Define convenient alias for the final set of packages

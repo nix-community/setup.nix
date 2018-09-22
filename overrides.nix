@@ -1,24 +1,13 @@
 { pkgs, pythonPackages }:
 
 self: super: {
+
   "aiovault" = super."aiovault".overridePythonAttrs (old: {
     buildInputs = [ self."pytest-runner" ];
   });
 
-  "fiona" = pythonPackages."fiona".overridePythonAttrs(old:
-    with super."fiona"; { inherit name src propagatedBuildInputs; }
-  );
-
-  "flake8" = super."flake8".overridePythonAttrs (old: {
-    buildInputs = [ self."pytest-runner" ];
-    propagatedBuildInputs = super."flake8".propagatedBuildInputs ++ [
-      self."enum34"
-      self."configparser"
-    ];
-  });
-
-  "flake8-debugger" = super."flake8-debugger".overridePythonAttrs (old: {
-    buildInputs = [ self."pytest-runner" ];
+  "python-dateutil" = super."python-dateutil".overridePythonAttrs (old: {
+    buildInputs = [ self."setuptools-scm" ];
   });
 
   "flake8-print" = super."flake8-print".overridePythonAttrs (old: {
@@ -27,8 +16,8 @@ self: super: {
 
   "cffi" = pythonPackages."cffi".overridePythonAttrs(old:
     with super."cffi"; {
-      inherit name src;
-      propagatedBuildInputs = propagatedBuildInputs ++ [ pkgs.libffi ];
+      inherit name src propagatedBuildInputs;
+      buildInputs = [ pkgs."libffi" self."pytest" ];
       doCheck = false;
     }
   );
@@ -37,55 +26,15 @@ self: super: {
     buildInputs = [ self."cffi" ];
   });
 
-  "ipykernel" = pythonPackages."ipykernel".overridePythonAttrs(old:
-    with super."ipykernel"; { inherit name src propagatedBuildInputs; }
-  );
-
-  "lxml" = pythonPackages."lxml".overridePythonAttrs(old:
-    with super."lxml"; { inherit name src propagatedBuildInputs; }
-  );
-
-  "mccabe" = super."mccabe".overridePythonAttrs (old: {
-    buildInputs = [ self."pytest-runner" ];
-  });
-
-  "olefile" = pythonPackages."olefile".overridePythonAttrs(old:
-    with super."olefile"; { inherit name src propagatedBuildInputs; }
-  );
-
-  "pillow" = pythonPackages."pillow".overridePythonAttrs(old:
-    with super."pillow"; {
-      inherit name src propagatedBuildInputs;
-      buildInputs = old.buildInputs ++ [ self.nose ];
-    }
-  );
-
-  # Pillow is usually written with title case
+  # Pillow is often written with title case
   "Pillow" = pythonPackages."pillow".overridePythonAttrs(old:
     with super."Pillow"; {
       inherit name src propagatedBuildInputs;
-      buildInputs = old.buildInputs ++ [ self.nose ];
+      doCheck = false;
     }
   );
 
-  "pip" = pythonPackages."pip".overridePythonAttrs(old:
-    with super."pip"; { inherit name src propagatedBuildInputs; }
-  );
-
-  "psycopg2" = pythonPackages."psycopg2".overridePythonAttrs(old:
-    with super."psycopg2"; {
-      inherit name src propagatedBuildInputs;
-      buildInputs = old.buildInputs ++ [ pkgs.postgresql ];
-    }
-  );
-
-  "pytest" = super."pytest".overridePythonAttrs (old: {
-    buildInputs = [ self."setuptools_scm" ];
-  });
-
-  "python-dateutil" = super."python-dateutil".overridePythonAttrs (old: {
-    buildInputs = [ self."setuptools_scm" ];
-  });
+  pip = pythonPackages."pip";
 
   "python-ldap" = pythonPackages."ldap".overridePythonAttrs(old:
     with super."python-ldap"; {
@@ -97,19 +46,21 @@ self: super: {
         self.pyasn1-modules
       ];
       patches = [];
+      doCheck = false;
     }
   );
 
-  "pytest-runner" = super."pytest-runner".overridePythonAttrs (old: {
-    buildInputs = [ self."setuptools_scm" ];
-  });
-
-  "reportlab" = (pythonPackages."reportlab".override {
-    pillow = self.pillow;
-  }).overridePythonAttrs(old:
-    with super."reportlab"; {
+  "setuptools-scm" = pythonPackages."setuptools_scm".overridePythonAttrs(old:
+    with super."setuptools-scm"; {
       inherit name src propagatedBuildInputs;
-      doCheck = false;
+    }
+  );
+
+  "py.test" = self."pytest";
+
+  "pytest-runner" = pythonPackages."pytestrunner".overridePythonAttrs(old:
+    with super."pytest-runner"; {
+      inherit name src propagatedBuildInputs;
     }
   );
 
@@ -119,19 +70,6 @@ self: super: {
 
   "setuptools" = pythonPackages."setuptools";
 
-  "shapely" = pythonPackages."shapely".overridePythonAttrs(old:
-    with super."shapely"; { inherit name src propagatedBuildInputs; }
-  );
-
-  "sphinx" = super."sphinx".overridePythonAttrs(old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      self."typing"
-      self."configparser"
-    ];
-  });
-
-  "wheel" = pythonPackages."wheel".overridePythonAttrs(old:
-    with super."wheel"; { inherit name src propagatedBuildInputs; }
-  );
+  "testpath" = pythonPackages."testpath";
 
 }

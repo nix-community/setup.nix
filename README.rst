@@ -12,6 +12,12 @@ coexist with minimal additional maintanance.
 to develop Python packages on top of it when not all required packages or
 versions are yet (or no longer) in Nixpkgs_.
 
+.. note::
+
+   The current master is development version of setup.nix 2.0 supporting
+   NixOS 18.09, pip >= 18 and implicit reuse of nixpkgs Python package
+   derivations.
+
 
 Quick start
 ===========
@@ -41,11 +47,9 @@ Create minimal ``./setup.nix``:
 
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
-     , setup ? import (pkgs.fetchFromGitHub {
-         owner = "datakurre";
-         repo = "setup.nix";
-         rev = "b1bfe61cd2f60f5446c8e3e74e99663fdbbaf7f6";
-         sha256 = "1iw3ib6zwgyqnyr9gapsrmwprawws8k331cb600724ddv30xrpkg";
+     , setup ? import (fetchTarball {
+         url = "https://github.com/datakurre/setup.nix/archive/v.1.1.1.tar.gz";
+         sha256 = "1lxw6ifsc1psrmaz0wrz2jymdsxkh3abrw938ch59dkf3g9z3bm4";
        })
      }:
 
@@ -206,11 +210,9 @@ Project skeleton
 
     { pkgs ? import <nixpkgs> {}
     , pythonPackages ? pkgs.python3Packages
-    , setup ? import (pkgs.fetchFromGitHub {
-        owner = "datakurre";
-        repo = "setup.nix";
-        rev = "b1bfe61cd2f60f5446c8e3e74e99663fdbbaf7f6";
-        sha256 = "1iw3ib6zwgyqnyr9gapsrmwprawws8k331cb600724ddv30xrpkg";
+    , setup ? import (fetchTarball {
+        url = "https://github.com/datakurre/setup.nix/archive/v.1.1.1.tar.gz";
+        sha256 = "1lxw6ifsc1psrmaz0wrz2jymdsxkh3abrw938ch59dkf3g9z3bm4";
       })
     }:
 
@@ -278,36 +280,50 @@ configuration arguments:
 
 .. code:: nix
 
-    {
-    # Nixpkgs revision
-      pkgs ? import <nixpkgs> {}
+    { pkgs ? import <nixpkgs> {}
+    , pythonPackages ? pkgs.pythonPackages
 
-    # Python version
-    , pythonPackages ? pkgs.python36Packages
-
-    # project path, usually ./. (with implicit cleanSource filter)
+    # project path, usually ./., without cleanSource, which is added later
     , src
+
+    # custom post install script
+    , postInstall ? ""
 
     # enable tests on build
     , doCheck ? false
 
-    # force to build environment packages with empty requirements
-    , force ? false
-
-    # requirements overrides
+    # requirements overrides fix building packages with undetected inputs
     , overrides ? self: super: {}
     , defaultOverrides ? true
+    , implicitOverrides ? true
+
+    # force to build environments without package level dependency checks
+    , force ? false
+    , ignoreCollisions ? false
 
     # non-Python inputs
     , buildInputs ? []
     , propagatedBuildInputs ? []
+    , shellHook ? ""
 
-    # bdist_docker options (with image_name defaulting to package name)
+    # known list of "broken" as in non-installable Python packages
+    , nonInstallablePackages ? [ "zc.recipe.egg" ]
+
+    # very dedicated bdist_docker
+    , image_author ? null
     , image_name ? null
-    , image_tag  ? "latest"
+    , image_tag ? "latest"
     , image_entrypoint ? "/bin/sh"
+    , image_cmd ? null
     , image_features ? [ "busybox" "tmpdir" ]
     , image_labels ? {}
+    , image_extras ? []
+    , image_created ? "1970-01-01T00:00:01Z"
+    , image_user ? { name = "nobody"; uid = "65534"; gid = "65534"; }
+    , image_keepContentsDirlinks ? false
+    , image_runAsRoot ? ""
+    , image_extraCommands ? ""
+    , image_extraConfig ? {}
     }:
 
 Arguments in detail:
@@ -318,12 +334,12 @@ Arguments in detail:
 
     .. code:: nix
 
-       pkgs = import ((import <nixpkgs> {}).pkgs.fetchFromGitHub {
-           owner = "NixOS";
-           repo = "nixpkgs";
-           rev = "11d0cccf56979f621a2e513bf3a921b46972615b";
-           sha256 = "1il0r3xnmml71arg1f5kds0ds4ymmcljdmxrk8i8w3y1jw2mqgj6";
-       })
+     {
+       pkgs= import (fetchTarball {
+         url = "https://github.com/NixOS/nixpkgs-channels/archive/ef450efb9df5260e54503509d2fd638444668713.tar.gz";
+         sha256 = "1k9f3n2pmdh7sap79c8nqpz7cjx9930fcpk27pvp6lwmr4qigmxg";
+       }) {}
+     }
 
 **pythonPackges**
     In Nixpkgs_ each Python version has its own set of available packages.
