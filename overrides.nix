@@ -10,6 +10,10 @@ self: super: {
     buildInputs = [ self."setuptools-scm" ];
   });
 
+  "faker" = super."faker".overridePythonAttrs (old: {
+    buildInputs = [ self."pytest-runner" ];
+  });
+
   "flake8-print" = super."flake8-print".overridePythonAttrs (old: {
     buildInputs = [ self."pytest-runner" ];
   });
