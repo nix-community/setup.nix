@@ -198,11 +198,11 @@ in {
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.majorVersion)
       ( import (fetchTarball {
-          url = "https://github.com/datakurre/pip2nix/archive/7b8cf7460738936a05c807ac549e90f11679e905.tar.gz";
-          sha256 = "0zdlvhl0011syd2kv0jhd0vpgkcfwqi7dnrk83yi6lan1s7d378z";
+          url = "https://github.com/datakurre/pip2nix/archive/20c6a615bac6e4d5781e5e93ce861f5aaaedfcddjb.tar.gz";
+          sha256 = "166gh05c2pz1nv7ffalr67dl6d0dwazwm8zc9n2xivqzms9kj693";
         } + "/release.nix") { inherit pkgs; }).pip2nix
       )
-  # ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
+#     ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
   ])).env;
 
   # Define convenient alias for the final set of packages

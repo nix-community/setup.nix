@@ -76,4 +76,8 @@ self: super: {
 
   "testpath" = pythonPackages."testpath";
 
+  "xhtml2pdf" = super."xhtml2pdf".overridePythonAttrs (old: {
+    buildInputs = [ self."nose" ];
+  });
+
 }
