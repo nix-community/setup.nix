@@ -199,7 +199,7 @@ in {
       ("python" + replaceStrings ["."] [""] pythonPackages.python.majorVersion)
       ( import (fetchTarball {
           url = "https://github.com/datakurre/pip2nix/archive/c9e9d575a7093af0cd44697ca91ff01ac83c9565.tar.gz";
-          sha256 = ""03jdr5hgg7dbg029h455x6lz84xfk3ngji7bwj1wy0b049pq3qkg;
+          sha256 = "03jdr5hgg7dbg029h455x6lz84xfk3ngji7bwj1wy0b049pq3qkg";
         } + "/release.nix") { inherit pkgs; }).pip2nix
       )
 #     ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
