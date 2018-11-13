@@ -77,7 +77,8 @@ let
   requirements = import (if baseNameOf src == "requirements.nix"
                          then src else src + "/requirements.nix") {
     inherit pkgs;
-    inherit (pkgs) fetchurl fetchgit fetchhg;
+    inherit (builtins) fetchurl;
+    inherit (pkgs) fetchgit fetchhg;
   };
 
   # Load default overrides
