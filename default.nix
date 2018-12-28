@@ -3,6 +3,7 @@
 
 # project path, usually ./., without cleanSource, which is added later
 , src
+, requirements ? null
 
 # custom post install script
 , postInstall ? ""
@@ -74,8 +75,11 @@ let
   )) else null;
 
   # Load generated requirements
-  requirements = import (if baseNameOf src == "requirements.nix"
-                         then src else src + "/requirements.nix") {
+  requirementsFunc = import (
+    if isNull requirements then (
+      if hasSuffix ".nix" (baseNameOf src)
+      then src else src + "/requirements.nix"
+    ) else requirements) {
     inherit pkgs;
     inherit (builtins) fetchurl;
     inherit (pkgs) fetchgit fetchhg;
@@ -85,7 +89,7 @@ let
   commonOverrides = import ./overrides.nix { inherit pkgs pythonPackages; };
 
   # List package names in requirements
-  requirementsNames = attrNames (requirements {} {});
+  requirementsNames = attrNames (requirementsFunc {} {});
 
   # List union of package names in overrides and defaultOverrides
   overridesNames = if defaultOverrides then
@@ -135,7 +139,7 @@ let
     (extends (if defaultOverrides then commonOverrides else self: super: {})
     (extends (if force then forcedRequirements else self: super: {})
     (extends (if implicitOverrides then nixpkgsOverrides else self: super: {})
-    (extends requirements pythonPackages.__unfix__)
+    (extends requirementsFunc pythonPackages.__unfix__)
     )))));
 
   # Helper to always return a list
