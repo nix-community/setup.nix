@@ -5,7 +5,9 @@
 }:
 
 let overrides = self: super: {
-
+  "flake8" = super."flake8".overrideDerivation(old: {
+    patches = [];
+  });
 };
 
 in setup {

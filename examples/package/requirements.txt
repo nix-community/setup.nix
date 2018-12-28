@@ -4,9 +4,10 @@ flake8-blind-except
 flake8-coding
 flake8-debugger
 flake8-quotes
+flake8
 isort
 pep8-naming
-pyroma==2.2
+pyroma
 pytest
 pytest-cov
 pytest-runner

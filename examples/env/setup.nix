@@ -4,8 +4,14 @@
 , setup ? import ../../default.nix
 }:
 
-setup {
-  inherit pkgs pythonPackages;
+let overrides = self: super: {
+  "flake8" = super."flake8".overrideDerivation(old: {
+    patches = [];
+  });
+};
+
+in setup {
+  inherit pkgs pythonPackages overrides;
   src = ./.;
   buildInputs = [ pkgs.lolcat ];
 }
