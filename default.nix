@@ -201,10 +201,10 @@ in {
   # Define known good version of pip2nix environment
   pip2nix = (pythonPackages.python.withPackages (ps: [
     (getAttr
-      ("python" + replaceStrings ["."] [""] pythonPackages.python.majorVersion)
+      ("python" + replaceStrings ["."] [""] pythonPackages.python.pythonVersion)
       ( import (fetchTarball {
-          url = "https://github.com/datakurre/pip2nix/archive/c69e8bb7246ae028ffc80025051a4264e42d96b7.tar.gz";
-          sha256 = "1vl2qkkwix2azrl19wwz38sgjvh83jyspr7rw65fvm6clysww7hw";
+          url = "https://github.com/datakurre/pip2nix/archive/45165491273a8fe645312dca1430877b95f5e5b9.tar.gz";
+          sha256 = "1yrvgfhwicz7d2b0a7bjf4gybzhv9ly10zf6vgv9qqws8khf28m9";
         } + "/release.nix") { inherit pkgs; }).pip2nix
       )
 #     ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
