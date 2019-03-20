@@ -311,7 +311,7 @@ in {
 
   shell = build.overrideDerivation(old: {
     name = "${old.name}-shell";
-    buildInputs = buildInputs ++ propagatedBuildInputs ++ map
+    nativeBuildInputs = buildInputs ++ propagatedBuildInputs ++ map
       (name: getAttr name packages)
       (foldl' (x: y: remove y x)
        requirementsNames nonInstallablePackages);
