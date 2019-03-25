@@ -50,8 +50,7 @@ with pkgs.lib;
 with pkgs.stdenv;
 
 let
-  # go 1.9 pin until https://github.com/moby/moby/pull/35739
-  dockerTools = pkgs.callPackage ./docker { go = pkgs.go_1_9; };
+  dockerTools = pkgs.callPackage ./docker {};
 
   # Parse setup.cfg into Nix via JSON (strings with \n are parsed into lists)
   package = if pathExists (src + "/setup.cfg") then fromJSON(readFile(
