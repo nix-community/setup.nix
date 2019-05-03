@@ -119,12 +119,17 @@ let
       value = (getAttr name pythonPackages).overridePythonAttrs(old: {
         inherit name;
         src = (getAttr name super).src;
-        propagatedBuildInputs = (getAttr name super).propagatedBuildInputs;
+        nativeBuildInputs = map
+          (x: if hasAttr (nameFromDrvName x.name) super
+              then getAttr (nameFromDrvName x.name) self
+              else x)
+          (if hasAttr "nativeBuildInputs" old then old.nativeBuildInputs else []);
         buildInputs = map
           (x: if hasAttr (nameFromDrvName x.name) super
               then getAttr (nameFromDrvName x.name) self
               else x)
           (if hasAttr "buildInputs" old then old.buildInputs else []);
+        propagatedBuildInputs = (getAttr name super).propagatedBuildInputs;
         doCheck = false;  # already tested at nixpkgs
       });
     })
@@ -275,9 +280,11 @@ in {
   build = packages.buildPythonPackage ({
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
-    buildInputs = buildInputs ++ map
-      (name: getAttr name packages) ((list "setup_requires" package.options) ++
-                                     (list "tests_require" package.options));
+    nativeBuildInputs = map
+      (name: getAttr name packages) (list "setup_requires" package.options);
+    buildInputs = buildInputs;
+    checkInputs = map
+      (name: getAttr name packages) (list "tests_require" package.options);
     propagatedBuildInputs = if force == true then propagatedBuildInputs ++ map
       (name: getAttr name packages)
       (foldl' (x: y: remove y x)

@@ -3,13 +3,14 @@
 self: super: {
 
   "aiovault" = super."aiovault".overridePythonAttrs (old: {
-    buildInputs = [ self."pytest-runner" ];
+    nativeBuildInputs = [ self."pytest-runner" ];
   });
 
   "cffi" = pythonPackages."cffi".overridePythonAttrs(old:
     with super."cffi"; {
       inherit name src propagatedBuildInputs;
-      buildInputs = [ pkgs."libffi" self."pytest" ];
+      nativeBuildInputs = [ self."pytest" ];
+      buildInputs = [ pkgs."libffi" ];
       doCheck = false;
     }
   );
@@ -19,15 +20,15 @@ self: super: {
   });
 
   "faker" = super."faker".overridePythonAttrs (old: {
-    buildInputs = [ self."pytest-runner" ];
+    nativeBuildInputs = [ self."pytest-runner" ];
   });
 
   "flake8-print" = super."flake8-print".overridePythonAttrs (old: {
-    buildInputs = [ self."pytest-runner" ];
+    nativeBuildInputs = [ self."pytest-runner" ];
   });
 
   "jsonschema" = super."jsonschema".overridePythonAttrs(old: {
-    buildInputs = [
+    nativeBuildInputs = [
       self."pytest-runner"
       self."setuptools-scm"
     ];
@@ -46,21 +47,21 @@ self: super: {
   "py.test" = self."pytest";
 
   "pyrsistent" = super."pyrsistent".overridePythonAttrs(old: {
-    buildInputs = [ self."pytest-runner" ];
+    nativeBuildInputs = [ self."pytest-runner" ];
   });
 
   "python-dateutil" = super."python-dateutil".overridePythonAttrs (old: {
-    buildInputs = [ self."setuptools-scm" ];
+    nativeBuildInputs = [ self."setuptools-scm" ];
   });
 
   "python-ldap" = pythonPackages."ldap".overridePythonAttrs(old:
     with super."python-ldap"; {
       inherit name src;
       propagatedBuildInputs = [
-        pkgs.cyrus_sasl
-        pkgs.openldap
-        pkgs.openssl
-        self.pyasn1-modules
+        pkgs."cyrus_sasl"
+        pkgs."openldap"
+        pkgs."openssl"
+        self."pyasn1-modules"
       ];
       patches = [];
       doCheck = false;
@@ -75,13 +76,9 @@ self: super: {
 
   "reportlab" = super."reportlab".overridePythonAttrs(old: {
     buildInputs = [
-      (pkgs.freetype.overrideAttrs (old: { dontDisableStatic = true; }))
-      self.pillow
+      (pkgs."freetype".overrideAttrs (old: { dontDisableStatic = true; }))
+      self."pillow"
     ];
-  });
-
-  "robotframework" = super."robotframework".overridePythonAttrs(old: {
-    buildInputs = [ pkgs.unzip ];
   });
 
   "rst2pdf" = super."rst2pdf".overridePythonAttrs(old: {
@@ -99,7 +96,7 @@ self: super: {
   "testpath" = pythonPackages."testpath";
 
   "xhtml2pdf" = super."xhtml2pdf".overridePythonAttrs (old: {
-    buildInputs = [ self."nose" ];
+    nativeBuildInputs = [ self."nose" ];
   });
 
 }
