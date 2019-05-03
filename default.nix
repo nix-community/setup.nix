@@ -26,7 +26,7 @@
 , shellHook ? ""
 
 # known list of "broken" as in non-installable Python packages
-, nonInstallablePackages ? [ "zc.recipe.egg" ]
+, nonInstallablePackages ? []
 
 # very dedicated bdist_docker
 , image_author ? null
