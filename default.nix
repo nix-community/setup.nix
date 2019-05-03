@@ -207,8 +207,8 @@ in {
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.pythonVersion)
       ( import (fetchTarball {
-          url = "https://github.com/datakurre/pip2nix/archive/db7bbc4dd18b0073b348f1191dad36f3d28e4fe9.tar.gz";
-          sha256 = "1i9i7ggbgxr7msy83rgfnxwbi7c3gayqf10gq3h0s817y4yv8b26";
+          url = "https://github.com/datakurre/pip2nix/archive/2e678eb959318c4817b79907f342a4f7a793fead.tar.gz";
+          sha256 = "1jfsld633h3xsnz990jgp30zx9ci0c7if1xvxjxy67m5xh2srd90";
         } + "/release.nix") { inherit pkgs; }).pip2nix
       )
 #     ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
