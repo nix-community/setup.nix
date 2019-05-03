@@ -5,26 +5,22 @@
 
 self: super: {
   "django" = super.buildPythonPackage {
-    name = "django-2.1";
+    name = "django-2.1.7";
     doCheck = false;
     propagatedBuildInputs = [
       self."pytz"
     ];
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/b6/cf/8cbe9bd4bb83ce2dd277564b43435edb7b151a099458e63706d10ec9e4fa/Django-2.1.tar.gz";
-      sha256 = "0dv184lgp7scq8cr4422rrvkd8npyiqww0zw50ygcim5smw6093z";
+      url = "https://files.pythonhosted.org/packages/7e/ae/29c28f6afddae0e305326078f31372f03d7f2e6d6210c9963843196ce67e/Django-2.1.7.tar.gz";
+      sha256 = "0qvrcvlvd4866vjzf62nwwnvpy7534mgi3jx9pbm6zadsglm55lk";
     };
   };
   "pytz" = super.buildPythonPackage {
-    name = "pytz-2018.5";
+    name = "pytz-2018.9";
     doCheck = false;
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/ca/a9/62f96decb1e309d6300ebe7eee9acfd7bccaeedd693794437005b9067b44/pytz-2018.5.tar.gz";
-      sha256 = "0xzj5gkpdn2da8m6j47chlp6zrzcypv9m0fjv4236q3jw4fyzfgz";
+      url = "https://files.pythonhosted.org/packages/af/be/6c59e30e208a5f28da85751b93ec7b97e4612268bb054d0dff396e758a90/pytz-2018.9.tar.gz";
+      sha256 = "0k1pqnq3c4gvcspjxf3fschdjn71fk89i4wz801rxqh7f145xw6m";
     };
   };
-
-### Test requirements
-
-  
 }
