@@ -90,12 +90,6 @@ let
   # List package names in requirements
   requirementsNames = attrNames (requirementsFunc {} {});
 
-  # List union of package names in overrides and defaultOverrides
-  overridesNames = if defaultOverrides then
-    attrNames ((commonOverrides {} {}) // (overrides {} {}))
-  else
-    attrNames (overrides {} {});
-
   # Define optional overlay for force building requirements without overrides
   forcedRequirements = self: super: (listToAttrs (map
     (name: {
@@ -105,7 +99,7 @@ let
         propagatedBuildInputs = [];
       });
     })
-    (filter (name: !(elem name overridesNames)) requirementsNames)
+    requirementsNames
   ));
 
   nameFromDrvName = name:
@@ -207,8 +201,8 @@ in {
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.pythonVersion)
       ( import (fetchTarball {
-          url = "https://github.com/datakurre/pip2nix/archive/2e678eb959318c4817b79907f342a4f7a793fead.tar.gz";
-          sha256 = "1jfsld633h3xsnz990jgp30zx9ci0c7if1xvxjxy67m5xh2srd90";
+          url = "https://github.com/datakurre/pip2nix/archive/c49ba4c0644af8e65191575c4aad1bf23135f543.tar.gz";
+          sha256 = "0hxsl8cgb4c057dbj94zbd9zn6xzkf26hghs9mhfq06vn99q1vzc";
         } + "/release.nix") { inherit pkgs; }).pip2nix
       )
 #     ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )

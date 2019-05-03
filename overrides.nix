@@ -6,6 +6,18 @@ self: super: {
     nativeBuildInputs = [ self."pytest-runner" ];
   });
 
+  "backports.functools-lru-cache" = super."backports.functools-lru-cache".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."setuptools-scm" ];
+    postInstall = ''
+      rm -f $out/lib/*/site-packages/backports/__init__.py
+      rm -f $out/lib/*/site-packages/backports/__init__.pyc
+    '';
+  });
+
+  "BTrees" = super."BTrees".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."persistent" self."zope.interface" ];
+  });
+
   "cffi" = pythonPackages."cffi".overridePythonAttrs(old:
     with super."cffi"; {
       inherit name src propagatedBuildInputs;
@@ -19,7 +31,22 @@ self: super: {
     buildInputs = [ self."cffi" ];
   });
 
+  "createcoverage" = super."createcoverage".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."setuptools-scm" ];
+    postInstall = ''
+      rm $out/bin/coverage
+    '';
+  });
+
+  "fancycompleter" = super."fancycompleter".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."setuptools-scm" ];
+  });
+
   "faker" = super."faker".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."pytest-runner" ];
+  });
+
+  "flake8" = super."flake8".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."pytest-runner" ];
   });
 
@@ -34,6 +61,14 @@ self: super: {
     ];
   });
 
+  "Paste" = super."Paste".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."pytest-runner" ];
+  });
+
+  "pdbpp" = super."pdbpp".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."setuptools-scm" ];
+  });
+
   # Pillow is often written with title case
   "Pillow" = pythonPackages."pillow".overridePythonAttrs(old:
     with super."Pillow"; {
@@ -42,7 +77,36 @@ self: super: {
     }
   );
 
-  pip = pythonPackages."pip";
+  "Products.CMFUid" = super."Products.CMFUid".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
+  });
+
+  "Products.DCWorkflow" = super."Products.DCWorkflow".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
+  });
+
+  "Products.GenericSetup" = super."Products.GenericSetup".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
+  });
+
+  "persistent" = super."persistent".overridePythonAttrs(old: {
+    nativeBuildInputs = [];
+  });
+
+  "pip" = pythonPackages."pip";
+
+  "piexif" = super."piexif".overridePythonAttrs(old: {
+    nativeBuildInputs = [ pkgs."unzip" ];
+  });
+
+  "plone.app.robotframework" = super."plone.app.robotframework".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."setuptools-scm" ];
+    postInstall = ''
+      rm -f $out/bin/pybabel
+      rm -f $out/bin/pybot
+      rm -f $out/bin/robot
+    '';
+  });
 
   "py.test" = self."pytest";
 
@@ -93,10 +157,22 @@ self: super: {
     }
   );
 
+  # Sphinx is often written with title case
+  "Sphinx" = pythonPackages."sphinx".overridePythonAttrs(old:
+    with super."Sphinx"; {
+      inherit name src propagatedBuildInputs;
+      doCheck = false;
+    }
+  );
+
   "testpath" = pythonPackages."testpath";
 
   "xhtml2pdf" = super."xhtml2pdf".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."nose" ];
+  });
+
+  "zope.security" = super."zope.security".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."zope.interface" self."zope.proxy" ];
   });
 
 }
