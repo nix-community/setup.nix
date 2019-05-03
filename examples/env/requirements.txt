@@ -2,7 +2,7 @@ flake8
 flake8-debugger
 mccabe
 pillow
-pytest==3.10.1
+pytest
 pytest-runner
 reportlab
 sphinx

@@ -6,7 +6,7 @@
 
 let
 
-  manifest_python = pythonPackages.python.withPackages(ps: [
+  "manifest_python" = pythonPackages.python.withPackages(ps: [
     ps.setuptools ps.wheel
   ]);
 
@@ -19,6 +19,7 @@ let
         --replace "os.path.abspath(python)" \
                   "\"${manifest_python.interpreter}\""
     '';
+    nativeBuildInputs =  [ pythonPackages.toml ];
     propagatedBuildInputs = [ manifest_python ];
   });
 
@@ -36,5 +37,4 @@ let
 in setup {
   inherit pkgs pythonPackages overrides;
   src = ./requirements.nix;
-  force = true;
 }

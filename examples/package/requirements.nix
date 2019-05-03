@@ -343,6 +343,9 @@ self: super: {
   "setuptools" = super.buildPythonPackage {
     name = "setuptools-41.0.1";
     doCheck = false;
+    nativeBuildInputs = [
+      pkgs."unzip"
+    ];
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/1d/64/a18a487b4391a05b9c7f938b94a16d80305bf0369c6b0b9509e86165e1d3/setuptools-41.0.1.zip";
       sha256 = "04sns22y2hhsrwfy1mha2lgslvpjsjsz8xws7h2rh5a7ylkd28m2";

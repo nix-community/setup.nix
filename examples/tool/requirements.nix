@@ -5,93 +5,66 @@
 
 self: super: {
   "Pygments" = super.buildPythonPackage {
-    name = "Pygments-2.2.0";
+    name = "Pygments-2.3.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/71/2a/2e4e77803a8bd6408a2903340ac498cb0a2181811af7c9ec92cb70b0308a/Pygments-2.2.0.tar.gz";
-      sha256 = "1k78qdvir1yb1c634nkv6rbga8wv4289xarghmsbbvzhvr311bnv";
+      url = "https://files.pythonhosted.org/packages/64/69/413708eaf3a64a6abb8972644e0f20891a55e621c6759e2c3f3891e05d63/Pygments-2.3.1.tar.gz";
+      sha256 = "0ji87g09jph8jqcvclgb02qvxasdnr9pzvk90rl66d90yqcxmyjz";
     };
   };
   "bleach" = super.buildPythonPackage {
-    name = "bleach-2.1.3";
+    name = "bleach-3.1.0";
     doCheck = false;
     propagatedBuildInputs = [
       self."six"
-      self."html5lib"
+      self."webencodings"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/eb/ea/58428609442130dc31d3a59010bf6cbd263a16c589d01d23b7c1e6997e3b/bleach-2.1.3.tar.gz";
-      sha256 = "0i4sga1rlnn0qaf9y52i31bk2isd2f5q6jlxrvci179l6bv8cwzb";
+      url = "https://files.pythonhosted.org/packages/78/5a/0df03e8735cd9c75167528299c738702437589b9c71a849489d00ffa82e8/bleach-3.1.0.tar.gz";
+      sha256 = "1yhrgrhkln8bd6gn3imj69g1h4xqah9gaz9q26crqr6gmmvpzprz";
     };
   };
   "certifi" = super.buildPythonPackage {
-    name = "certifi-2018.1.18";
+    name = "certifi-2019.3.9";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/15/d4/2f888fc463d516ff7bf2379a4e9a552fef7f22a94147655d9b1097108248/certifi-2018.1.18.tar.gz";
-      sha256 = "0z9zyry30znikglm66d3r9y0yaqa2sxr4xlsyxqzbvi76hh3zg7d";
-    };
-  };
-  "cffi" = super.buildPythonPackage {
-    name = "cffi-1.11.5";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."pycparser"
-    ];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/e7/a7/4cd50e57cc6f436f1cc3a7e8fa700ff9b8b4d471620629074913e3735fb2/cffi-1.11.5.tar.gz";
-      sha256 = "1x3lrj928dcxx1k8k9gf3s4s3jwvzv8mc3kkyg1g7c3a1sc1f3z9";
+      url = "https://files.pythonhosted.org/packages/06/b8/d1ea38513c22e8c906275d135818fee16ad8495985956a9b7e2bb21942a1/certifi-2019.3.9.tar.gz";
+      sha256 = "1bnpw7hrf9i1l9gfxjnzi45hkrvzz0pyn9ia8m4mw7sxhgb08qdj";
     };
   };
   "chardet" = super.buildPythonPackage {
     name = "chardet-3.0.4";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/fc/bb/a5768c230f9ddb03acc9ef3f0d4a3cf93462473795d18e9535498c8f929d/chardet-3.0.4.tar.gz";
+      url = "https://files.pythonhosted.org/packages/fc/bb/a5768c230f9ddb03acc9ef3f0d4a3cf93462473795d18e9535498c8f929d/chardet-3.0.4.tar.gz";
       sha256 = "1bpalpia6r5x1kknbk11p1fzph56fmmnp405ds8icksd3knr5aw4";
     };
   };
   "check-manifest" = super.buildPythonPackage {
-    name = "check-manifest-0.36";
-    doCheck = false;
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/6f/6f/38f3ad250b69a174e8c054572f29450959d4e3cab94645f5b1835ee9af58/check-manifest-0.36.tar.gz";
-      sha256 = "111dynjqs8vfr9n10w3xg8yknyc1ljsxmh6nbz62dw506skhdf9b";
-    };
-  };
-  "cmarkgfm" = super.buildPythonPackage {
-    name = "cmarkgfm-0.4.0";
+    name = "check-manifest-0.38";
     doCheck = false;
     propagatedBuildInputs = [
-      self."cffi"
+      self."toml"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/3c/ca/8dd58934f585a8e8da7e2ff3ccb189f00d0605f6ba4de5bc4f818a06799d/cmarkgfm-0.4.0.tar.gz";
-      sha256 = "1gjrb42vb5bdcimmzzjjhl2rdvawg7dimxvsprfbqzlwfxhp0zcp";
+      url = "https://files.pythonhosted.org/packages/3d/c3/99f1dc28ef1b743fd8b53c7fd07bb1502ec658a495b8d2e0f02610d6c2f7/check-manifest-0.38.tar.gz";
+      sha256 = "08xkgx4a2jminzg8by15cdndxjhz6ff4r0ghnhzgin3l72g7996v";
     };
   };
   "colorama" = super.buildPythonPackage {
-    name = "colorama-0.3.9";
+    name = "colorama-0.4.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/e6/76/257b53926889e2835355d74fec73d82662100135293e17d382e2b74d1669/colorama-0.3.9.tar.gz";
-      sha256 = "1wd1szk0z3073ghx26ynw43gnc140ibln1safgsis6s6z3s25ss8";
+      url = "https://files.pythonhosted.org/packages/76/53/e785891dce0e2f2b9f4b4ff5bc6062a53332ed28833c7afede841f46a5db/colorama-0.4.1.tar.gz";
+      sha256 = "0ba247bx5pc60hcpbf3rjsqk0whilg241i9qdfnlcwij5qgdgvh5";
     };
   };
   "docutils" = super.buildPythonPackage {
     name = "docutils-0.14";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/84/f4/5771e41fdf52aabebbadecc9381d11dea0fa34e4759b4071244fa094804c/docutils-0.14.tar.gz";
+      url = "https://files.pythonhosted.org/packages/84/f4/5771e41fdf52aabebbadecc9381d11dea0fa34e4759b4071244fa094804c/docutils-0.14.tar.gz";
       sha256 = "0x22fs3pdmr42kvz6c654756wja305qv6cx1zbhwlagvxgr4xrji";
-    };
-  };
-  "future" = super.buildPythonPackage {
-    name = "future-0.16.0";
-    doCheck = false;
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/00/2b/8d082ddfed935f3608cc61140df6dcbf0edea1bc3ab52fb6c29ae3e81e85/future-0.16.0.tar.gz";
-      sha256 = "1nzy1k4m9966sikp0qka7lirh8sqrsyainyf8rk97db7nwdfv773";
     };
   };
   "gocept.zestreleaser.customupload" = super.buildPythonPackage {
@@ -103,203 +76,193 @@ self: super: {
       self."zest.releaser"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/97/6a/b2c181d572df6027271531f4d17e9bea9452130d9a8b2cb64f3e91339072/gocept.zestreleaser.customupload-3.0.tar.gz";
+      url = "https://files.pythonhosted.org/packages/97/6a/b2c181d572df6027271531f4d17e9bea9452130d9a8b2cb64f3e91339072/gocept.zestreleaser.customupload-3.0.tar.gz";
       sha256 = "157iifvcqm60x9yjvyg4krqn7s6jphn8mym69f24l37m44zkwb64";
     };
   };
-  "html5lib" = super.buildPythonPackage {
-    name = "html5lib-1.0.1";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."six"
-      self."webencodings"
-    ];
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/85/3e/cf449cf1b5004e87510b9368e7a5f1acd8831c2d6691edd3c62a0823f98f/html5lib-1.0.1.tar.gz";
-      sha256 = "0dipzfrycv6j1jw82v9b7d8lzggx3x8xngx6l4xrqkxwvg7hvjv6";
-    };
-  };
   "idna" = super.buildPythonPackage {
-    name = "idna-2.6";
+    name = "idna-2.8";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/f4/bd/0467d62790828c23c47fc1dfa1b1f052b24efdf5290f071c7a91d0d82fd3/idna-2.6.tar.gz";
-      sha256 = "13qaab6d0s15gknz8v3zbcfmbj6v86hn9pjxgkdf62ch13imssic";
+      url = "https://files.pythonhosted.org/packages/ad/13/eb56951b6f7950cadb579ca166e448ba77f9d24efc03edd7e55fa57d04b7/idna-2.8.tar.gz";
+      sha256 = "01rlkigdxg17sf9yar1jl8n18ls59367wqh59hnawlyg53vb6my3";
     };
   };
   "pkginfo" = super.buildPythonPackage {
-    name = "pkginfo-1.4.2";
+    name = "pkginfo-1.5.0.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/39/c9/111ececbeed8e69cd1b6bec79a32a0b0f6074038a4244e58e285ad278248/pkginfo-1.4.2.tar.gz";
-      sha256 = "0x6lm17p1ks031mj6pajyp4rkq74vpqq8qwjb7ikgwmkli1day2q";
-    };
-  };
-  "pycparser" = super.buildPythonPackage {
-    name = "pycparser-2.18";
-    doCheck = false;
-    src = fetchurl {
-      url = "https://pypi.python.org/packages/8c/2d/aad7f16146f4197a11f8e91fb81df177adcc2073d36a17b1491fd09df6ed/pycparser-2.18.tar.gz";
-      sha256 = "09mjyw82ibqzl449g7swy8bfxnfpmas0815d2rkdjlcqw81wma4r";
+      url = "https://files.pythonhosted.org/packages/6c/04/fd6683d24581894be8b25bc8c68ac7a0a73bf0c4d74b888ac5fe9a28e77f/pkginfo-1.5.0.1.tar.gz";
+      sha256 = "1fs825s0vrylg45rj16nm0vmnhvpbc233gsb8banq60wa74g493l";
     };
   };
   "pyroma" = super.buildPythonPackage {
-    name = "pyroma-2.2";
+    name = "pyroma-2.4";
     doCheck = false;
     propagatedBuildInputs = [
-      self."setuptools"
       self."docutils"
+      self."setuptools"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/de/f3/104ae27624982cd4b6de786d9afe23a2dc0b8c0999443ba370b3755848c7/pyroma-2.2.tar.gz";
-      sha256 = "0l5ab84plqf6gy2xphm92dazpa6c5r1xcj20f35zhlbwd1aq1zfk";
+      url = "https://files.pythonhosted.org/packages/1d/e4/540694eb7116c1557244f3d5c656673cea48674cb40759a78bf7bbc14c47/pyroma-2.4.tar.gz";
+      sha256 = "0zzfnrrpydj44d5bg47fqhbg4mi5j23v9j3ssfdzyswpfyq1r8cl";
     };
   };
   "python-gettext" = super.buildPythonPackage {
-    name = "python-gettext-3.0";
+    name = "python-gettext-4.0";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/80/a7/a4a5cf3aa9500dbb09b48dae6d4d9581883dd90ae7a84cbb2d3448410114/python-gettext-3.0.zip";
-      sha256 = "0mil2vbv27i3ij8k0n31n39j2h3sxh589bvsvwrhwq6w9qr401gl";
+      url = "https://files.pythonhosted.org/packages/86/64/1475ff167cf6e6b6f9e50973900011cb53be8260010e3d016ad3778c4565/python-gettext-4.0.tar.gz";
+      sha256 = "00pcqwpnir0cr5lynima9ra1y4na1pk51x8c8v1jz2dca4d50sv2";
     };
   };
   "readme-renderer" = super.buildPythonPackage {
-    name = "readme-renderer-18.1";
+    name = "readme-renderer-24.0";
     doCheck = false;
     propagatedBuildInputs = [
-      self."bleach"
-      self."cmarkgfm"
-      self."docutils"
-      self."future"
       self."Pygments"
+      self."bleach"
+      self."docutils"
       self."six"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/14/f5/ff4ca0c6ba90cff4152fc15373bfe94a8ed9f78d2d4c4067fd83f1623a43/readme_renderer-18.1.tar.gz";
-      sha256 = "0qvmqamcbgvphzn57fjv998qylz10jzf2n8vvy82jh873dzsp371";
+      url = "https://files.pythonhosted.org/packages/44/de/a567140b13a0fc8d3b04d85a510b5a7d9869b44b2939fa8ac07c5e421485/readme_renderer-24.0.tar.gz";
+      sha256 = "0br0562lnvj339f1nwz4nfl4ay49rw05xkqacigzf9wz4mdza5mv";
     };
   };
   "requests" = super.buildPythonPackage {
-    name = "requests-2.18.4";
+    name = "requests-2.21.0";
     doCheck = false;
     propagatedBuildInputs = [
+      self."certifi"
       self."chardet"
       self."idna"
       self."urllib3"
-      self."certifi"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/b0/e1/eab4fc3752e3d240468a8c0b284607899d2fbfb236a56b7377a329aa8d09/requests-2.18.4.tar.gz";
-      sha256 = "0zi3v9nsmv9j27d0c0m1dvqyvaxz53g8m0aa1h3qanxs4irkwi4w";
+      url = "https://files.pythonhosted.org/packages/52/2c/514e4ac25da2b08ca5a464c50463682126385c4272c18193876e91f4bc38/requests-2.21.0.tar.gz";
+      sha256 = "13jr0wkj9c2j8c0c8iaal9iivi0bpxghnsdn6lxcpnmc657q4ajh";
     };
   };
   "requests-toolbelt" = super.buildPythonPackage {
-    name = "requests-toolbelt-0.8.0";
+    name = "requests-toolbelt-0.9.1";
     doCheck = false;
     propagatedBuildInputs = [
       self."requests"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/86/f9/e80fa23edca6c554f1994040064760c12b51daff54b55f9e379e899cd3d4/requests-toolbelt-0.8.0.tar.gz";
-      sha256 = "1dc7l42i4080r8i4m9fj51jx367lqkai170vrv7wd93gdj9k39gn";
+      url = "https://files.pythonhosted.org/packages/28/30/7bf7e5071081f761766d46820e52f4b16c8a08fef02d2eb4682ca7534310/requests-toolbelt-0.9.1.tar.gz";
+      sha256 = "1h3gm88dcjbd7gm229a7x5qkkhnsqsjz0m0l2xyavm2ab3a8k04n";
     };
   };
   "setuptools" = super.buildPythonPackage {
-    name = "setuptools-39.0.1";
+    name = "setuptools-41.0.1";
     doCheck = false;
+    nativeBuildInputs = [
+      pkgs."unzip"
+    ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/72/c2/c09362ab29338413ab687b47dab03bab4a792e2bbb727a1eb5e0a88e3b86/setuptools-39.0.1.zip";
-      sha256 = "1ix7sqh5fqsfc4p6kms1spjp86y4xlv7ii7saf0zrrv01zgvmixy";
+      url = "https://files.pythonhosted.org/packages/1d/64/a18a487b4391a05b9c7f938b94a16d80305bf0369c6b0b9509e86165e1d3/setuptools-41.0.1.zip";
+      sha256 = "04sns22y2hhsrwfy1mha2lgslvpjsjsz8xws7h2rh5a7ylkd28m2";
     };
   };
   "six" = super.buildPythonPackage {
-    name = "six-1.11.0";
+    name = "six-1.12.0";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz";
-      sha256 = "1scqzwc51c875z23phj48gircqjgnn3af8zy2izjwmnlxrxsgs3h";
+      url = "https://files.pythonhosted.org/packages/dd/bf/4138e7bfb757de47d1f4b6994648ec67a51efe58fa907c1e11e350cddfca/six-1.12.0.tar.gz";
+      sha256 = "0wxs1q74v07ssjywbbm7x6h5v9qx209ld2yfsif4060sxi0h2sni";
+    };
+  };
+  "toml" = super.buildPythonPackage {
+    name = "toml-0.10.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://files.pythonhosted.org/packages/b9/19/5cbd78eac8b1783671c40e34bb0fa83133a06d340a38b55c645076d40094/toml-0.10.0.tar.gz";
+      sha256 = "0p1xww2mzkhqvxkfvmfzm58bbfj812zhdz4rwdjiv94ifz2q37r2";
     };
   };
   "tqdm" = super.buildPythonPackage {
-    name = "tqdm-4.21.0";
+    name = "tqdm-4.31.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/b2/e8/722388675a980859ebe6cd8bc1209ae483ad78721a737d08bd981521b5c5/tqdm-4.21.0.tar.gz";
-      sha256 = "0w0i8gvm6jqdxll1i0lvxirb2039jzchp85dls9svsjc10vg4jmr";
+      url = "https://files.pythonhosted.org/packages/80/9b/f3036a9a11c250eb51d38acf94d1d7c33a0d4da8a8931bfdf15e12d505b1/tqdm-4.31.1.tar.gz";
+      sha256 = "01fdks20qx09xw3zdxda6ybiqlycjy8zppgnc8izfqg9xgipfag2";
     };
   };
   "twine" = super.buildPythonPackage {
-    name = "twine-1.11.0";
+    name = "twine-1.13.0";
     doCheck = false;
     propagatedBuildInputs = [
-      self."tqdm"
       self."pkginfo"
+      self."readme-renderer"
       self."requests"
       self."requests-toolbelt"
       self."setuptools"
+      self."tqdm"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/9e/89/2971f240b9fc102b2e56ee8b0a9d7c9c3a7cf081b851eb02d85891de20d1/twine-1.11.0.tar.gz";
-      sha256 = "09cz9v63f8mrs4znbjapjj2z3wdfryq8q364zm0wzjhbzzcs9n9g";
+      url = "https://files.pythonhosted.org/packages/e1/af/4f5bfaa8e9c0ddce229b058a4ebdc11a6e05e9c2e51b854d1d0e8f764d09/twine-1.13.0.tar.gz";
+      sha256 = "1p0lbgzz14i00g7a9x8rw5q5fpbwz2hkm8cz3ndlxiyg7s9rrhnn";
     };
   };
   "urllib3" = super.buildPythonPackage {
-    name = "urllib3-1.22";
+    name = "urllib3-1.24.3";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/ee/11/7c59620aceedcc1ef65e156cc5ce5a24ef87be4107c2b74458464e437a5d/urllib3-1.22.tar.gz";
-      sha256 = "0kyvc9zdlxr5r96bng5rhm9a6sfqidrbvvkz64s76qs5267dli6c";
+      url = "https://files.pythonhosted.org/packages/8a/3c/1bb7ef6c435dea026f06ed9f3ba16aa93f9f4f5d3857a51a35dfa00882f1/urllib3-1.24.3.tar.gz";
+      sha256 = "1x0slqrv6kixkbcdnxbglvjliwhc1payavxjvk8fvbqjrnasd4r3";
     };
   };
   "webencodings" = super.buildPythonPackage {
     name = "webencodings-0.5.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz";
+      url = "https://files.pythonhosted.org/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz";
       sha256 = "08qrgrc4hrximb2gqnl69g01s93rhf2842jfxdjljc1dbwj1qsmk";
     };
   };
   "wheel" = super.buildPythonPackage {
-    name = "wheel-0.31.0";
+    name = "wheel-0.33.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://pypi.python.org/packages/5d/c1/45947333669b31bc6b4933308dd07c2aa2fedcec0a95b14eedae993bd449/wheel-0.31.0.tar.gz";
-      sha256 = "1kjmrf4ad0hqd0km8wvkz4jahjw5rydl4wivj5ib073hxlxibs0s";
+      url = "https://files.pythonhosted.org/packages/b7/cf/1ea0f5b3ce55cacde1e84cdde6cee1ebaff51bd9a3e6c7ba4082199af6f6/wheel-0.33.1.tar.gz";
+      sha256 = "178fix20jymknzx8qs6iqh6zc9rbxzd750q99dkbnxw9y9vgva36";
     };
   };
   "zest.pocompile" = super.buildPythonPackage {
     name = "zest.pocompile-1.4";
     doCheck = false;
+    nativeBuildInputs = [
+      pkgs."unzip"
+    ];
     propagatedBuildInputs = [
-      self."setuptools"
       self."python-gettext"
+      self."setuptools"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/44/42/6189f119fa6776c7725da9fbc767886f38ace040297d559785640591f9ad/zest.pocompile-1.4.zip";
+      url = "https://files.pythonhosted.org/packages/44/42/6189f119fa6776c7725da9fbc767886f38ace040297d559785640591f9ad/zest.pocompile-1.4.zip";
       sha256 = "1krha8srg91clp2schxj0i2hyc11j07bxqbybcjzblp0nsv0ivsz";
     };
   };
   "zest.releaser" = super.buildPythonPackage {
-    name = "zest.releaser-6.14.0";
+    name = "zest.releaser-6.18.2";
     doCheck = false;
     propagatedBuildInputs = [
-      self."setuptools"
-      self."colorama"
-      self."six"
-      self."twine"
       self."chardet"
       self."check-manifest"
+      self."colorama"
       self."pyroma"
       self."readme-renderer"
+      self."requests"
+      self."setuptools"
+      self."six"
+      self."twine"
       self."wheel"
     ];
     src = fetchurl {
-      url = "https://pypi.python.org/packages/8c/6d/c05f1380c5d6c38771bdd8758bf96e59c8c75c179e93ac021c49579507e0/zest.releaser-6.14.0.tar.gz";
-      sha256 = "1bhavljm38wg12hzhb0dsi81b3azh4vh9585vrbn1is3p5ya8l38";
+      url = "https://files.pythonhosted.org/packages/54/4a/0d9f3eac02cda49fff11d583ed4f0a943751e3270c6ebf1f9c1a14abcac5/zest.releaser-6.18.2.tar.gz";
+      sha256 = "1p0b96dfwbyrlvvn9p3v7vfx7mgsl93sarjwg5hrkf9ml7cm6y0j";
     };
   };
-
-### Test requirements
-
-  
 }
