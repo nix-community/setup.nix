@@ -14,8 +14,8 @@ versions are yet (or no longer) in Nixpkgs_.
 
 .. note::
 
-   The current master is development version of setup.nix 2.0 supporting
-   NixOS 18.09, pip >= 18 and implicit reuse of nixpkgs Python package
+   The current master is development version of setup.nix 2.x supporting
+   NixOS 19.03, pip >= 18 and implicit reuse of nixpkgs Python package
    derivations.
 
 
@@ -48,8 +48,8 @@ Create minimal ``./setup.nix``:
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
      , setup ? import (fetchTarball {
-         url = "https://github.com/datakurre/setup.nix/archive/v.1.1.1.tar.gz";
-         sha256 = "1lxw6ifsc1psrmaz0wrz2jymdsxkh3abrw938ch59dkf3g9z3bm4";
+         url = "https://github.com/datakurre/setup.nix/archive/f685d6f8063488dff77e3a672d4e6058c81ffc8b.tar.gz";
+         sha256 = "1b2j5hrx3p38nd0685r0mdnkcx7k1pk15x87nkkn6d876gbfnq8f";
        })
      }:
 
@@ -211,8 +211,8 @@ Project skeleton
     { pkgs ? import <nixpkgs> {}
     , pythonPackages ? pkgs.python3Packages
     , setup ? import (fetchTarball {
-        url = "https://github.com/datakurre/setup.nix/archive/v.1.1.1.tar.gz";
-        sha256 = "1lxw6ifsc1psrmaz0wrz2jymdsxkh3abrw938ch59dkf3g9z3bm4";
+        url = "https://github.com/datakurre/setup.nix/archive/f685d6f8063488dff77e3a672d4e6058c81ffc8b.tar.gz";
+        sha256 = "1b2j5hrx3p38nd0685r0mdnkcx7k1pk15x87nkkn6d876gbfnq8f";
       })
     }:
 
@@ -285,6 +285,8 @@ configuration arguments:
 
     # project path, usually ./., without cleanSource, which is added later
     , src
+    # or alternatively path to requirements.nix to be used as such
+    , requirements ? null
 
     # custom post install script
     , postInstall ? ""
@@ -305,9 +307,6 @@ configuration arguments:
     , buildInputs ? []
     , propagatedBuildInputs ? []
     , shellHook ? ""
-
-    # known list of "broken" as in non-installable Python packages
-    , nonInstallablePackages ? [ "zc.recipe.egg" ]
 
     # very dedicated bdist_docker
     , image_author ? null
@@ -335,10 +334,10 @@ Arguments in detail:
     .. code:: nix
 
      {
-       pkgs= import (fetchTarball {
-         url = "https://github.com/NixOS/nixpkgs-channels/archive/ef450efb9df5260e54503509d2fd638444668713.tar.gz";
-         sha256 = "1k9f3n2pmdh7sap79c8nqpz7cjx9930fcpk27pvp6lwmr4qigmxg";
-       }) {}
+       pkgs = (fetchTarball {
+         url = "https://github.com/NixOS/nixpkgs-channels/archive/915ce0f1e1a75adec7079ddb6cd3ffba5036b3fc.tar.gz";
+         sha256 = "1kmx29i3xy4701z4lgmv5xxslb1djahrjxmrf83ig1whb4vgk4wm";
+       }) {};
      }
 
 **pythonPackges**

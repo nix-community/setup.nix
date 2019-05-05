@@ -25,6 +25,7 @@
 , propagatedBuildInputs ? []
 , shellHook ? ""
 
+# DEPRECATED (because there should not be any):
 # known list of "broken" as in non-installable Python packages
 , nonInstallablePackages ? []
 
