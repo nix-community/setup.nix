@@ -48,8 +48,8 @@ Create minimal ``./setup.nix``:
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
      , setup ? import (fetchTarball {
-         url = "https://github.com/datakurre/setup.nix/archive/f685d6f8063488dff77e3a672d4e6058c81ffc8b.tar.gz";
-         sha256 = "1b2j5hrx3p38nd0685r0mdnkcx7k1pk15x87nkkn6d876gbfnq8f";
+         url = "https://github.com/datakurre/setup.nix/archive/v2.0.tar.gz";
+         sha256 = "14nffpbqfx64wrc5rhsy6hn5az7r8gkqd8zv0hvfcdk2hnq396nb";
        })
      }:
 
@@ -208,20 +208,20 @@ Project skeleton
 
 .. code:: nix
 
-    { pkgs ? import <nixpkgs> {}
-    , pythonPackages ? pkgs.python3Packages
-    , setup ? import (fetchTarball {
-        url = "https://github.com/datakurre/setup.nix/archive/f685d6f8063488dff77e3a672d4e6058c81ffc8b.tar.gz";
-        sha256 = "1b2j5hrx3p38nd0685r0mdnkcx7k1pk15x87nkkn6d876gbfnq8f";
-      })
-    }:
+   { pkgs ? import <nixpkgs> {}
+   , pythonPackages ? pkgs.python3Packages
+   , setup ? import (fetchTarball {
+      url = "https://github.com/datakurre/setup.nix/archive/v2.0.tar.gz";
+      sha256 = "14nffpbqfx64wrc5rhsy6hn5az7r8gkqd8zv0hvfcdk2hnq396nb";
+    })
+   }:
 
-    setup {
-      inherit pkgs pythonPackages;
-      src = ./.;
-      doCheck = true;
-      image_entrypoint = "/bin/hello-world";
-    }
+   setup {
+     inherit pkgs pythonPackages;
+     src = ./.;
+     doCheck = true;
+     image_entrypoint = "/bin/hello-world";
+   }
 
 **./requirements.nix**:
 
