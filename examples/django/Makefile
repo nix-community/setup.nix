@@ -37,7 +37,7 @@ upgrade:
 	sed -i "2s|.*|    url = \"https://github.com/NixOS/nixpkgs-channels/archive/$$rev.tar.gz\";|" setup-pinned.nix; \
 	sed -i "3s|.*|    sha256 = \"$$sha\";|" setup-pinned.nix;
 	@echo "Updating setup-pinned.nix revision"; \
-	rev=$$(curl https://api.github.com/repos/datakurre/setup.nix/branches/master|jq -r ".commit.sha"); \
+	rev=$$(curl https://api.github.com/repos/datakurre/setup.nix/tags|jq -r ".[0].name"); \
 	echo "Updating setup-pinned.nix $$rev hash"; \
 	sha=$$(nix-prefetch-url --unpack https://github.com/datakurre/setup.nix/archive/$$rev.tar.gz); \
 	sed -i "6s|.*|    url = \"https://github.com/datakurre/setup.nix/archive/$$rev.tar.gz\";|" setup-pinned.nix; \
