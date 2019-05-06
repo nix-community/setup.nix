@@ -128,7 +128,9 @@ let
         doCheck = false;  # already tested at nixpkgs
       });
     })
-    (filter (name: (hasAttr name pythonPackages)) requirementsNames)
+    (filter (name: ((hasAttr name pythonPackages)
+                    && (getAttr name pythonPackages) != null))
+     requirementsNames)
   ));
 
   # Build final pythonPackages with all generated & customized requirements
