@@ -6,6 +6,10 @@ self: super: {
     nativeBuildInputs = [ self."pytest-runner" ];
   });
 
+  "Automat" = super."Automat".overridePythonAttrs(old: {
+    buildInputs = [ self."m2r" self."setuptools-scm" ];
+  });
+
   "backports.functools-lru-cache" = super."backports.functools-lru-cache".overridePythonAttrs(old: {
     nativeBuildInputs = [ self."setuptools-scm" ];
     postInstall = ''
@@ -145,6 +149,8 @@ self: super: {
     ];
   });
 
+  "robotframework-python3" = self.robotframework;
+
   "rst2pdf" = super."rst2pdf".overridePythonAttrs(old: {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ self."pillow" ];
   });
@@ -166,6 +172,10 @@ self: super: {
   );
 
   "testpath" = pythonPackages."testpath";
+
+  "Twisted" = super."Twisted".overridePythonAttrs(old: {
+    buildInputs = [ self."incremental" ];
+  });
 
   "xhtml2pdf" = super."xhtml2pdf".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."nose" ];
