@@ -81,6 +81,14 @@ self: super: {
     }
   );
 
+  "Products.CMFActionIcons" = super."Products.CMFActionIcons".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
+  });
+
+  "Products.CMFCore" = super."Products.CMFCore".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
+  });
+
   "Products.CMFUid" = super."Products.CMFUid".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."eggtestinfo" ];
   });
@@ -183,6 +191,12 @@ self: super: {
 
   "zope.security" = super."zope.security".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."zope.interface" self."zope.proxy" ];
+  });
+
+  "zope.testing" = super."zope.testing".overridePythonAttrs(old: {
+    postInstall = ''
+      rm -f $out/bin/zope-testrunner
+    '';
   });
 
 }
