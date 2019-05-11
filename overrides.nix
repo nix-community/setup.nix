@@ -54,6 +54,10 @@ self: super: {
     nativeBuildInputs = [ self."nose" ];
   });
 
+  "flake8-print" = super."flake8-print".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."pytest-runner" ];
+  });
+
   "jsonschema" = super."jsonschema".overridePythonAttrs(old: {
     nativeBuildInputs = [
       self."pytest-runner"
