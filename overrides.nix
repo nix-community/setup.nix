@@ -89,6 +89,10 @@ self: super: {
     nativeBuildInputs = [ self."setuptools-scm" ];
   });
 
+  "pylint" = super."pylint".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."pytest-runner" ];
+  });
+
   # Pillow is often written with title case
   "Pillow" = pythonPackages."pillow".overridePythonAttrs(old:
     with super."Pillow"; {
