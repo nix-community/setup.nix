@@ -1,8 +1,14 @@
 { pkgs, pythonPackages }:
 
+with pkgs.lib;
+
 self: super: {
 
   "aiovault" = super."aiovault".overridePythonAttrs (old: {
+    nativeBuildInputs = [ self."pytest-runner" ];
+  });
+
+  "astroid" = super."astroid".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."pytest-runner" ];
   });
 
@@ -16,6 +22,12 @@ self: super: {
       rm -f $out/lib/*/site-packages/backports/__init__.py
       rm -f $out/lib/*/site-packages/backports/__init__.pyc
     '';
+  });
+
+  "coveralls" = super."coveralls".overridePythonAttrs(old: {
+    buildInputs = [ self."pytest-runner" ];
+    propagatedBuildInputs = old.propagatedBuildInputs
+    ++ optionals self.isPy27 [ self."ipaddress" self."pyopenssl" ];
   });
 
   "BTrees" = super."BTrees".overridePythonAttrs (old: {
@@ -40,6 +52,10 @@ self: super: {
     postInstall = ''
       rm $out/bin/coverage
     '';
+  });
+
+  "lazy-object-proxy" = super."lazy-object-proxy".overridePythonAttrs(old: {
+    buildInputs = [ self."setuptools-scm" ];
   });
 
   "fancycompleter" = super."fancycompleter".overridePythonAttrs(old: {
