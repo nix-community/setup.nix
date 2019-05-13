@@ -213,9 +213,7 @@ self: super: {
   "zest.releaser" = super."zest.releaser".overridePythonAttrs(old: {
     postInstall = ''
       for prog in $out/bin/*; do
-        mv $prog $prog-python${pythonPackages.python.pythonVersion}
-        wrapProgram $prog-python${pythonPackages.python.pythonVersion} \
-          --set SOURCE_DATE_EPOCH 315532800
+        wrapProgram $prog --set SOURCE_DATE_EPOCH 315532800
       done
     '';
   });
