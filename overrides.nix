@@ -209,6 +209,17 @@ self: super: {
     nativeBuildInputs = [ self."nose" ];
   });
 
+  # building wheels require SOURCE_DATE_EPOCH
+  "zest.releaser" = super."zest.releaser".overridePythonAttrs(old: {
+    postInstall = ''
+      for prog in $out/bin/*; do
+        mv $prog $prog-python${pythonPackages.python.pythonVersion}
+        wrapProgram $prog-python${pythonPackages.python.pythonVersion} \
+          --set SOURCE_DATE_EPOCH 315532800
+      done
+    '';
+  });
+
   "zope.security" = super."zope.security".overridePythonAttrs (old: {
     nativeBuildInputs = [ self."zope.interface" self."zope.proxy" ];
   });
