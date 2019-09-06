@@ -6,21 +6,11 @@
 
 let
 
-  "manifest_python" = pythonPackages.python.withPackages(ps: [
-    ps.setuptools ps.wheel
-  ]);
+overrides = self: super: {
 
-  overrides = self: super: {
-
-  # check-manifest requires Python interpreter able to import setup.py
   "check-manifest" = super."check-manifest".overridePythonAttrs(old: {
-    postPatch = ''
-      substituteInPlace check_manifest.py \
-        --replace "os.path.abspath(python)" \
-                  "\"${manifest_python.interpreter}\""
-    '';
-    nativeBuildInputs =  [ pythonPackages.toml ];
-    propagatedBuildInputs = [ manifest_python ];
+    # check-manifest requires Python interpreter able to import setup.py
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools self.wheel ];
   });
 
   # building wheels require SOURCE_DATE_EPOCH
