@@ -16,7 +16,8 @@ versions are yet (or no longer) in Nixpkgs_.
 
    The current master is development version of setup.nix 3.x supporting
    NixOS >= 19.03, pip >= 18 and implicit reuse of nixpkgs Python package
-   derivations.
+   derivations. Some rarely used flags from previous versions have been
+   removed.
 
 
 Quick start
@@ -48,8 +49,8 @@ Create minimal ``./setup.nix``:
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
      , setup ? import (fetchTarball {
-         url = "https://github.com/datakurre/setup.nix/archive/v2.0.tar.gz";
-         sha256 = "14nffpbqfx64wrc5rhsy6hn5az7r8gkqd8zv0hvfcdk2hnq396nb";
+         url = "https://github.com/datakurre/setup.nix/archive/v3.0.tar.gz";
+         sha256 = "0s3drfcbyp21v8qvlwrpabldsc2aqqpic9r8dmnayqgjixcb09mc";
        })
      }:
 
@@ -217,8 +218,8 @@ Project skeleton
    { pkgs ? import <nixpkgs> {}
    , pythonPackages ? pkgs.python3Packages
    , setup ? import (fetchTarball {
-      url = "https://github.com/datakurre/setup.nix/archive/v2.0.tar.gz";
-      sha256 = "14nffpbqfx64wrc5rhsy6hn5az7r8gkqd8zv0hvfcdk2hnq396nb";
+      url = "https://github.com/datakurre/setup.nix/archive/v3.0.tar.gz";
+      sha256 = "0s3drfcbyp21v8qvlwrpabldsc2aqqpic9r8dmnayqgjixcb09mc";
     })
    }:
 
