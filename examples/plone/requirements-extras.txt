@@ -1,0 +1,3 @@
+git+https://github.com/datakurre/plonectl.git@master
+git+https://github.com/datakurre/ZServer.git@datakurre/py3
+git+https://github.com/datakurre/collective.wsevents.git@master
