@@ -3,31 +3,23 @@
 
 # project path, usually ./., without cleanSource, which is added later
 , src
+
+# nix path to pip2nix built requirements file (or empty for ./requirements.nix)
 , requirements ? null
 
 # custom post install script
 , postInstall ? ""
 
-# enable tests on build
+# enable tests on package
 , doCheck ? false
 
 # requirements overrides fix building packages with undetected inputs
 , overrides ? self: super: {}
-, defaultOverrides ? true
-, implicitOverrides ? true
-
-# force to build environments without package level dependency checks
-, force ? false
-, ignoreCollisions ? false
 
 # non-Python inputs
 , buildInputs ? []
 , propagatedBuildInputs ? []
 , shellHook ? ""
-
-# DEPRECATED (because there should not be any):
-# known list of "broken" as in non-installable Python packages
-, nonInstallablePackages ? []
 
 # very dedicated bdist_docker
 , image_author ? null
@@ -48,6 +40,7 @@
 
 with builtins;
 with pkgs.lib;
+with pkgs.lib.attrsets;
 with pkgs.stdenv;
 
 let
@@ -81,67 +74,62 @@ let
       then src else src + "/requirements.nix"
     ) else requirements) {
     inherit pkgs;
-    inherit (builtins) fetchurl;
-    inherit (pkgs) fetchgit fetchhg;
+    inherit (pkgs) fetchurl fetchgit fetchhg;
   };
-
-  # Load default overrides
-  commonOverrides = import ./overrides.nix { inherit pkgs pythonPackages; };
 
   # List package names in requirements
   requirementsNames = attrNames (requirementsFunc {} {});
 
-  # Define optional overlay for force building requirements without overrides
-  forcedRequirements = self: super: (listToAttrs (map
-    (name: {
-      inherit name;
-      value = (getAttr name super).overridePythonAttrs(old: {
-        installFlags = [ "--no-dependencies" ];
-        propagatedBuildInputs = [];
-      });
-    })
-    requirementsNames
-  ));
+  # Merge named input list from nixpkgs drv with input list from requirements drv
+  mergedInputs = old: new: inputsName: self: super:
+    (attrByPath [ inputsName ] [] new) ++ map
+    (x: attrByPath [ (nameFromDrvName x.name) ] x self)
+    (filter (x: !isNull x) (attrByPath [ inputsName ] [] old));
 
+  # Merge package drf from nixpkgs drv with requirements drv
+  mergedPackage = old: new: self: super:
+    if new.format == "wheel" && new.pname != "wheel"
+    then new.overridePythonAttrs(old: rec {
+      propagatedBuildInputs =
+        mergedInputs old new "propagatedBuildInputs" self super;
+    })
+    else old.overridePythonAttrs(old: rec {
+      inherit (new) pname version src format;
+      name = "${pname}-${version}";
+      checkInputs =
+        mergedInputs old new "checkInputs" self super;
+      buildInputs =
+        mergedInputs old new "buildInputs" self super;
+      nativeBuildInputs =
+        mergedInputs old new "nativeBuildInputs" self super;
+      propagatedBuildInputs =
+        mergedInputs old new "propagatedBuildInputs" self super;
+      doCheck = false;
+    });
+
+  # Return base name form derivation name
   nameFromDrvName = name:
     let parts = tail (split "([0-9]-)" (parseDrvName name).name);
     in if length parts > 0 then elemAt parts 1 else name;
 
-  # Define implicit overrides overlay to implictly reuse nixpkgs derivations
-  nixpkgsOverrides = self: super: (listToAttrs (map
-    (name: {
-      inherit name;
-      value = (getAttr name pythonPackages).overridePythonAttrs(old: {
-        inherit name;
-        src = (getAttr name super).src;
-        nativeBuildInputs = map
-          (x: if hasAttr (nameFromDrvName x.name) super
-              then getAttr (nameFromDrvName x.name) self
-              else x)
-          (if hasAttr "nativeBuildInputs" old then old.nativeBuildInputs else []);
-        buildInputs = map
-          (x: if hasAttr (nameFromDrvName x.name) super
-              then getAttr (nameFromDrvName x.name) self
-              else x)
-          (if hasAttr "buildInputs" old then old.buildInputs else []);
-        propagatedBuildInputs = (getAttr name super).propagatedBuildInputs;
-        doCheck = false;  # already tested at nixpkgs
-      });
-    })
-    (filter (name: ((hasAttr name pythonPackages)
-                    && (getAttr name pythonPackages) != null))
-     requirementsNames)
-  ));
-
   # Build final pythonPackages with all generated & customized requirements
-  packages =
-    (fix
-    (extends overrides
-    (extends (if defaultOverrides then commonOverrides else self: super: {})
-    (extends (if force then forcedRequirements else self: super: {})
-    (extends (if implicitOverrides then nixpkgsOverrides else self: super: {})
-    (extends requirementsFunc pythonPackages.__unfix__)
-    )))));
+  python = (pythonPackages.python.override {
+    packageOverrides = self: super:
+      # 1) Merge packages already in pythonPackages
+      let super_ = (requirementsFunc self super);  # from requirements
+          results = (listToAttrs (map (name: let new = getAttr name super_; in {
+        inherit name;
+        value = mergedPackage (getAttr name super) new self super_;
+      })
+      (filter (name: hasAttr "overridePythonAttrs"
+                     (attrByPath [ name ] {} pythonPackages))
+       requirementsNames)))
+      // # 2) with packages only in requirements
+      (listToAttrs (map (name: { inherit name; value = (getAttr name super_); })
+      (filter (name: ! hasAttr name pythonPackages) requirementsNames)));
+      in results // (overrides self (super // results));
+    self = pythonPackages.python;
+  });
 
   # Helper to always return a list
   list = name: attrs:
@@ -196,63 +184,45 @@ let
   };
 
 
-# Define commmon targets
+# Common targets
 in {
 
-  # Define known good version of pip2nix environment
+  # Known good version of pip2nix environment
   pip2nix = (pythonPackages.python.withPackages (ps: [
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.pythonVersion)
-      ( import (fetchTarball {
-          url = "https://github.com/datakurre/pip2nix/archive/c49ba4c0644af8e65191575c4aad1bf23135f543.tar.gz";
-          sha256 = "0hxsl8cgb4c057dbj94zbd9zn6xzkf26hghs9mhfq06vn99q1vzc";
-        } + "/release.nix") { inherit pkgs; }).pip2nix
-      )
-#     ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
+       ( import (fetchTarball {
+           url = "https://github.com/nix-community/pip2nix/archive/45f0580cef09c83d741ad0b7fddcbd464d375268.tar.gz";
+           sha256 = "0w2hsl56g82jw4mfc7hcym2vviffxxmiwvsb7f4vwj9a811hn9m5";
+         } + "/release.nix") { inherit pkgs; }).pip2nix
+       )
+#      ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
   ])).env;
 
-  # Define convenient alias for the final set of packages
-  pythonPackages = packages;
+  # Alias for the final set of Python packages
+  pythonPackages = python.pkgs;
 
 } //
 
 # Define environment build targets
 (if isNull package then rec {
 
-  # Make all packages available for build with all requirements
-  build = genAttrs requirementsNames (name:
-    if force == true then
-      (getAttr name packages).overridePythonAttrs(old: {
-        propagatedBuildInputs =
-          map (name: getAttr name packages)
-              (foldl' (x: y: remove y x)
-               requirementsNames (nonInstallablePackages ++ [ name ]));
-      })
-    else
-      getAttr name packages
-  );
+  # Requirements build as attribute set
+  build = genAttrs requirementsNames (name: getAttr name python.pkgs);
 
-  # Setup.py alias
   develop = shell;
 
   # Build env with all requirements
   env = pkgs.buildEnv {
     name = "env";
     paths = buildInputs ++ propagatedBuildInputs ++ [
-      (packages.python.buildEnv.override {
-        extraLibs = map
-          (name: getAttr name packages)
-          (foldl' (x: y: remove y x)
-           requirementsNames nonInstallablePackages);
-        inherit ignoreCollisions;
-      })
+      (python.withPackages(ps: map (name: getAttr name ps) requirementsNames))
     ];
   };
 
-  # Setup.py alias
   install = env;
 
-  # Make full environment available for nix-shell
+  # nix-shell
   shell = pkgs.stdenv.mkDerivation {
     name = "env";
     nativeBuildInputs = [ env ];
@@ -271,26 +241,22 @@ in {
     }
   ) else null;
 
-# Define package build targets
+# Package build targets
 } else rec {
 
-  build = packages.buildPythonPackage ({
+  build = python.pkgs.buildPythonPackage ({
     name = "${package.metadata.name}-${package.metadata.version}";
     src = cleanSource src;
     nativeBuildInputs = map
-      (name: getAttr name packages) (list "setup_requires" package.options);
+      (name: getAttr name python.pkgs) (list "setup_requires" package.options);
     buildInputs = buildInputs;
     checkInputs = map
-      (name: getAttr name packages) (list "tests_require" package.options);
-    propagatedBuildInputs = if force == true then propagatedBuildInputs ++ map
-      (name: getAttr name packages)
-      (foldl' (x: y: remove y x)
-       requirementsNames (nonInstallablePackages ++ [ package.metadata.name ]))
-    else propagatedBuildInputs ++ map
-      (name: getAttr name packages) (list "install_requires" package.options);
+      (name: getAttr name python.pkgs) (list "tests_require" package.options);
+    propagatedBuildInputs = propagatedBuildInputs ++ map
+      (name: getAttr name python.pkgs) (list "install_requires" package.options);
     inherit doCheck;
   } // (if isFunction postInstall then {
-    postInstall = (postInstall packages);
+    postInstall = (postInstall python.pkgs);
   } else {
     inherit postInstall;
   }));
@@ -300,24 +266,16 @@ in {
   env = pkgs.buildEnv {
     name = "${package.metadata.name}-${package.metadata.version}-env";
     paths = buildInputs ++ propagatedBuildInputs ++ [
-      (packages.python.buildEnv.override {
-        extraLibs = map
-          (name: getAttr name packages)
-          (foldl' (x: y: remove y x)
-           requirementsNames nonInstallablePackages);
-        inherit ignoreCollisions;
-      })
+      (python.withPackages(ps: map (name: getAttr name ps) requirementsNames))
     ];
   };
 
-  install = packages.python.withPackages (ps: [ build ]);
+  install = python.withPackages (ps: [ build ]);
 
   shell = build.overrideDerivation(old: {
     name = "${old.name}-shell";
     nativeBuildInputs = buildInputs ++ propagatedBuildInputs ++ map
-      (name: getAttr name packages)
-      (foldl' (x: y: remove y x)
-       requirementsNames nonInstallablePackages);
+      (name: getAttr name python.pkgs) requirementsNames;
     shellHook = old.shellHook + shellHook;
   });
 

@@ -14,8 +14,8 @@ versions are yet (or no longer) in Nixpkgs_.
 
 .. note::
 
-   The current master is development version of setup.nix 2.x supporting
-   NixOS 19.03, pip >= 18 and implicit reuse of nixpkgs Python package
+   The current master is development version of setup.nix 3.x supporting
+   NixOS >= 19.03, pip >= 18 and implicit reuse of nixpkgs Python package
    derivations.
 
 
@@ -30,10 +30,10 @@ Requirements
 * union of package and development requirements in ``requirements.txt``
 * Nix_ or NixOS_ with current Nixpkgs_ channel.
 
-.. _pip2nix: https://github.com/johbo/pip2nix
+.. _pip2nix: https://github.com/nix-community/pip2nix
 .. _Nix: https://nixos.org/nix/
 .. _NixOS: https://nixos.org/
-.. _Nixpkgs:  https://nixos.org/nixpkgs/
+.. _Nixpkgs: https://nixos.org/nixpkgs/
 
 __ http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
 
@@ -123,15 +123,21 @@ When Python packages fail to build with ``nix-shell`` or ``nix-build``, it's
 usually because of missing ``buildInputs`` (because pip2nix cannot detect
 ``setup_requires`` for generated packages in ``requirements.nix``). These
 issues can usually be fixed by manually overriding package derivation in
-``setup.nix`` ``overrides``. Check the automatically included `default
-overrides`__ for reference.
+``setup.nix`` ``overrides``, e.g.:
 
-__ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
+.. code:: nix
 
-Until all the available features and options are documented, see the
-setup-function_ and `examples`_ for more information.
+   overrides = self: super: {
 
-.. _setup-function: https://github.com/datakurre/setup.nix/blob/master/default.nix
+     "sphinx" = super."sphinx".overridePythonAttrs(old: {
+       propagatedBuildInputs = old.propagatedBuildInputs ++ [ self."packaging" ];
+     });
+
+   };
+
+
+Please, see the `examples`_ for more examples of use.
+
 .. _examples: https://github.com/datakurre/setup.nix/blob/master/examples
 
 
@@ -285,23 +291,18 @@ configuration arguments:
 
     # project path, usually ./., without cleanSource, which is added later
     , src
-    # or alternatively path to requirements.nix to be used as such
+
+    # nix path to pip2nix built requirements file (or empty for ./requirements.nix)
     , requirements ? null
 
     # custom post install script
     , postInstall ? ""
 
-    # enable tests on build
+    # enable tests on package
     , doCheck ? false
 
     # requirements overrides fix building packages with undetected inputs
     , overrides ? self: super: {}
-    , defaultOverrides ? true
-    , implicitOverrides ? true
-
-    # force to build environments without package level dependency checks
-    , force ? false
-    , ignoreCollisions ? false
 
     # non-Python inputs
     , buildInputs ? []
@@ -353,20 +354,11 @@ Arguments in detail:
     If you are only building an evironment or an existing package from
     ``requirements.txt``, ``src = ./requirements.nix`` is enough.
 
-**force**
-    By default **setup.nix** tries its best to behave like a good **nixpkgs**
-    citizen and compose Python projects from reusable package builds with
-    well-defined dependencies. ``force = true`` configures **setup.nix** to
-    build individual packages without their dependencies, only to add all the
-    dependencies into the final derivation. `This makes it possible to build
-    packages with circular dependencies or packages with add-ons (depending
-    on the package itself).`__
-
 **doCheck**
     In Nixpkgs_ it is usual to require tests to pass before pakage is built,
-    but elsewhere it's usual to run tests in a separate test stage on CI.
-    **setup.nix** defaults to disable automatic tests on build, but tests
-    can be forced with argment ``doCheck = true``.
+    **setup.nix** disables tests for overridden packages. ``doCheck = true``
+    enables tests for the current package. Tests for overridden packages can
+    only be re-enabled by doing in custom overrides (see below).
 
 **overrides**
     Because pip2nix_ cannot always generate fully working derivations for every
