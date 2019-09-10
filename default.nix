@@ -122,7 +122,8 @@ let
         value = mergedPackage (getAttr name super) new self super_;
       })
       (filter (name: hasAttr "overridePythonAttrs"
-                     (attrByPath [ name ] {} pythonPackages))
+                     (if (tryEval (attrByPath [ name ] {} pythonPackages)).success
+                      then (attrByPath [ name ] {} pythonPackages) else {}))
        requirementsNames)))
       // # 2) with packages only in requirements
       (listToAttrs (map (name: { inherit name; value = (getAttr name super_); })
