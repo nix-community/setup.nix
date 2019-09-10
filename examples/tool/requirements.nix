@@ -256,20 +256,6 @@ self: super: {
       self."requests"
     ];
   };
-  "setuptools" = super.buildPythonPackage rec {
-    pname = "setuptools";
-    version = "41.2.0";
-    src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/b2/86/095d2f7829badc207c893dd4ac767e871f6cd547145df797ea26baea4e2e/setuptools-41.2.0-py2.py3-none-any.whl";
-      sha256 = "1p20h1z8qzlzs33fjw0wnnr87khdd5npqs1dl9dimzag5b7sp023";
-    };
-    format = "wheel";
-    doCheck = false;
-    buildInputs = [];
-    checkInputs = [];
-    nativeBuildInputs = [];
-    propagatedBuildInputs = [];
-  };
   "six" = super.buildPythonPackage rec {
     pname = "six";
     version = "1.12.0";
@@ -314,10 +300,10 @@ self: super: {
   };
   "twine" = super.buildPythonPackage rec {
     pname = "twine";
-    version = "1.13.0";
+    version = "1.14.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/28/90/59eec88c0b2ac9e47fe135959007acb93a3cc9f7146366e11fecf718dd15/twine-1.13.0-py2.py3-none-any.whl";
-      sha256 = "0ik439xi2j5hfmsck98z9p5llbhslyqkdvsxmdn0fqjgvyivzc0g";
+      url = "https://files.pythonhosted.org/packages/8b/db/5f4b228e1b3a4776a593433dd8cc250ec438216ad26c46f4be1bc9eb00ec/twine-1.14.0-py2.py3-none-any.whl";
+      sha256 = "1c73jl8slw5yf3yy03fdpllgj36gccvz8myjh11dfny53bfc1kmj";
     };
     format = "wheel";
     doCheck = false;
@@ -386,7 +372,9 @@ self: super: {
     doCheck = false;
     buildInputs = [];
     checkInputs = [];
-    nativeBuildInputs = [];
+    nativeBuildInputs = [
+      pkgs."unzip"
+    ];
     propagatedBuildInputs = [
       self."python-gettext"
       self."setuptools"

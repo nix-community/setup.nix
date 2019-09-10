@@ -193,12 +193,12 @@ in {
   pip2nix = (pythonPackages.python.withPackages (ps: [
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.pythonVersion)
-       ( import (fetchTarball {
-           url = "https://github.com/nix-community/pip2nix/archive/71671e232d9827b9184feacc47925a7636a55492.tar.gz";
-           sha256 = "0mm2nsqphqz0pmq6ki3c0fz3cg7kl1q5xih5y4sf1c7gc9i7g2fw";
-         } + "/release.nix") { inherit pkgs; }).pip2nix
-       )
-#      ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
+      ( import (fetchTarball {
+          url = "https://github.com/nix-community/pip2nix/archive/63c5f6395fd4fc0a0f25e7f6d60f6bd2d28ecdd1.tar.gz";
+          sha256 = "0hngpnljwbvrhpy5s035sy8ap35n65g0phzl07hvvpykps09rcmq";
+      } + "/release.nix") { inherit pkgs; }).pip2nix
+    )
+#   ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )
   ])).env;
 
   # Alias for the final set of Python packages
