@@ -74,7 +74,8 @@ let
       then src else src + "/requirements.nix"
     ) else requirements) {
     inherit pkgs;
-    inherit (pkgs) fetchurl fetchgit fetchhg;
+    inherit (builtins) fetchurl;
+    inherit (pkgs) fetchgit fetchhg;
   };
 
   # List package names in requirements
