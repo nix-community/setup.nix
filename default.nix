@@ -129,7 +129,12 @@ let
       // # 2) with packages only in requirements
       (listToAttrs (map (name: { inherit name; value = (getAttr name super_); })
       (filter (name: ! hasAttr name pythonPackages) requirementsNames)));
-      in results // (overrides self (super // results));
+      in # 3) with also nixpkgs normalized names of packages
+      (results // (listToAttrs (map (name: {
+        name = replaceStrings ["-"] ["_"] name;
+        value = attrByPath [ name ] {} results;
+      }) (attrNames results))))
+      // (overrides self (super // results));
     self = pythonPackages.python;
   });
 
