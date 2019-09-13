@@ -27,16 +27,15 @@ Quick start
 Requirements
 ------------
 
-* `package configuration declaratively in setup.cfg`__
+* package configuration declaratively in `setup.cfg`_
 * union of package and development requirements in ``requirements.txt``
 * Nix_ or NixOS_ with current Nixpkgs_ channel.
 
+.. _setup.cfg: http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
 .. _pip2nix: https://github.com/nix-community/pip2nix
 .. _Nix: https://nixos.org/nix/
 .. _NixOS: https://nixos.org/
 .. _Nixpkgs: https://nixos.org/nixpkgs/
-
-__ http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
 
 
 Installation
@@ -49,8 +48,8 @@ Create minimal ``./setup.nix``:
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
      , setup ? import (fetchTarball {
-         url = "https://github.com/datakurre/setup.nix/archive/v3.0.tar.gz";
-         sha256 = "0s3drfcbyp21v8qvlwrpabldsc2aqqpic9r8dmnayqgjixcb09mc";
+         url = "https://github.com/datakurre/setup.nix/archive/v3.1.0.tar.gz";
+         sha256 = "1dp9bzivqaqqc2d9bnfy6jh37rfz6mvqaqbxy34l998y0khv5fpv";
        })
      }:
 
@@ -218,7 +217,7 @@ Project skeleton
    { pkgs ? import <nixpkgs> {}
    , pythonPackages ? pkgs.python3Packages
    , setup ? import (fetchTarball {
-      url = "https://github.com/datakurre/setup.nix/archive/v3.0.tar.gz";
+      url = "https://github.com/datakurre/setup.nix/archive/v3.1.0.tar.gz";
       sha256 = "0s3drfcbyp21v8qvlwrpabldsc2aqqpic9r8dmnayqgjixcb09mc";
     })
    }:
@@ -354,6 +353,11 @@ Arguments in detail:
     find your project's ``setup.cfg`` and ``requirements.txt``.
     If you are only building an evironment or an existing package from
     ``requirements.txt``, ``src = ./requirements.nix`` is enough.
+
+**requirements**
+    This is the absolute path for ``requirements.nix``, when it's named something
+    other than ``requirements.nix``. This option was added to allow to generate
+    different requirements files for different Python versions.
 
 **doCheck**
     In Nixpkgs_ it is usual to require tests to pass before pakage is built,
