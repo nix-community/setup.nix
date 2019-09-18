@@ -65,10 +65,10 @@ self: super: {
   };
   "certifi" = super.buildPythonPackage rec {
     pname = "certifi";
-    version = "2019.6.16";
+    version = "2019.9.11";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/69/1b/b853c7a9d4f6a6d00749e94eb6f3a041e342a885b87340b79c1ef73e3a78/certifi-2019.6.16-py2.py3-none-any.whl";
-      sha256 = "0fa9rjd5n3jda7v3hikb948p5sm70738nqiv70vjyxaf9p034s04";
+      url = "https://files.pythonhosted.org/packages/18/b0/8146a4f8dd402f60744fa380bc73ca47303cccf8b9190fd16a827281eac2/certifi-2019.9.11-py2.py3-none-any.whl";
+      sha256 = "1vvc1sssixxgcx719hpibg4zwkv0valbn9ndk87g1p3xf9s7qz7x";
     };
     format = "wheel";
     doCheck = false;
@@ -283,10 +283,10 @@ self: super: {
   };
   "importlib-metadata" = super.buildPythonPackage rec {
     pname = "importlib-metadata";
-    version = "0.20";
+    version = "0.23";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/89/77/8bae90e4534a8fee1e0c3ee4890e2c7d215dccd7386cf2ec7555e529d6bb/importlib_metadata-0.20-py2.py3-none-any.whl";
-      sha256 = "0xc3fqb7sy3wc44diblk7hl5j3ax7s0fk95qh3h2s52llg2v3wcz";
+      url = "https://files.pythonhosted.org/packages/f6/d2/40b3fa882147719744e6aa50ac39cf7a22a913cbcba86a0371176c425a3b/importlib_metadata-0.23-py2.py3-none-any.whl";
+      sha256 = "1brrppl17a672z5qimlgzh4ba9rf5207fws5q5ws2fkzfxwqmwfm";
     };
     format = "wheel";
     doCheck = false;
@@ -389,10 +389,10 @@ self: super: {
   };
   "pluggy" = super.buildPythonPackage rec {
     pname = "pluggy";
-    version = "0.12.0";
+    version = "0.13.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/06/ee/de89e0582276e3551df3110088bf20844de2b0e7df2748406876cc78e021/pluggy-0.12.0-py2.py3-none-any.whl";
-      sha256 = "0z3mfz5wnx1hpg9swh7wa7kxsv6zyxkqfgsxv1svydjrx4bp90dr";
+      url = "https://files.pythonhosted.org/packages/92/c7/48439f7d5fd6bddb4c04b850bb862b42e3e2b98570040dfaf68aedd8114b/pluggy-0.13.0-py2.py3-none-any.whl";
+      sha256 = "1rn39rg4ncng4m5rdrn1hn8s2nl4fsj2sa1kl2s3a7df39hbgd0d";
     };
     format = "wheel";
     doCheck = false;
@@ -628,10 +628,10 @@ self: super: {
   };
   "tqdm" = super.buildPythonPackage rec {
     pname = "tqdm";
-    version = "4.35.0";
+    version = "4.36.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/dc/88/d3213e2f3492daf09d8b41631ad6899f56db17ce83ea9c8a579902bafe5e/tqdm-4.35.0-py2.py3-none-any.whl";
-      sha256 = "0ms45326sram4alphj1mxsvm6qijj1s9vqvqjd9sd9rl7l7a6fby";
+      url = "https://files.pythonhosted.org/packages/95/6b/fe4304220f7a9800f820a6379ee9b1b87128ae8a9703cc3e1ec5171e12ac/tqdm-4.36.0-py2.py3-none-any.whl";
+      sha256 = "0140n9b9ssiq28wgk8rkckh4dnhv1xgkn603ykdyadlp75vz0d2c";
     };
     format = "wheel";
     doCheck = false;
@@ -642,10 +642,10 @@ self: super: {
   };
   "twine" = super.buildPythonPackage rec {
     pname = "twine";
-    version = "1.13.0";
+    version = "1.15.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/28/90/59eec88c0b2ac9e47fe135959007acb93a3cc9f7146366e11fecf718dd15/twine-1.13.0-py2.py3-none-any.whl";
-      sha256 = "0ik439xi2j5hfmsck98z9p5llbhslyqkdvsxmdn0fqjgvyivzc0g";
+      url = "https://files.pythonhosted.org/packages/23/0e/9e833399b84e9232a7f86a8f4351d6687dbab0b03a2a6e352d431463fa68/twine-1.15.0-py2.py3-none-any.whl";
+      sha256 = "0q04gnhr5cns8mib2hhp6dacr71zgr9rdip61f9jbrs2wgbas3v3";
     };
     format = "wheel";
     doCheck = false;
@@ -695,20 +695,6 @@ self: super: {
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/f4/24/2a3e3df732393fed8b3ebf2ec078f05546de641fe1b667ee316ec1dcf3b7/webencodings-0.5.1-py2.py3-none-any.whl";
       sha256 = "0y2aa53jkkcszhbbx59z817ywjvy3ah3lavym6bn88n2yc9i5bx0";
-    };
-    format = "wheel";
-    doCheck = false;
-    buildInputs = [];
-    checkInputs = [];
-    nativeBuildInputs = [];
-    propagatedBuildInputs = [];
-  };
-  "wheel" = super.buildPythonPackage rec {
-    pname = "wheel";
-    version = "0.33.6";
-    src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/00/83/b4a77d044e78ad1a45610eb88f745be2fd2c6d658f9798a15e384b7d57c9/wheel-0.33.6-py2.py3-none-any.whl";
-      sha256 = "0a5gkxdnhdn8jalrxppx6350xw7h434sf51av4n2xkxysdiignpl";
     };
     format = "wheel";
     doCheck = false;

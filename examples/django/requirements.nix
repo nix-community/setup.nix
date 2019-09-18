@@ -21,6 +21,20 @@ self: super: {
       self."sqlparse"
     ];
   };
+  "psycopg2" = super.buildPythonPackage rec {
+    pname = "psycopg2";
+    version = "2.8.3";
+    src = fetchurl {
+      url = "https://files.pythonhosted.org/packages/5c/1c/6997288da181277a0c29bc39a5f9143ff20b8c99f2a7d059cfb55163e165/psycopg2-2.8.3.tar.gz";
+      sha256 = "0ms4kx0p5n281l89awccix4d05ybmdngnjjpi9jbzd0rhf1nwyl9";
+    };
+    format = "setuptools";
+    doCheck = false;
+    buildInputs = [];
+    checkInputs = [];
+    nativeBuildInputs = [];
+    propagatedBuildInputs = [];
+  };
   "pytz" = super.buildPythonPackage rec {
     pname = "pytz";
     version = "2019.2";

@@ -89,13 +89,13 @@ let
 
   # Merge package drf from nixpkgs drv with requirements drv
   mergedPackage = old: new: self: super:
-    if new.format == "wheel" && new.pname != "wheel"
+    if !isNull (match ".*\.whl" new.src) && new.pname != "wheel"
     then new.overridePythonAttrs(old: rec {
       propagatedBuildInputs =
         mergedInputs old new "propagatedBuildInputs" self super;
     })
     else old.overridePythonAttrs(old: rec {
-      inherit (new) pname version src format;
+      inherit (new) pname version src;
       name = "${pname}-${version}";
       checkInputs =
         mergedInputs old new "checkInputs" self super;
@@ -199,8 +199,8 @@ in {
     (getAttr
       ("python" + replaceStrings ["."] [""] pythonPackages.python.pythonVersion)
       ( import (fetchTarball {
-          url = "https://github.com/nix-community/pip2nix/archive/63c5f6395fd4fc0a0f25e7f6d60f6bd2d28ecdd1.tar.gz";
-          sha256 = "0hngpnljwbvrhpy5s035sy8ap35n65g0phzl07hvvpykps09rcmq";
+          url = "https://github.com/nix-community/pip2nix/archive/3094dc6dbd169f298bf72da89634c8ac8fd7f78f.tar.gz";
+          sha256 = "1fn577vp13jdx4r05b1k2mfnq18w6ab2r54rxhrcam0dqxc346l8";
       } + "/release.nix") { inherit pkgs; }).pip2nix
     )
 #   ( import ../pip2nix/release.nix { inherit pkgs; }).pip2nix )

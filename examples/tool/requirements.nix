@@ -37,10 +37,10 @@ self: super: {
   };
   "certifi" = super.buildPythonPackage rec {
     pname = "certifi";
-    version = "2019.6.16";
+    version = "2019.9.11";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/69/1b/b853c7a9d4f6a6d00749e94eb6f3a041e342a885b87340b79c1ef73e3a78/certifi-2019.6.16-py2.py3-none-any.whl";
-      sha256 = "0fa9rjd5n3jda7v3hikb948p5sm70738nqiv70vjyxaf9p034s04";
+      url = "https://files.pythonhosted.org/packages/18/b0/8146a4f8dd402f60744fa380bc73ca47303cccf8b9190fd16a827281eac2/certifi-2019.9.11-py2.py3-none-any.whl";
+      sha256 = "1vvc1sssixxgcx719hpibg4zwkv0valbn9ndk87g1p3xf9s7qz7x";
     };
     format = "wheel";
     doCheck = false;
@@ -286,10 +286,10 @@ self: super: {
   };
   "tqdm" = super.buildPythonPackage rec {
     pname = "tqdm";
-    version = "4.35.0";
+    version = "4.36.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/dc/88/d3213e2f3492daf09d8b41631ad6899f56db17ce83ea9c8a579902bafe5e/tqdm-4.35.0-py2.py3-none-any.whl";
-      sha256 = "0ms45326sram4alphj1mxsvm6qijj1s9vqvqjd9sd9rl7l7a6fby";
+      url = "https://files.pythonhosted.org/packages/95/6b/fe4304220f7a9800f820a6379ee9b1b87128ae8a9703cc3e1ec5171e12ac/tqdm-4.36.0-py2.py3-none-any.whl";
+      sha256 = "0140n9b9ssiq28wgk8rkckh4dnhv1xgkn603ykdyadlp75vz0d2c";
     };
     format = "wheel";
     doCheck = false;
@@ -300,10 +300,10 @@ self: super: {
   };
   "twine" = super.buildPythonPackage rec {
     pname = "twine";
-    version = "1.14.0";
+    version = "1.15.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/8b/db/5f4b228e1b3a4776a593433dd8cc250ec438216ad26c46f4be1bc9eb00ec/twine-1.14.0-py2.py3-none-any.whl";
-      sha256 = "1c73jl8slw5yf3yy03fdpllgj36gccvz8myjh11dfny53bfc1kmj";
+      url = "https://files.pythonhosted.org/packages/23/0e/9e833399b84e9232a7f86a8f4351d6687dbab0b03a2a6e352d431463fa68/twine-1.15.0-py2.py3-none-any.whl";
+      sha256 = "0q04gnhr5cns8mib2hhp6dacr71zgr9rdip61f9jbrs2wgbas3v3";
     };
     format = "wheel";
     doCheck = false;
@@ -339,20 +339,6 @@ self: super: {
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/f4/24/2a3e3df732393fed8b3ebf2ec078f05546de641fe1b667ee316ec1dcf3b7/webencodings-0.5.1-py2.py3-none-any.whl";
       sha256 = "0y2aa53jkkcszhbbx59z817ywjvy3ah3lavym6bn88n2yc9i5bx0";
-    };
-    format = "wheel";
-    doCheck = false;
-    buildInputs = [];
-    checkInputs = [];
-    nativeBuildInputs = [];
-    propagatedBuildInputs = [];
-  };
-  "wheel" = super.buildPythonPackage rec {
-    pname = "wheel";
-    version = "0.33.6";
-    src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/00/83/b4a77d044e78ad1a45610eb88f745be2fd2c6d658f9798a15e384b7d57c9/wheel-0.33.6-py2.py3-none-any.whl";
-      sha256 = "0a5gkxdnhdn8jalrxppx6350xw7h434sf51av4n2xkxysdiignpl";
     };
     format = "wheel";
     doCheck = false;
