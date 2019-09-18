@@ -133,10 +133,10 @@ self: super: {
   };
   "importlib-metadata" = super.buildPythonPackage rec {
     pname = "importlib-metadata";
-    version = "0.20";
+    version = "0.23";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/89/77/8bae90e4534a8fee1e0c3ee4890e2c7d215dccd7386cf2ec7555e529d6bb/importlib_metadata-0.20-py2.py3-none-any.whl";
-      sha256 = "0xc3fqb7sy3wc44diblk7hl5j3ax7s0fk95qh3h2s52llg2v3wcz";
+      url = "https://files.pythonhosted.org/packages/f6/d2/40b3fa882147719744e6aa50ac39cf7a22a913cbcba86a0371176c425a3b/importlib_metadata-0.23-py2.py3-none-any.whl";
+      sha256 = "1brrppl17a672z5qimlgzh4ba9rf5207fws5q5ws2fkzfxwqmwfm";
     };
     format = "wheel";
     doCheck = false;
@@ -225,10 +225,10 @@ self: super: {
   };
   "pluggy" = super.buildPythonPackage rec {
     pname = "pluggy";
-    version = "0.12.0";
+    version = "0.13.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/06/ee/de89e0582276e3551df3110088bf20844de2b0e7df2748406876cc78e021/pluggy-0.12.0-py2.py3-none-any.whl";
-      sha256 = "0z3mfz5wnx1hpg9swh7wa7kxsv6zyxkqfgsxv1svydjrx4bp90dr";
+      url = "https://files.pythonhosted.org/packages/92/c7/48439f7d5fd6bddb4c04b850bb862b42e3e2b98570040dfaf68aedd8114b/pluggy-0.13.0-py2.py3-none-any.whl";
+      sha256 = "1rn39rg4ncng4m5rdrn1hn8s2nl4fsj2sa1kl2s3a7df39hbgd0d";
     };
     format = "wheel";
     doCheck = false;
@@ -360,20 +360,6 @@ self: super: {
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/7e/9f/526a6947247599b084ee5232e4f9190a38f398d7300d866af3ab571a5bfe/wcwidth-0.1.7-py2.py3-none-any.whl";
       sha256 = "0z6yi9wgxisnsz14c5zpz123bd2rslg7cgsmcjl40yxg4lcygszl";
-    };
-    format = "wheel";
-    doCheck = false;
-    buildInputs = [];
-    checkInputs = [];
-    nativeBuildInputs = [];
-    propagatedBuildInputs = [];
-  };
-  "wheel" = super.buildPythonPackage rec {
-    pname = "wheel";
-    version = "0.33.6";
-    src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/00/83/b4a77d044e78ad1a45610eb88f745be2fd2c6d658f9798a15e384b7d57c9/wheel-0.33.6-py2.py3-none-any.whl";
-      sha256 = "0a5gkxdnhdn8jalrxppx6350xw7h434sf51av4n2xkxysdiignpl";
     };
     format = "wheel";
     doCheck = false;
