@@ -48,7 +48,7 @@ Create minimal ``./setup.nix``:
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
      , setup ? import (fetchTarball {
-         url = "https://github.com/datakurre/setup.nix/archive/v3.1.0.tar.gz";
+         url = "https://github.com/nix-community/setup.nix/archive/v3.1.0.tar.gz";
          sha256 = "1dp9bzivqaqqc2d9bnfy6jh37rfz6mvqaqbxy34l998y0khv5fpv";
        })
      }:
@@ -138,7 +138,7 @@ issues can usually be fixed by manually overriding package derivation in
 
 Please, see the `examples`_ for more examples of use.
 
-.. _examples: https://github.com/datakurre/setup.nix/blob/master/examples
+.. _examples: https://github.com/nix-community/setup.nix/blob/master/examples
 
 
 Complete example
@@ -217,7 +217,7 @@ Project skeleton
    { pkgs ? import <nixpkgs> {}
    , pythonPackages ? pkgs.python3Packages
    , setup ? import (fetchTarball {
-      url = "https://github.com/datakurre/setup.nix/archive/v3.1.0.tar.gz";
+      url = "https://github.com/nix-community/setup.nix/archive/v3.1.0.tar.gz";
       sha256 = "0s3drfcbyp21v8qvlwrpabldsc2aqqpic9r8dmnayqgjixcb09mc";
     })
    }:
@@ -411,14 +411,14 @@ Arguments in detail:
     ``image_labels`` should be a flat record of key value pairs for to be
     used as Docker image labels.
 
-__ https://github.com/datakurre/setup.nix/blob/master/examples/tool
-__ https://github.com/datakurre/setup.nix/blob/master/overrides.nix
+__ https://github.com/nix-community/setup.nix/blob/master/examples/tool
+__ https://github.com/nix-community/setup.nix/blob/master/overrides.nix
 
 
 More examples
 =============
 
 * https://github.com/collective/sphinxcontrib-httpexample
-* https://github.com/datakurre/setup.nix/blob/master/examples/env
-* https://github.com/datakurre/setup.nix/blob/master/examples/package
-* https://github.com/datakurre/setup.nix/blob/master/examples/tool
+* https://github.com/nix-community/setup.nix/blob/master/examples/env
+* https://github.com/nix-community/setup.nix/blob/master/examples/package
+* https://github.com/nix-community/setup.nix/blob/master/examples/tool
