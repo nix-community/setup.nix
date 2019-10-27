@@ -48,8 +48,8 @@ Create minimal ``./setup.nix``:
      { pkgs ? import <nixpkgs> {}
      , pythonPackages ? pkgs.python3Packages
      , setup ? import (fetchTarball {
-         url = "https://github.com/nix-community/setup.nix/archive/v3.1.0.tar.gz";
-         sha256 = "1dp9bzivqaqqc2d9bnfy6jh37rfz6mvqaqbxy34l998y0khv5fpv";
+         url = "https://github.com/nix-community/setup.nix/archive/v3.3.0.tar.gz";
+         sha256 = "1v1rgv1rl7za7ha3ngs6zap0b61z967aavh4p2ydngp44w5m2j5a";
        })
      }:
 
@@ -217,8 +217,8 @@ Project skeleton
    { pkgs ? import <nixpkgs> {}
    , pythonPackages ? pkgs.python3Packages
    , setup ? import (fetchTarball {
-      url = "https://github.com/nix-community/setup.nix/archive/v3.1.0.tar.gz";
-      sha256 = "0s3drfcbyp21v8qvlwrpabldsc2aqqpic9r8dmnayqgjixcb09mc";
+      url = "https://github.com/nix-community/setup.nix/archive/v3.3.0.tar.gz";
+      sha256 = "1v1rgv1rl7za7ha3ngs6zap0b61z967aavh4p2ydngp44w5m2j5a";
     })
    }:
 
