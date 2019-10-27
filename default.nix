@@ -279,11 +279,14 @@ in {
 
   install = python.withPackages (ps: [ build ]);
 
-  shell = build.overrideDerivation(old: {
+  shell = build.overridePythonAttrs(old: {
     name = "${old.name}-shell";
     nativeBuildInputs = buildInputs ++ propagatedBuildInputs ++ map
       (name: getAttr name python.pkgs) requirementsNames;
-    shellHook = old.shellHook + shellHook;
+    postShellHook =
+      if (hasAttr "postShellHook" old)
+      then old.postShellHook + shellHook
+      else shellHook;
   });
 
   sdist = build.overrideDerivation(old: {

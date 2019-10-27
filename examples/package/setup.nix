@@ -16,4 +16,7 @@ in setup {
     "com.example.image" = "helloworld";
   };
   doCheck = true;
+  shellHook = ''
+    echo "Developed version of ./hello-world is now on path."
+  '';
 }
