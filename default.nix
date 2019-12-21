@@ -4,7 +4,8 @@
 # project path, usually ./., without cleanSource, which is added later
 , src
 
-# nix path to pip2nix built requirements file (or empty for ./requirements.nix)
+# nix path to pip2nix built requirements file or similar nix function
+# or left empty to expect ./requirements.nix to exist
 , requirements ? null
 
 # custom post install script
@@ -68,11 +69,14 @@ let
   )) else null;
 
   # Load generated requirements
-  requirementsFunc = import (
-    if isNull requirements then (
+  requirementsFunc = (
+    if (isFunction requirements) then requirements
+    else (import (if (isNull requirements) then (
       if hasSuffix ".nix" (baseNameOf src)
-      then src else src + "/requirements.nix"
-    ) else requirements) {
+      then src
+      else src + "/requirements.nix")
+    else requirements))
+  ){
     inherit pkgs;
     inherit (builtins) fetchurl;
     inherit (pkgs) fetchgit fetchhg;
@@ -89,7 +93,9 @@ let
 
   # Merge package drf from nixpkgs drv with requirements drv
   mergedPackage = old: new: self: super:
-    if !isNull (match ".*\.whl" new.src) && new.pname != "wheel"
+    if isString new.src
+       && !isNull (match ".*\.whl" new.src)
+       && new.pname != "wheel"
     then new.overridePythonAttrs(old: rec {
       propagatedBuildInputs =
         mergedInputs old new "propagatedBuildInputs" self super;

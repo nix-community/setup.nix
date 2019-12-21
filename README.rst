@@ -292,7 +292,8 @@ configuration arguments:
     # project path, usually ./., without cleanSource, which is added later
     , src
 
-    # nix path to pip2nix built requirements file (or empty for ./requirements.nix)
+    # nix path to pip2nix built requirements file or similar nix function
+    # or left empty to expect ./requirements.nix to exist
     , requirements ? null
 
     # custom post install script
