@@ -2,6 +2,8 @@
 setup.nix – Nix for Python developers simplified
 ================================================
 
+**DEPRECATION NOTICE** I'm working on minimal version on nix-Python-toolchain developed in *setup.nix* with intention to distribute it as a scaffold for pip2nix_. *setup.nix* won't disappear, but may not regularly be updated for newer NixOS versions anymore.
+
 **setup.nix** provides opinionated helper functions and pip2nix_-based workflow
 for developing, testing and packaging declaratively configured Python packages
 in Nix_/NixOS_ environments. **setup.nix** is designed for mixed environments,
@@ -18,7 +20,6 @@ versions are yet (or no longer) in Nixpkgs_.
    NixOS >= 19.03, pip >= 18 and implicit reuse of nixpkgs Python package
    derivations. Some rarely used flags from previous versions have been
    removed.
-
 
 Quick start
 ===========
