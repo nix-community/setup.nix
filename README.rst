@@ -2,7 +2,7 @@
 setup.nix – Nix for Python developers simplified
 ================================================
 
-**DEPRECATION NOTICE** I'm working on minimal version on nix-Python-toolchain developed in *setup.nix* with intention to distribute it as a scaffold for pip2nix_. *setup.nix* won't disappear, but may not regularly be updated for newer NixOS versions anymore.
+**DEPRECATION NOTICE** I'm working on minimal version on nix-Python-toolchain developed in *setup.nix* with intention to distribute it as a scaffold for pip2nix_. *setup.nix* won't disappear, but may not regularly be updated for newer NixOS versions anymore. Example for Python environment at: https://gist.github.com/datakurre/ebbc41d514a799587ee8b8a92efa8f82
 
 **setup.nix** provides opinionated helper functions and pip2nix_-based workflow
 for developing, testing and packaging declaratively configured Python packages
