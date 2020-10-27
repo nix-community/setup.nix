@@ -1,4 +1,4 @@
-cryptography==2.7
+cryptography==3.2
 PyYAML==5.1
 buildout-requirements==0.2.2
 cffi==1.12.3
