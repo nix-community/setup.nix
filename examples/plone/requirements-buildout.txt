@@ -1,5 +1,5 @@
 cryptography==2.7
-PyYAML==5.1
+PyYAML==5.4
 buildout-requirements==0.2.2
 cffi==1.12.3
 lxml==4.3.4
